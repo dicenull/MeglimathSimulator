@@ -22,6 +22,18 @@ public:
 	/// <param name="team">セルにタイルを置くチーム</param>
 	void PaintedBy(TeamType team);
 
+	/// <summary>
+	/// セルにはめられたタイルを取得する
+	/// </summary>
+	/// <returns>セルにあるタイル</returns>
+	TileType GetTile() const;
+
+	/// <summary>
+	/// セルの得点を取得する
+	/// </summary>
+	/// <returns>セルの得点</returns>
+	int GetPoint() const;
+
 public:
 	Cell();
 	Cell(int point);

@@ -17,6 +17,16 @@ void Cell::PaintedBy(TeamType team)
 	}
 }
 
+TileType Cell::GetTile() const
+{
+	return _tile;
+}
+
+int Cell::GetPoint() const
+{
+	return _point;
+}
+
 Cell::Cell()
 	:Cell(0)
 {}
