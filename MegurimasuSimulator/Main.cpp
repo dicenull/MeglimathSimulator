@@ -37,6 +37,8 @@ void Main()
 {
 	MyApp manager;
 	manager.add<Scenes::Game>(U"Game");
+	
+	FontAsset::Register(U"Cell", 16, Typeface::Black);
 
 	while (System::Update())
 	{
