@@ -15,10 +15,28 @@ private:
 	/// </summary>
 	Point _position;
 
-	Actions _actions;
+public:
+	/// <summary>
+	/// 座標を取得
+	/// </summary>
+	/// <returns>現在の座標</returns>
+	Point GetPosition() const;
+
+	/// <summary>
+	/// エージェントを動かす
+	/// </summary>
+	/// <param name="dir">動かす方向</param>
+	void Move(Direction dir);
 
 public:
 	Agent();
+
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
+	/// <param name="position">初期座標</param>
+	Agent(Point position);
+
 	virtual ~Agent();
 };
 
