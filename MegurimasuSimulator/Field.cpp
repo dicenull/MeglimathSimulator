@@ -9,12 +9,27 @@ void Field::Draw() const
 		{
 			r = Rect(_origin + Point(i, k) * _c_size, _c_size);
 
-			r.draw(Tile::ColorOf(_cells[k][i].GetTile()));
+			r.draw(Transform::ColorOf(_cells[k][i].GetTile()));
 			r.drawFrame(1.0, Palette::Gray);
 
-			_font(_cells[k][i].GetPoint()).drawAt(r.center(), Palette::Black);
+			FontAsset(U"Cell")(_cells[k][i].GetPoint()).drawAt(r.center(), Palette::Black);
 		}
 	}
+}
+
+Grid<Cell> Field::GetCells()
+{
+	return _cells;
+}
+
+void Field::PaintCell(Point pos, TeamType team)
+{
+	_cells[pos.y][pos.x].PaintedBy(team);
+}
+
+void Field::RemoveTile(Point pos)
+{
+	_cells[pos.y][pos.x].RemoveTile();
 }
 
 Field::Field()
