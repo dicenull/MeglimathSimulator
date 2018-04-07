@@ -24,7 +24,7 @@ enum class Direction
 	Stop
 };
 
-struct Actions
+struct Step
 {
 	Action action;
 	Direction direction;
