@@ -3,17 +3,17 @@
 #include "Team.h"
 
 
-	class Game
-	{
-	private:
-		Field _field;
-		Team _teams[2];
+class Game
+{
+private:
+	Field _field;
+	Team _teams[2];
 
-	public:
-		void Update();
-		void Draw();
+public:
+	void Update();
+	void Draw() const;
 
-	public:
-		Game(const Field &field, Team team_a, Team team_b);
-		virtual ~Game();
-	};
+public:
+	Game(const Field &field, Team team_a, Team team_b);
+	virtual ~Game();
+};
