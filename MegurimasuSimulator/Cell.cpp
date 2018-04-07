@@ -17,6 +17,11 @@ void Cell::PaintedBy(TeamType team)
 	}
 }
 
+void Cell::RemoveTile()
+{
+	_tile = TileType::None;
+}
+
 TileType Cell::GetTile() const
 {
 	return _tile;

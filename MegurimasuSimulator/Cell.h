@@ -23,6 +23,11 @@ public:
 	void PaintedBy(TeamType team);
 
 	/// <summary>
+	/// 置かれたタイルを取る
+	/// </summary>
+	void RemoveTile();
+
+	/// <summary>
 	/// セルにはめられたタイルを取得する
 	/// </summary>
 	/// <returns>セルにあるタイル</returns>
