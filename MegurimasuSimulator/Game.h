@@ -11,6 +11,9 @@ private:
 	FieldDrawer _field_drawer;
 	Team _teams[2];
 
+	GameInfo getGameInfo() const;
+	std::map<TeamType, Array<Agent>> getAgentMap() const;
+
 public:
 	void Update();
 	void Draw() const;
