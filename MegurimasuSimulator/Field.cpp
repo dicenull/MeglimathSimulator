@@ -17,7 +17,7 @@ void Field::RemoveTile(Point pos)
 
 bool Field::IsInField(Point pos)
 {
-	return (0 <= pos.x && pos.x < _cells.width) && (0 <= pos.y && pos.y < _cells.height());
+	return (0 <= pos.x && pos.x < _cells.width()) && (0 <= pos.y && pos.y < _cells.height());
 }
 
 Field::Field()
