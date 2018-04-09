@@ -9,7 +9,7 @@ class Game
 private:
 	Field _field;
 	FieldDrawer _field_drawer;
-	Team _teams[2];
+	Array<std::shared_ptr<Team>> _teams;
 
 	GameInfo getGameInfo() const;
 	std::map<TeamType, Array<Agent>> getAgentMap() const;
@@ -19,6 +19,6 @@ public:
 	void Draw() const;
 
 public:
-	Game(const Field &field, Team team_a, Team team_b);
+	Game(const Field &field, std::shared_ptr<Team> team_a, std::shared_ptr<Team> team_b);
 	virtual ~Game();
 };

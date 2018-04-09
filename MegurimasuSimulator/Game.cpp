@@ -1,5 +1,6 @@
 #include "Game.h"
 
+// TODO: エージェント同士が重ならないようにする
 
 GameInfo Game::getGameInfo() const
 {
@@ -9,8 +10,8 @@ GameInfo Game::getGameInfo() const
 std::map<TeamType, Array<Agent>> Game::getAgentMap() const
 {
 	std::map<TeamType, Array<Agent>> agents;
-	agents[TeamType::A] = _teams[0].GetAgents();
-	agents[TeamType::B] = _teams[1].GetAgents();
+	agents[TeamType::A] = _teams[0]->GetAgents();
+	agents[TeamType::B] = _teams[1]->GetAgents();
 
 	return agents;
 }
@@ -22,11 +23,11 @@ void Game::Update()
 	GameInfo info = getGameInfo();
 	auto agents = getAgentMap();
 
-	thinks[TeamType::A] = _teams[0].NextThink(info);
-	thinks[TeamType::B] = _teams[1].NextThink(info);
+	thinks[TeamType::A] = _teams[0]->NextThink(info);
+	thinks[TeamType::B] = _teams[1]->NextThink(info);
 
 	// シミュレーション
-	std::map<Point, Array<std::pair<Direction, TeamType>>> move_point_map;
+	Array<std::pair<Point, std::pair<Direction, TeamType>>> move_point_arr;
 	Array<Point> remove_points;
 	for (TeamType team : {TeamType::A, TeamType::B})
 	{
@@ -40,7 +41,7 @@ void Game::Update()
 			switch (thinks[team].agents[i].action)
 			{
 			case Action::Move:
-				move_point_map[pos].push_back(std::make_pair(dir, team));
+				move_point_arr.push_back(std::make_pair(pos, std::make_pair(dir, team)));
 				break;
 			case Action::RemoveTile:
 				remove_points.push_back(pos);
@@ -50,23 +51,27 @@ void Game::Update()
 	}
 
 	// 衝突していないエージェントの行動のみ実行する
-	for (auto & pos_map : move_point_map)
+	for (auto & pos_map : move_point_arr)
 	{
 		auto pos = pos_map.first;
 
-		if (pos_map.second.count() == 1 && _field.IsInField(pos))
-		{	
-			auto dir = pos_map.second[0].first;
-			auto team = pos_map.second[0].second;
+		if (move_point_arr.count_if([pos](std::pair<Point, std::pair<Direction, TeamType>> itr) {return itr.first == pos; }) == 1
+			&& _field.IsInField(pos))
+		{
+			auto dir = pos_map.second.first;
+			auto team = pos_map.second.second;
 
-			_teams[static_cast<int>(team)].MoveAgent(pos, dir);
+			// 元の座標に戻す
+			pos -= Transform::DirToDelta(dir);
+
+			_teams[static_cast<int>(team)]->MoveAgent(pos, dir);
 			_field.PaintCell(pos, team);
 		}
 	}
 
 	for (auto & remove_point : remove_points)
 	{
-		if (remove_points.count_if(Equal(fgetpos)) == 1 && _field.IsInField(remove_point))
+		if (remove_points.count_if(Equal(remove_point)) == 1 && _field.IsInField(remove_point))
 		{
 			_field.RemoveTile(remove_point);
 		}
@@ -79,11 +84,10 @@ void Game::Draw() const
 	_field_drawer.Draw(getGameInfo());
 }
 
-Game::Game(const Field &field, Team team_a, Team team_b)
+Game::Game(const Field &field, std::shared_ptr<Team> team_a, std::shared_ptr<Team> team_b)
 {
 	_field = field;
-	_teams[0] = team_a;
-	_teams[1] = team_b;
+	_teams.append({ team_a, team_b });
 }
 
 Game::~Game()
