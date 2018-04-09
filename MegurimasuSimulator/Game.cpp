@@ -25,6 +25,7 @@ void Game::Update()
 	thinks[TeamType::A] = _teams[0].NextThink(info);
 	thinks[TeamType::B] = _teams[1].NextThink(info);
 
+	// TODO: フィールド外にはみ出していないか判定
 	// シミュレーション
 	Array<Point> move_points;
 	Array<Point> remove_points;

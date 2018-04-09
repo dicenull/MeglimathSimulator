@@ -1,5 +1,7 @@
 #include "Team.h"
 
+// TODO: KeyBoardTeam�̍쐬
+
 Think Team::NextThink(GameInfo info)
 {
 	return Think({ Step{ Action::Stop }, Step{ Action::Stop } });
