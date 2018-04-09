@@ -1,5 +1,5 @@
 #pragma once
-#include "Field.h"
+#include "GameInfo.h"
 #include <Siv3D.hpp>
 
 class FieldDrawer
@@ -16,7 +16,7 @@ public:
 	void SetOrigin(Point origin);
 	Point GetOrigin() const;
 
-	void Draw(const Field & field) const;
+	void Draw(const GameInfo & info) const;
 
 public:
 	FieldDrawer();
