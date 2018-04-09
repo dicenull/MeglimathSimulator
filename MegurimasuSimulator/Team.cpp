@@ -17,6 +17,18 @@ void Team::MoveAgent(int idx, Direction dir)
 	_agents[idx].Move(dir);
 }
 
+void Team::MoveAgent(Point pos, Direction dir)
+{
+	for (auto & agent : _agents)
+	{
+		if (agent.GetPosition() == pos)
+		{
+			agent.Move(dir);
+			return;
+		}
+	}
+}
+
 Team::Team()
 	:Team(TeamType::A, Agent(), Agent())
 {}

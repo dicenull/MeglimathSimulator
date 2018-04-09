@@ -23,6 +23,13 @@ public:
 	/// <param name="dir">動かす方向</param>
 	void MoveAgent(int idx, Direction dir);
 
+	/// <summary>
+	/// 指定座標にいるエージェントを動かす
+	/// </summary>
+	/// <param name="pos">エージェントのいる座標</param>
+	/// <param name="dir">動かす方向</param>
+	void MoveAgent(Point pos, Direction dir);
+
 public:
 	Team();
 
