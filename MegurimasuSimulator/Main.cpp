@@ -5,7 +5,7 @@
 
 struct CommonData
 {
-	Game game = { Field(Point(16,16), Size(10, 10)), Team(), Team() };
+	Game game = { Field(Size(10, 10)), Team(), Team() };
 };
 
 using MyApp = SceneManager<String, CommonData>;

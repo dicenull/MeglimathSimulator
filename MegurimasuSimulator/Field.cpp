@@ -1,10 +1,5 @@
 #include "Field.h"
 
-void Field::Draw()const
-{
-	_drawer.Draw(this);
-}
-
 Grid<Cell> Field::GetCells() const
 {
 	return _cells;
@@ -27,18 +22,13 @@ Field::Field()
 void Field::operator=(const Field & other)
 {
 	_cells = other._cells;
-	_drawer = other._drawer;
 }
 
-
-Field::Field(Point origin, Size size)
-{
-	_drawer.SetOrigin(origin);
-	_cells = Grid<Cell>(size);
-}
 
 Field::Field(Size size)
-	:Field(Point(0, 0), size){}
+{
+	_cells = Grid<Cell>(size);
+}
 
 Field::~Field()
 {

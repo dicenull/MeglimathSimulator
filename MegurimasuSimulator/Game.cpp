@@ -67,7 +67,7 @@ void Game::Update()
 
 void Game::Draw() const
 {
-	_field.Draw();
+	_field_drawer.Draw(_field);
 }
 
 Game::Game(const Field &field, Team team_a, Team team_b)

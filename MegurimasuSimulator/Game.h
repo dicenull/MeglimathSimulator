@@ -1,4 +1,5 @@
 #pragma once
+#include "FieldDrawer.h"
 #include "Field.h"
 #include "Team.h"
 
@@ -7,6 +8,7 @@ class Game
 {
 private:
 	Field _field;
+	FieldDrawer _field_drawer;
 	Team _teams[2];
 
 public:
