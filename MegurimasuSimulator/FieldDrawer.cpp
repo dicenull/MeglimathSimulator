@@ -16,7 +16,7 @@ void FieldDrawer::Draw(const GameInfo & info) const
 
 	// セルとタイルポイントの描画
 	Rect r;
-	auto & cells = info.GetField().GetCells();
+	auto cells = info.GetField().GetCells();
 	Array<Agent> a_agents = info.GetAgents(TeamType::A);
 	Array<Agent> b_agents = info.GetAgents(TeamType::B);
 	
@@ -35,14 +35,14 @@ void FieldDrawer::Draw(const GameInfo & info) const
 
 			if (a_agents.includes_if(pos_lamda))
 			{
-				frame_color = Palette::Red;
+				frame_color = Palette::Magenta;
 			}
 			else if (b_agents.includes_if(pos_lamda))
 			{
-				frame_color = Palette::Blue;
+				frame_color = Palette::Cyan;
 			}
 
-			r.drawFrame(1.0, 0, frame_color);
+			r.drawFrame(2.0, 0, frame_color);
 
 			FontAsset(U"Cell")(cells[k][i].GetPoint()).drawAt(r.center(), Palette::Black);
 		}
