@@ -2,14 +2,15 @@
 # include <Siv3D.hpp> // OpenSiv3D v0.2.4
 #include <HamFramework.hpp>
 #include "Game.h"
+#include "RandomTeam.h"
 
 struct CommonData
 {
 	Game game =
 	{
 		Field(Size(10, 10)),
-		Team(TeamType::A, Agent(Point(1,1)), Agent(Point(5,6))),
-		Team(TeamType::B, Agent(Point(5, 1)), Agent(Point(3, 7))) };
+		std::shared_ptr<Team>(new RandomTeam(TeamType::A, Agent(Point(1,1)), Agent(Point(5,6)))),
+		std::shared_ptr<Team>(new RandomTeam(TeamType::B, Agent(Point(5, 1)), Agent(Point(3, 7)))) };
 };
 
 using MyApp = SceneManager<String, CommonData>;
@@ -27,7 +28,10 @@ namespace Scenes
 
 		void update() override
 		{
-			getData().game.Update();
+			if (!KeyEnter.pressed())
+			{
+				getData().game.Update();
+			}
 		}
 
 		void draw() const override

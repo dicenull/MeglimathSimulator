@@ -204,6 +204,7 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameInfo.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="RandomTeam.cpp" />
     <ClCompile Include="Team.cpp" />
     <ClCompile Include="TyokushinTeam.cpp" />
   </ItemGroup>
@@ -263,6 +264,7 @@
     <ClInclude Include="Agent.h" />
     <ClInclude Include="Cell.h" />
     <ClInclude Include="FieldDrawer.h" />
+    <ClInclude Include="RandomTeam.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="Field.h" />
     <ClInclude Include="Game.h" />
