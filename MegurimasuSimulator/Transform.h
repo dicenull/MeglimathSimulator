@@ -7,33 +7,34 @@ namespace Transform
 {
 	constexpr Point DirToDelta(Direction dir)
 	{
-		Point movement = Point(0, 0);
 		switch (dir)
 		{
 		case Direction::Right:
-			movement = Point(1, 0);
-			break;
+			return Point(1, 0);
+			
 		case Direction::RightUp:
-			movement = Point(1, -1);
-			break;
+			return Point(1, -1);
+			
 		case Direction::Up:
-			movement = Point(0, -1);
-			break;
+			return Point(0, -1);
+			
 		case Direction::LeftUp:
-			movement = Point(-1, -1);
-			break;
+			return Point(-1, -1);
+			
 		case Direction::Left:
-			movement = Point(-1, 0);
-			break;
-		case Direction::Down:
-			movement = Point(0, 1);
-			break;
-		case Direction::RightDown:
-			movement = Point(1, 1);
-			break;
-		}
+			return Point(-1, 0);
 
-		return movement;
+		case Direction::LeftDown:
+			return Point(-1, 1);
+			
+		case Direction::Down:
+			return Point(0, 1);
+			
+		case Direction::RightDown:
+			return Point(1, 1);
+			
+		}
+		return Point(0, 0);
 	}
 
 	/// <summary>
