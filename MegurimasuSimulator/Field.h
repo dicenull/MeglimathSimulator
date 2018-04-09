@@ -1,22 +1,18 @@
 #pragma once
+#include "FieldDrawer.h"
 #include "Cell.h"
 #include "Transform.h"
 
 class Field
 {
 private:
+	FieldDrawer _drawer;
 	Grid<Cell> _cells;
-	Point _origin;
-
-	/// <summary>
-	/// ƒZƒ‹ˆê‚Â“–‚½‚è‚Ì‘å‚«‚³
-	/// </summary>
-	const Size _c_size = Size(32, 32);
 
 public:
 	void Draw() const;
 
-	Grid<Cell> GetCells();
+	Grid<Cell> GetCells() const;
 
 	/// <summary>
 	/// ƒZƒ‹‚ð“h‚é

@@ -1,23 +1,11 @@
 #include "Field.h"
 
-void Field::Draw() const
+void Field::Draw()const
 {
-	Rect r;
-	for (int i = 0; i < _cells.size().x; i++)
-	{
-		for (int k = 0; k < _cells.size().y; k++)
-		{
-			r = Rect(_origin + Point(i, k) * _c_size, _c_size);
-
-			r.draw(Transform::ColorOf(_cells[k][i].GetTile()));
-			r.drawFrame(1.0, Palette::Gray);
-
-			FontAsset(U"Cell")(_cells[k][i].GetPoint()).drawAt(r.center(), Palette::Black);
-		}
-	}
+	_drawer.Draw(this);
 }
 
-Grid<Cell> Field::GetCells()
+Grid<Cell> Field::GetCells() const
 {
 	return _cells;
 }
@@ -39,13 +27,13 @@ Field::Field()
 void Field::operator=(const Field & other)
 {
 	_cells = other._cells;
-	_origin = other._origin;
+	_drawer = other._drawer;
 }
 
 
 Field::Field(Point origin, Size size)
 {
-	_origin = origin;
+	_drawer.SetOrigin(origin);
 	_cells = Grid<Cell>(size);
 }
 

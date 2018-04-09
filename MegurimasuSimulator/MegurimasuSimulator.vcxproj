@@ -200,6 +200,7 @@
     <ClCompile Include="Agent.cpp" />
     <ClCompile Include="Cell.cpp" />
     <ClCompile Include="Field.cpp" />
+    <ClCompile Include="FieldDrawer.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameInfo.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -261,6 +262,7 @@
     <ClInclude Include="Action.h" />
     <ClInclude Include="Agent.h" />
     <ClInclude Include="Cell.h" />
+    <ClInclude Include="FieldDrawer.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="Field.h" />
     <ClInclude Include="Game.h" />
