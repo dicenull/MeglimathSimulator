@@ -1,13 +1,13 @@
 #include "GameInfo.h"
 
-Field GameInfo::GetField()
+Field GameInfo::GetField() const
 {
 	return _field;
 }
 
-Array<Agent> GameInfo::GetAgents(TeamType type)
+Array<Agent> GameInfo::GetAgents(TeamType type) const
 {
-	return _agents[type];
+	return _agents.find(type)->second;
 }
 
 GameInfo::GameInfo(Field field, std::map<TeamType, Array<Agent>> agents)

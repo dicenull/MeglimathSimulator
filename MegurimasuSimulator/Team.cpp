@@ -5,7 +5,7 @@ Think Team::NextThink(GameInfo info)
 	return Think({ Step{ Action::Stop }, Step{ Action::Stop } });
 }
 
-Array<Agent> Team::GetAgents()
+Array<Agent> Team::GetAgents() const
 {
 	return Array<Agent>({ _agents[0], _agents[1] });
 }
@@ -23,6 +23,7 @@ Team::Team(TeamType type, Agent agent1, Agent agent2)
 {
 	_agents[0] = agent1;
 	_agents[1] = agent2;
+
 	_type = type;
 	_total_point = 0;
 }

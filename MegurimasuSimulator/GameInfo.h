@@ -9,8 +9,8 @@ private:
 	std::map<TeamType, Array<Agent>> _agents;
 
 public:
-	Field GetField();
-	Array<Agent> GetAgents(TeamType type);
+	Field GetField() const;
+	Array<Agent> GetAgents(TeamType type) const;
 
 public:
 	GameInfo(Field field, std::map<TeamType, Array<Agent>> agents);

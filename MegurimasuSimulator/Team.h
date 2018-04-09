@@ -14,7 +14,7 @@ private:
 public:
 	virtual Think NextThink(GameInfo info);
 
-	Array<Agent> GetAgents();
+	Array<Agent> GetAgents() const;
 	
 	/// <summary>
 	/// 指定のエージェントを動かす
