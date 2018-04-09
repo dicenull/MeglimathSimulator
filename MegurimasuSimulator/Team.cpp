@@ -1,12 +1,5 @@
 #include "Team.h"
 
-// TODO: KeyBoardTeam�̍쐬
-
-Think Team::NextThink(GameInfo info)
-{
-	return Think({ Step{ Action::Stop }, Step{ Action::Stop } });
-}
-
 Array<Agent> Team::GetAgents() const
 {
 	return Array<Agent>({ _agents[0], _agents[1] });

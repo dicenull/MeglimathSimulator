@@ -12,7 +12,7 @@ private:
 	TeamType _type;
 
 public:
-	virtual Think NextThink(GameInfo info);
+	virtual Think NextThink(GameInfo info) = 0;
 
 	Array<Agent> GetAgents() const;
 	
