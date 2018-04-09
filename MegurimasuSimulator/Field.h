@@ -25,6 +25,13 @@ public:
 	/// <param name="pos">タイルの座標</param>
 	void RemoveTile(Point pos);
 
+	/// <summary>
+	/// 指定座標がフィールドの中であるか判定する
+	/// </summary>
+	/// <param name="pos">フィールド内か判定する座標</param>
+	/// <returns>座標がフィールド内であるか</returns>
+	bool IsInField(Point pos);
+
 public:
 	Field();
 

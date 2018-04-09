@@ -25,7 +25,6 @@ void Game::Update()
 	thinks[TeamType::A] = _teams[0].NextThink(info);
 	thinks[TeamType::B] = _teams[1].NextThink(info);
 
-	// TODO: フィールド外にはみ出していないか判定
 	// シミュレーション
 	std::map<Point, Array<std::pair<Direction, TeamType>>> move_point_map;
 	Array<Point> remove_points;
@@ -53,9 +52,10 @@ void Game::Update()
 	// 衝突していないエージェントの行動のみ実行する
 	for (auto & pos_map : move_point_map)
 	{
-		if (pos_map.second.count() == 1)
-		{
-			auto pos = pos_map.first;
+		auto pos = pos_map.first;
+
+		if (pos_map.second.count() == 1 && _field.IsInField(pos))
+		{	
 			auto dir = pos_map.second[0].first;
 			auto team = pos_map.second[0].second;
 
@@ -66,7 +66,7 @@ void Game::Update()
 
 	for (auto & remove_point : remove_points)
 	{
-		if (remove_points.count_if(Equal(fgetpos)) == 1)
+		if (remove_points.count_if(Equal(fgetpos)) == 1 && _field.IsInField(remove_point))
 		{
 			_field.RemoveTile(remove_point);
 		}
