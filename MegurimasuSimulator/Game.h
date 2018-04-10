@@ -14,7 +14,7 @@ private:
 	Array<Point> _arrives;
 
 private:
-	bool dfsAreaPoint(Point pos);
+	bool dfsAreaPoint(Point pos, TileType tile);
 
 	GameInfo getGameInfo() const;
 	std::map<TeamType, Array<Agent>> getAgentMap() const;
