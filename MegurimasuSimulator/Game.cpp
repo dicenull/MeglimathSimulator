@@ -1,7 +1,5 @@
 #include "Game.h"
 
-// TODO: エージェント同士が重ならないようにする
-
 GameInfo Game::getGameInfo() const
 {
 	return GameInfo(_field, getAgentMap());
