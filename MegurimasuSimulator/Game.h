@@ -13,6 +13,7 @@ private:
 
 	GameInfo getGameInfo() const;
 	std::map<TeamType, Array<Agent>> getAgentMap() const;
+	Array<Agent> getAgents() const;
 
 public:
 	void Update();

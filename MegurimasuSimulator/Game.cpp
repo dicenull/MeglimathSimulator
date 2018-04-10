@@ -16,12 +16,18 @@ std::map<TeamType, Array<Agent>> Game::getAgentMap() const
 	return agents;
 }
 
+Array<Agent> Game::getAgents() const
+{
+	return _teams[0]->GetAgents().append(_teams[1]->GetAgents());
+}
+
 void Game::Update()
 {
 	std::map<TeamType, Think> thinks;
 	
 	GameInfo info = getGameInfo();
-	auto agents = getAgentMap();
+	auto agents_map = getAgentMap();
+	auto agents = getAgents();
 
 	thinks[TeamType::A] = _teams[0]->NextThink(info);
 	thinks[TeamType::B] = _teams[1]->NextThink(info);
@@ -35,7 +41,7 @@ void Game::Update()
 		{
 			Direction dir = thinks[team].agents[i].direction;
 			// エージェントを動かしたい方向に動かした場合の座標
-			Point pos = agents[team][i].GetPosition().movedBy(Transform::DirToDelta(dir));
+			Point pos = agents_map[team][i].GetPosition().movedBy(Transform::DirToDelta(dir));
 
 			// エージェントが動作する座標を追加
 			switch (thinks[team].agents[i].action)
@@ -55,8 +61,12 @@ void Game::Update()
 	{
 		auto pos = pos_map.first;
 
+		// その座標に行くエージェントが一人、フィールド内
+		// タイルが置かれていない、どのエージェントもいない
 		if (move_point_arr.count_if([pos](std::pair<Point, std::pair<Direction, TeamType>> itr) {return itr.first == pos; }) == 1
-			&& _field.IsInField(pos))
+			&& _field.IsInField(pos)
+			&& _field.GetCells()[pos.y][pos.x].GetTile() == TileType::None
+			&& agents.count_if([pos](Agent agent) { return agent.GetPosition() == pos; }) == 0)
 		{
 			auto dir = pos_map.second.first;
 			auto team = pos_map.second.second;
