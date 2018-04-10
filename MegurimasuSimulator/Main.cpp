@@ -28,7 +28,7 @@ namespace Scenes
 
 		void update() override
 		{
-			if (!KeyEnter.pressed())
+			if (MouseL.down() || KeyEnter.pressed())
 			{
 				getData().game.Update();
 			}
