@@ -11,6 +11,11 @@ private:
 	FieldDrawer _field_drawer;
 	Array<std::shared_ptr<Team>> _teams;
 
+	Array<Point> _arrives;
+
+private:
+	bool dfsAreaPoint(Point pos);
+
 	GameInfo getGameInfo() const;
 	std::map<TeamType, Array<Agent>> getAgentMap() const;
 	Array<Agent> getAgents() const;

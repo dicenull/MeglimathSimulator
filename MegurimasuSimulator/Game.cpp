@@ -1,5 +1,12 @@
 #include "Game.h"
 
+bool Game::dfsAreaPoint(Point pos)
+{
+	_arrives.push_back(pos);
+
+	Point delta[] = { Point(0, 1), Point(1, 0), Point(0, -1), Point(-1, 0) };
+}
+
 GameInfo Game::getGameInfo() const
 {
 	return GameInfo(_field, getAgentMap());
