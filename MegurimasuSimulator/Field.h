@@ -52,9 +52,9 @@ public:
 	Field(Size size);
 
 	/// <summary>
-	/// セルを元に
+	/// セルを元にフィールドを生成するコンストラクタ
 	/// </summary>
-	/// <param name="cells"></param>
+	/// <param name="cells">元となるセル</param>
 	Field(Grid<Cell> cells);
 
 	virtual ~Field();

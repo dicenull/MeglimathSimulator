@@ -64,6 +64,11 @@ Field::Field(Size size)
 	_cells = Grid<Cell>(size);
 }
 
+Field::Field(Grid<Cell> cells)
+{
+	_cells = cells;
+}
+
 Field::~Field()
 {
 }
