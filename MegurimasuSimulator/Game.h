@@ -12,9 +12,10 @@ private:
 	Array<std::shared_ptr<Team>> _teams;
 
 	Array<Point> _arrives;
-
+	Grid<bool> _status;
 private:
-	bool dfsAreaPoint(Point pos, TileType tile);
+	int getAreaPoint(TileType tile);
+	void dfsAreaPoint(Point pos, TileType tile);
 
 	GameInfo getGameInfo() const;
 	std::map<TeamType, Array<Agent>> getAgentMap() const;

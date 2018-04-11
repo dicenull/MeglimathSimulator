@@ -1,53 +1,57 @@
 #include "Game.h"
 
-bool Game::dfsAreaPoint(Point pos, TileType tile)
+int Game::getAreaPoint(TileType tile)
+{
+	auto cells = _field.GetCells();
+	_status = Grid<bool>(cells.size() + Point(2, 2), true);
+
+	dfsAreaPoint(Point(0, 0), tile);
+
+	int area_point = 0;
+	for (int i : step(_status.width()))
+	{
+		for (int k : step(_status.height()))
+		{
+			if (_status[k][i])
+			{
+				area_point += cells[k - 1][i - 1].GetPoint();
+			}
+		}
+	}
+	
+	return area_point;
+}
+
+void Game::dfsAreaPoint(Point pos, TileType tile)
 {
 	auto cells = _field.GetCells();
 
-	if (cells[pos.y][pos.x].GetTile() == tile)
+	// 範囲外なら終了
+	if (pos.x < 0 || pos.x >= _status.width()
+		|| pos.y < 0 || pos.y >= _status.height())
 	{
-		return true;
+		return;
 	}
 
-	_arrives.push_back(pos);
-
+	_status[pos.y][pos.x] = false;
+	if (pos.x == 0 || pos.x == cells.width() ||
+		pos.y == 0 || pos.y == cells.height())
+	{
+		// 端は探索のみ行う
+	}
+	else if(cells[pos.y - 1][pos.x - 1].GetTile() == tile)
+	{
+		// 調査中のタイルが置かれていたら終了
+		return;
+	}
+	
 	Point delta[] = { Point(0, 1), Point(1, 0), Point(0, -1), Point(-1, 0) };
 
-	Point next_pos;
-	// 四方でタイルのないマスがあったらそのマスへ探索
+	// 四方へ探索する
 	for (int i : step(4))
 	{
-		next_pos = pos + delta[i];
-
-		// フィールド外
-		if (next_pos.x < 0 || next_pos.y < 0 || next_pos.x >= cells.width() || next_pos.y >= cells.height())
-		{
-			return false;
-		}
-
-		// 探索済みなら探索しない
-		if (_arrives.includes(next_pos))
-		{
-			continue;
-		}
-
-		auto next_tile = cells[next_pos.y][next_pos.x].GetTile();
-
-		if(next_tile == TileType::None)
-		{
-			// 先のマスが囲まれていない場合このマスも囲まれていない
-			if (!dfsAreaPoint(next_pos, tile))
-			{
-				return false;
-			}
-		}
-		else if (next_tile != tile)
-		{
-			return false;
-		}
+		dfsAreaPoint(pos + delta[i], tile);
 	}
-
-	return true;
 }
 
 GameInfo Game::getGameInfo() const
