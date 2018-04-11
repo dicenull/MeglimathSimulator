@@ -15,5 +15,6 @@ public:
 	}
 
 public:
+	RandomTeam(TeamType type);
 	RandomTeam(TeamType type, Agent agent1, Agent agent2);
 };
