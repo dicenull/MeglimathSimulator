@@ -1,5 +1,55 @@
 #include "Game.h"
 
+bool Game::dfsAreaPoint(Point pos, TileType tile)
+{
+	auto cells = _field.GetCells();
+
+	if (cells[pos.y][pos.x].GetTile() == tile)
+	{
+		return true;
+	}
+
+	_arrives.push_back(pos);
+
+	Point delta[] = { Point(0, 1), Point(1, 0), Point(0, -1), Point(-1, 0) };
+
+	Point next_pos;
+	// 四方でタイルのないマスがあったらそのマスへ探索
+	for (int i : step(4))
+	{
+		next_pos = pos + delta[i];
+
+		// フィールド外
+		if (next_pos.x < 0 || next_pos.y < 0 || next_pos.x >= cells.width() || next_pos.y >= cells.height())
+		{
+			return false;
+		}
+
+		// 探索済みなら探索しない
+		if (_arrives.includes(next_pos))
+		{
+			continue;
+		}
+
+		auto next_tile = cells[next_pos.y][next_pos.x].GetTile();
+
+		if(next_tile == TileType::None)
+		{
+			// 先のマスが囲まれていない場合このマスも囲まれていない
+			if (!dfsAreaPoint(next_pos, tile))
+			{
+				return false;
+			}
+		}
+		else if (next_tile != tile)
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
+
 GameInfo Game::getGameInfo() const
 {
 	return GameInfo(_field, getAgentMap());
