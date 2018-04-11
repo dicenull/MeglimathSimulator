@@ -4,6 +4,11 @@ bool Game::dfsAreaPoint(Point pos, TileType tile)
 {
 	auto cells = _field.GetCells();
 
+	if (cells[pos.y][pos.x].GetTile() == tile)
+	{
+		return true;
+	}
+
 	_arrives.push_back(pos);
 
 	Point delta[] = { Point(0, 1), Point(1, 0), Point(0, -1), Point(-1, 0) };
