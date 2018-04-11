@@ -8,8 +8,19 @@ class Field
 {
 private:
 	Grid<Cell> _cells;
+	Grid<bool> _status;
+
+private:
+	void dfsAreaPoint(Point pos, TileType tile);
 
 public:
+	/// <summary>
+	/// 指定のタイルで囲まれた領域の得点を計算します
+	/// </summary>
+	/// <param name="tile">どのタイルで囲まれているか</param>
+	/// <returns>領域ポイント</returns>
+	int GetAreaPoint(TileType tile);
+
 	Grid<Cell> GetCells() const;
 
 	/// <summary>
