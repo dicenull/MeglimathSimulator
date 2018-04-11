@@ -1,6 +1,6 @@
 #include "Game.h"
 
-int Game::getAreaPoint(TileType tile)
+int Game::GetAreaPoint(TileType tile)
 {
 	auto cells = _field.GetCells();
 	_status = Grid<bool>(cells.size() + Point(2, 2), true);
@@ -27,15 +27,21 @@ void Game::dfsAreaPoint(Point pos, TileType tile)
 	auto cells = _field.GetCells();
 
 	// 範囲外なら終了
-	if (pos.x < 0 || pos.x >= _status.width()
-		|| pos.y < 0 || pos.y >= _status.height())
+	if (pos.x < 0 || pos.x > cells.width() + 1
+		|| pos.y < 0 || pos.y > cells.height() + 1)
+	{
+		return;
+	}
+
+	// 探索済みなら終了
+	if (_status[pos.y][pos.x] == false)
 	{
 		return;
 	}
 
 	_status[pos.y][pos.x] = false;
-	if (pos.x == 0 || pos.x == cells.width() ||
-		pos.y == 0 || pos.y == cells.height())
+	if (pos.x == 0 || pos.x == cells.width() + 1 ||
+		pos.y == 0 || pos.y == cells.height() + 1)
 	{
 		// 端は探索のみ行う
 	}
