@@ -2,8 +2,6 @@
 #include "Cell.h"
 #include "Transform.h"
 
-// TODO: FieldGeneratorを作成
-
 class Field
 {
 private:
@@ -14,6 +12,13 @@ private:
 	void dfsAreaPoint(Point pos, TileType tile);
 
 public:
+	/// <summary>
+	/// フィールドを生成します
+	/// </summary>
+	/// <param name="file">フィールド情報のあるjsonファイル</param>
+	/// <returns>生成したフィールド</returns>
+	static Field Create(FilePath file);
+
 	/// <summary>
 	/// 指定のタイルで囲まれた領域の得点を計算します
 	/// </summary>
@@ -53,6 +58,12 @@ public:
 	/// </summary>
 	/// <param name="size">フィールドの大きさ</param>
 	Field(Size size);
+
+	/// <summary>
+	/// セルを元にフィールドを生成するコンストラクタ
+	/// </summary>
+	/// <param name="cells">元となるセル</param>
+	Field(Grid<Cell> cells);
 
 	virtual ~Field();
 };

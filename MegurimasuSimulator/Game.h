@@ -3,7 +3,6 @@
 #include "Field.h"
 #include "Team.h"
 
-// TODO: —Ìˆæƒ|ƒCƒ“ƒg‚Ìˆ—
 class Game
 {
 private:
@@ -17,6 +16,7 @@ private:
 	Array<Agent> getAgents() const;
 
 public:
+	void Game::InitAgents();
 
 	void Update();
 	void Draw() const;
