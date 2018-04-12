@@ -8,16 +8,19 @@ class Field
 {
 private:
 	Grid<Cell> _cells;
+	Grid<bool> _status;
+
+private:
+	void dfsAreaPoint(Point pos, TileType tile);
 
 public:
 	/// <summary>
-	/// フィールドをします
+	/// 指定のタイルで囲まれた領域の得点を計算します
 	/// </summary>
-	/// <param name="file">フィールド情報のあるjsonファイル</param>
-	/// <returns>生成したフィールド</returns>
-	static Field Create(FilePath file);
+	/// <param name="tile">どのタイルで囲まれているか</param>
+	/// <returns>領域ポイント</returns>
+	int GetAreaPoint(TileType tile);
 
-public:
 	Grid<Cell> GetCells() const;
 
 	/// <summary>
@@ -50,12 +53,6 @@ public:
 	/// </summary>
 	/// <param name="size">フィールドの大きさ</param>
 	Field(Size size);
-
-	/// <summary>
-	/// セルを元にフィールドを生成するコンストラクタ
-	/// </summary>
-	/// <param name="cells">元となるセル</param>
-	Field(Grid<Cell> cells);
 
 	virtual ~Field();
 };
