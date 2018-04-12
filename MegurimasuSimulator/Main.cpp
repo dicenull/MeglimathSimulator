@@ -8,9 +8,10 @@ struct CommonData
 {
 	Game game =
 	{
-		Field(Size(10, 10)),
-		std::shared_ptr<Team>(new RandomTeam(TeamType::A, Agent(Point(1,1)), Agent(Point(5,6)))),
-		std::shared_ptr<Team>(new RandomTeam(TeamType::B, Agent(Point(5, 1)), Agent(Point(3, 7)))) };
+		Field::Create(U"../TestField01.json"),
+		std::shared_ptr<Team>(new RandomTeam(TeamType::A)),
+		std::shared_ptr<Team>(new RandomTeam(TeamType::B))
+	};
 };
 
 using MyApp = SceneManager<String, CommonData>;
@@ -23,7 +24,7 @@ namespace Scenes
 		Game(const InitData& init)
 			: IScene(init)
 		{
-
+			getData().game.InitAgents();
 		}
 
 		void update() override

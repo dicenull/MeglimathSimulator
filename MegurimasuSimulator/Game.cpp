@@ -69,6 +69,25 @@ Array<Agent> Game::getAgents() const
 	return _teams[0]->GetAgents().append(_teams[1]->GetAgents());
 }
 
+void Game::InitAgents()
+{
+	Size size = _field.GetCells().size();
+
+	Point init_pos = Point(Random((size.x - 2) / 2), Random((size.y - 2) / 2));
+
+	size -= Point(1, 1);
+	Point agent_pos[] = 
+	{
+		init_pos,
+		Point(size.x - init_pos.x, init_pos.y),
+		Point(init_pos.x, size.y - init_pos.y),
+		size - init_pos
+	};
+
+	_teams[0]->InitAgentsPos(agent_pos[0], agent_pos[1]);
+	_teams[1]->InitAgentsPos(agent_pos[2], agent_pos[3]);
+}
+
 void Game::Update()
 {
 	std::map<TeamType, Think> thinks;
@@ -142,7 +161,7 @@ void Game::Draw() const
 	_field_drawer.Draw(getGameInfo());
 }
 
-Game::Game(const Field &field, std::shared_ptr<Team> team_a, std::shared_ptr<Team> team_b)
+Game::Game(const Field & field, std::shared_ptr<Team> team_a, std::shared_ptr<Team> team_b)
 {
 	_field = field;
 	_teams.append({ team_a, team_b });

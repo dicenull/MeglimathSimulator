@@ -21,6 +21,8 @@ private:
 	Array<Agent> getAgents() const;
 
 public:
+	void InitAgents();
+
 	void Update();
 	void Draw() const;
 

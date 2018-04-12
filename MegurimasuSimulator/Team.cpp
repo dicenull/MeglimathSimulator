@@ -1,5 +1,11 @@
 #include "Team.h"
 
+void Team::InitAgentsPos(Point pos1, Point pos2)
+{
+	_agents[0] = Agent(pos1);
+	_agents[1] = Agent(pos2);
+}
+
 Array<Agent> Team::GetAgents() const
 {
 	return Array<Agent>({ _agents[0], _agents[1] });

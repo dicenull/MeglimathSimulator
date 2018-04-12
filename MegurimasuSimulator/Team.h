@@ -14,6 +14,8 @@ private:
 public:
 	virtual Think NextThink(GameInfo info) = 0;
 
+	void InitAgentsPos(Point pos1, Point pos2);
+
 	Array<Agent> GetAgents() const;
 	
 	/// <summary>

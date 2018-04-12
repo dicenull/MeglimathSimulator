@@ -206,6 +206,10 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="RandomTeam.cpp" />
     <ClCompile Include="Team.cpp" />
+    <Text Include="TestField01.json">
+      <FileType>Text</FileType>
+      <DeploymentContent>true</DeploymentContent>
+    </Text>
     <ClCompile Include="TyokushinTeam.cpp" />
   </ItemGroup>
   <ItemGroup>

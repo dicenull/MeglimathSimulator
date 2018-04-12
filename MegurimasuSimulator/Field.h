@@ -10,6 +10,14 @@ private:
 	Grid<Cell> _cells;
 
 public:
+	/// <summary>
+	/// フィールドをします
+	/// </summary>
+	/// <param name="file">フィールド情報のあるjsonファイル</param>
+	/// <returns>生成したフィールド</returns>
+	static Field Create(FilePath file);
+
+public:
 	Grid<Cell> GetCells() const;
 
 	/// <summary>
@@ -42,6 +50,12 @@ public:
 	/// </summary>
 	/// <param name="size">フィールドの大きさ</param>
 	Field(Size size);
+
+	/// <summary>
+	/// セルを元にフィールドを生成するコンストラクタ
+	/// </summary>
+	/// <param name="cells">元となるセル</param>
+	Field(Grid<Cell> cells);
 
 	virtual ~Field();
 };
