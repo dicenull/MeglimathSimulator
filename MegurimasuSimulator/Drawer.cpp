@@ -1,4 +1,4 @@
-#include "FieldDrawer.h"
+#include "Drawer.h"
 
 void Drawer::DrawField(const Field & field) const
 {
@@ -42,11 +42,11 @@ void Drawer::DrawAgents(std::map<TeamType, Array<Agent>> agents) const
 	for(TeamType team : {TeamType::A, TeamType::B})
 	{
 		// 一人目のエージェントを描画
-		Circle(center(agents[team][0].GetPosition()), cellSize / 2).draw(color_map[team]);
+		Circle(center(agents[team][0].GetPosition()), cellSize.x / 2).drawFrame(2.0, color_map[team]);
 
 		// 二人目のエージェントを描画
 		Rect(Arg::center = center(agents[team][1].GetPosition()), edge_width).rotated(45_deg)
-			.draw(color_map[team]);
+			.drawFrame(2.0, color_map[team]);
 	}
 }
 

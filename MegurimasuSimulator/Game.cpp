@@ -108,7 +108,8 @@ void Game::Update()
 
 void Game::Draw() const
 {
-	_field_drawer.Draw(getGameInfo());
+	_drawer.DrawField(_field);
+	_drawer.DrawAgents(getAgentMap());
 }
 
 Game::Game(const Field & field, std::shared_ptr<Team> team_a, std::shared_ptr<Team> team_b)

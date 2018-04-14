@@ -1,5 +1,5 @@
 #pragma once
-#include "FieldDrawer.h"
+#include "Drawer.h"
 #include "Field.h"
 #include "Team.h"
 
@@ -7,7 +7,7 @@ class Game
 {
 private:
 	Field _field;
-	FieldDrawer _field_drawer;
+	Drawer _drawer;
 	Array<std::shared_ptr<Team>> _teams;
 
 private:
