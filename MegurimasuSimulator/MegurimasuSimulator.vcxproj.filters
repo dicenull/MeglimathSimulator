@@ -211,7 +211,7 @@
     <Text Include="App\engine\font\noto\LICENSE_OFL.txt">
       <Filter>Resource Files\engine\font\noto</Filter>
     </Text>
-    <Text Include="TestField01.json" />
+    <Text Include="Field01.json" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Cell.h">

@@ -18,9 +18,11 @@ Field Field::Create(FilePath file)
 	{
 		for (int k : step(data_size.x))
 		{
-			cells[k][i] = points[idx].get<int>();
+			cells[i][k] = points[idx].get<int>();
 			// データをコピー
-			cells[size.y - 1 - k][size.x - 1 - i] = cells[k][i];
+			cells[size.y - 1 - i][size.x - 1 - k] = cells[i][k];
+			cells[size.y - 1 - i][k] = cells[i][k];
+			cells[i][size.x - 1 - k] = cells[i][k];
 
 			idx++;
 		}
