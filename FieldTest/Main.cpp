@@ -1,22 +1,49 @@
 ﻿
 # include <Siv3D.hpp> // OpenSiv3D v0.2.4
+#include "../MegurimasuSimulator/Field.h"
+#include "../MegurimasuSimulator/Drawer.h"
 
 void Main()
 {
-	Graphics::SetBackground(ColorF(0.8, 0.9, 1.0));
+	FontAsset::Register(U"Cell", 16, Typeface::Black);
+	FontAsset::Register(U"Test", 16, Typeface::Default);
+	
+	Drawer drawer;
+	Array<String> paths = FileSystem::DirectoryContents(U"../TestFields");
+	int index = 0;
 
-	const Font font(50);
+	Field field;
+	JSONReader json;
+	
+	const Texture failure(Emoji(U"❌"), TextureDesc::Mipped);
+	const Texture success(Emoji(U"✔"), TextureDesc::Mipped);
 
-	const Texture textureCat(Emoji(U"🐈"), TextureDesc::Mipped);
+	auto judge = [&](std::pair<int, int> points) {return (points.first == points.second) ? success : failure; };
 
+	std::pair<int, int> points_a;
+	std::pair<int, int> points_b;
 	while (System::Update())
 	{
-		font(U"Hello, Siv3D!🐣").drawAt(Window::Center(), Palette::Black);
+		if (index < paths.size() && MouseL.down())
+		{
+			field = Field::Create(paths[index]);
+			json = JSONReader(paths[index]);
 
-		font(Cursor::Pos()).draw(20, 400, ColorF(0.6));
+			index++;
 
-		textureCat.resized(80).draw(540, 380);
+			points_a.first = json[U"TeamA"].get<int>();
+			points_a.second = field.GetAreaPoint(TileType::A);
 
-		Circle(Cursor::Pos(), 60).draw(ColorF(1, 0, 0, 0.5));
+			points_b.first = json[U"TeamB"].get<int>();
+			points_b.second = field.GetAreaPoint(TileType::B);
+		}
+
+		drawer.DrawField(field);
+
+		judge(points_a).resized(16).draw(Point(0, 5));
+		FontAsset(U"Test")(U"TileA  expected : ", points_a.first, U" actual : ", points_a.second).draw(Point(16, 0));
+
+		judge(points_b).resized(16).draw(Point(0, 20));
+		FontAsset(U"Test")(U"TileB  expected : ", points_b.first, U" actual : ", points_b.second).draw(Point(16, 16));
 	}
 }

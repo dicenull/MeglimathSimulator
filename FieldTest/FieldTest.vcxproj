@@ -242,6 +242,7 @@
     <None Include="App\example\test.ini" />
     <None Include="App\example\test.json" />
     <None Include="App\example\test.toml" />
+    <None Include="TestFields\test1.json" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="App\engine\font\fontawesome\LICENSE_OFL.txt" />

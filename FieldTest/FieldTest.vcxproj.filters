@@ -43,6 +43,9 @@
     <Filter Include="Resource Files\engine\texture\box-shadow">
       <UniqueIdentifier>{cb012b1d-99ec-4d07-9383-ca0c0dc07cdc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="TestFields">
+      <UniqueIdentifier>{ea80fd39-ab43-4689-886d-d71448f4f6bd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -163,6 +166,9 @@
     </None>
     <None Include="App\example\a1a_training">
       <Filter>Resource Files\example</Filter>
+    </None>
+    <None Include="TestFields\test1.json">
+      <Filter>TestFields</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
