@@ -72,14 +72,11 @@
     <ClCompile Include="TyokushinTeam.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="FieldDrawer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="RandomTeam.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GameSeed01.json">
-      <Filter>Fields</Filter>
+    <ClCompile Include="Drawer.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -214,6 +211,7 @@
     <Text Include="App\engine\font\noto\LICENSE_OFL.txt">
       <Filter>Resource Files\engine\font\noto</Filter>
     </Text>
+    <Text Include="TestField01.json" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Cell.h">
@@ -249,10 +247,13 @@
     <ClInclude Include="Transform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="FieldDrawer.h">
+    <ClInclude Include="RandomTeam.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RandomTeam.h">
+    <ClInclude Include="DrawingInfo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Drawer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
