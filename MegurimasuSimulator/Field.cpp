@@ -43,10 +43,10 @@ Field Field::Create(FilePath file)
 			switch (tiles[i].getString()[k])
 			{
 			case 'a':
-				cells[k][i].PaintedBy(TeamType::A);
+				cells[i][k].PaintedBy(TeamType::A);
 				break;
 			case 'b':
-				cells[k][i].PaintedBy(TeamType::B);
+				cells[i][k].PaintedBy(TeamType::B);
 				break;
 			default:
 				break;
@@ -70,7 +70,7 @@ int Field::GetAreaPoint(TileType tile)
 		{
 			if (_status[k][i])
 			{
-				area_point += _cells[k - 1][i - 1].GetPoint();
+				area_point += Abs(_cells[k - 1][i - 1].GetPoint());
 			}
 		}
 	}
