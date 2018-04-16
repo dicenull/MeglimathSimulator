@@ -7,11 +7,11 @@ class  RandomTeam : public Team
 public:
 	Think NextThink(GameInfo info) override
 	{
-		Action action = static_cast<Action>(Random(0, 1));
-		Direction dir = static_cast<Direction>(Random(0, 7));
-		Step step{ action, dir};
-
-		return Think{ step, step };
+		return Think
+		{
+			Action(Random(0,1)),Direction(Random(0,7)),
+			Action(Random(0,1)),Direction(Random(0,7))
+		};
 	}
 
 public:
