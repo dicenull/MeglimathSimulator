@@ -87,12 +87,12 @@ void Game::Update()
 	{
 		for (int i = 0; i < 2; i++)
 		{
-			Direction dir = _thinks[team].agents[i].direction;
+			Direction dir = _thinks[team].steps[i].direction;
 			// エージェントを動かしたい方向に動かした場合の座標
 			Point pos = agents_map[team][i].GetPosition().movedBy(Transform::DirToDelta(dir));
 
 			// エージェントが動作する座標を追加
-			switch (_thinks[team].agents[i].action)
+			switch (_thinks[team].steps[i].action)
 			{
 			case Action::Move:
 				move_point_arr.push_back(std::make_pair(pos, std::make_pair(dir, team)));

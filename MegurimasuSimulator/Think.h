@@ -3,5 +3,5 @@
 
 struct Think
 {
-	Step agents[2];
+	Step steps[2];
 };

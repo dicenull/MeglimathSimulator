@@ -60,12 +60,12 @@ void Drawer::DrawStat(const std::map<TeamType, Think> & thinks, int turn) const
 	Array<String> messages =
 	{
 		U"Team A : ",
-		String(U"Agent 1 : ") + Transform::ToString(thinks.at(TeamType::A).agents[0]),
-		String(U"Agent 2 : ") + Transform::ToString(thinks.at(TeamType::A).agents[1]),
+		String(U"Agent 1 : ") + Transform::ToString(thinks.at(TeamType::A).steps[0]),
+		String(U"Agent 2 : ") + Transform::ToString(thinks.at(TeamType::A).steps[1]),
 		String(U"\n"),
 		U"Team B : ",
-		String(U"Agent 1 : ") + Transform::ToString(thinks.at(TeamType::B).agents[0]),
-		String(U"Agent 2 : ") + Transform::ToString(thinks.at(TeamType::B).agents[1]),
+		String(U"Agent 1 : ") + Transform::ToString(thinks.at(TeamType::B).steps[0]),
+		String(U"Agent 2 : ") + Transform::ToString(thinks.at(TeamType::B).steps[1]),
 		String(U"\n"),
 		String(U"Turn : ") + ToString(turn)
 	};
