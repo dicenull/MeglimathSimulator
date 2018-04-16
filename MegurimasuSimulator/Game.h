@@ -15,9 +15,11 @@ private:
 	std::map<TeamType, Array<Agent>> getAgentMap() const;
 	Array<Agent> getAgents() const;
 
+	void initAgents();
+	void initAgents(Point init_pos);
+
 public:
-	void InitAgents();
-	void InitAgents(Point init_pos);
+	void InitalizeFromJson(const String path);
 
 	void Update();
 	void Draw() const;

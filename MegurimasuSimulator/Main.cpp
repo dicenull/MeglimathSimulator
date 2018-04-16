@@ -27,7 +27,7 @@ namespace Scenes
 		{
 			auto data = getData();
 			data.field_path;
-			data.game.InitAgents(JSONReader(data.field_path)[U"InitPos"].get<Point>());
+			data.game.initAgents(JSONReader(data.field_path)[U"InitPos"].get<Point>());
 		}
 
 		void update() override

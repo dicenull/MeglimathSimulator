@@ -19,14 +19,14 @@ Array<Agent> Game::getAgents() const
 	return _teams[0]->GetAgents().append(_teams[1]->GetAgents());
 }
 
-void Game::InitAgents()
+void Game::initAgents()
 {
 	Size size = _field.GetCells().size();
 
-	InitAgents(Point(Random((size.x - 2) / 2), Random((size.y - 2) / 2)));
+	initAgents(Point(Random((size.x - 2) / 2), Random((size.y - 2) / 2)));
 }
 
-void Game::InitAgents(Point init_pos)
+void Game::initAgents(Point init_pos)
 {
 	Size size = _field.GetCells().size();
 
@@ -41,6 +41,22 @@ void Game::InitAgents(Point init_pos)
 
 	_teams[0]->InitAgentsPos(agent_pos[0], agent_pos[1]);
 	_teams[1]->InitAgentsPos(agent_pos[2], agent_pos[3]);
+}
+
+void Game::InitalizeFromJson(const String path)
+{
+	JSONReader json(path);
+
+	if (json[U"InitPos"].isEmpty())
+	{
+		initAgents();
+	}
+	else
+	{
+		initAgents(json[U"InitPos"].get<Point>());
+	}
+
+
 }
 
 void Game::Update()
