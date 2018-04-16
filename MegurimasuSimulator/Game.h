@@ -16,7 +16,8 @@ private:
 	Array<Agent> getAgents() const;
 
 public:
-	void Game::InitAgents();
+	void InitAgents();
+	void InitAgents(Point init_pos);
 
 	void Update();
 	void Draw() const;

@@ -23,10 +23,15 @@ void Game::InitAgents()
 {
 	Size size = _field.GetCells().size();
 
-	Point init_pos = Point(Random((size.x - 2) / 2), Random((size.y - 2) / 2));
+	InitAgents(Point(Random((size.x - 2) / 2), Random((size.y - 2) / 2)));
+}
+
+void Game::InitAgents(Point init_pos)
+{
+	Size size = _field.GetCells().size();
 
 	size -= Point(1, 1);
-	Point agent_pos[] = 
+	Point agent_pos[] =
 	{
 		init_pos,
 		Point(size.x - init_pos.x, init_pos.y),

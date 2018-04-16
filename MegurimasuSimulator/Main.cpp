@@ -6,9 +6,10 @@
 
 struct CommonData
 {
+	const String field_path = U"../Field01.json";
 	Game game =
 	{
-		Field::Create(U"../Field01.json"),
+		Field::Create(field_path),
 		std::shared_ptr<Team>(new RandomTeam(TeamType::A)),
 		std::shared_ptr<Team>(new RandomTeam(TeamType::B))
 	};
@@ -24,7 +25,9 @@ namespace Scenes
 		Game(const InitData& init)
 			: IScene(init)
 		{
-			getData().game.InitAgents();
+			auto data = getData();
+			data.field_path;
+			data.game.InitAgents(JSONReader(data.field_path)[U"InitPos"].get<Point>());
 		}
 
 		void update() override
