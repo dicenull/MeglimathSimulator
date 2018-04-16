@@ -9,6 +9,7 @@ private:
 	Field _field;
 	Drawer _drawer;
 	Array<std::shared_ptr<Team>> _teams;
+	int _turn;
 
 private:
 	GameInfo getGameInfo() const;
@@ -21,10 +22,12 @@ private:
 public:
 	void InitalizeFromJson(const String path);
 
+	int GetTurn() const;
+
 	void Update();
 	void Draw() const;
 
 public:
-	Game(const Field &field, std::shared_ptr<Team> team_a, std::shared_ptr<Team> team_b);
+	Game(std::shared_ptr<Team> team_a, std::shared_ptr<Team> team_b);
 	virtual ~Game();
 };

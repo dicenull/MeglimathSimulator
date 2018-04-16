@@ -47,7 +47,9 @@ void Game::InitalizeFromJson(const String path)
 {
 	JSONReader json(path);
 
-	if (json[U"InitPos"].isEmpty())
+	_field = Field::Create(path);
+
+	if (json[U"InitPos"].isNull())
 	{
 		initAgents();
 	}
@@ -56,11 +58,21 @@ void Game::InitalizeFromJson(const String path)
 		initAgents(json[U"InitPos"].get<Point>());
 	}
 
+	_turn = json[U"Turn"].get<int>();
+}
 
+int Game::GetTurn() const
+{
+	return _turn;
 }
 
 void Game::Update()
 {
+	if (_turn <= 0)
+	{
+		return;
+	}
+
 	std::map<TeamType, Think> thinks;
 	
 	GameInfo info = getGameInfo();
@@ -117,6 +129,7 @@ void Game::Update()
 		}
 	}
 
+	// タイルを取る行動を実行
 	for (auto & remove_point : remove_points)
 	{
 		if (remove_points.count_if(Equal(remove_point)) == 1 && _field.IsInField(remove_point))
@@ -125,6 +138,8 @@ void Game::Update()
 		}
 	}
 	
+	// ターンを進める
+	_turn--;
 }
 
 void Game::Draw() const
@@ -133,9 +148,8 @@ void Game::Draw() const
 	_drawer.DrawAgents(getAgentMap());
 }
 
-Game::Game(const Field & field, std::shared_ptr<Team> team_a, std::shared_ptr<Team> team_b)
+Game::Game(std::shared_ptr<Team> team_a, std::shared_ptr<Team> team_b)
 {
-	_field = field;
 	_teams.append({ team_a, team_b });
 }
 
