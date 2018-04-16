@@ -53,4 +53,10 @@ namespace Transform
 			return Palette::White;
 		}
 	}
+
+	const String ToString(Action action);
+
+	const String ToString(Direction dir);
+
+	const String ToString(Step step);
 }
