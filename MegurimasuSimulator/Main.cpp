@@ -6,7 +6,7 @@
 
 struct CommonData
 {
-	const String field_path = U"../Fields/Field01.json";
+	const String field_path = U"../Fields/LargeField.json";
 	Game game =
 	{
 		std::shared_ptr<Team>(new RandomTeam(TeamType::A)),

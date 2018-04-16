@@ -206,10 +206,6 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="RandomTeam.cpp" />
     <ClCompile Include="Team.cpp" />
-    <Text Include="Field01.json">
-      <FileType>Text</FileType>
-      <DeploymentContent>true</DeploymentContent>
-    </Text>
     <ClCompile Include="TyokushinTeam.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -255,6 +251,7 @@
     <None Include="App\example\test.ini" />
     <None Include="App\example\test.json" />
     <None Include="App\example\test.toml" />
+    <None Include="Fields\Field01.json" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="App\engine\font\fontawesome\LICENSE_OFL.txt" />
