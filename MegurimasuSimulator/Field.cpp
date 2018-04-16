@@ -18,9 +18,11 @@ Field Field::Create(FilePath file)
 	{
 		for (int k : step(data_size.x))
 		{
-			cells[k][i] = points[idx].get<int>();
+			cells[i][k] = points[idx].get<int>();
 			// データをコピー
-			cells[size.y - 1 - k][size.x - 1 - i] = cells[k][i];
+			cells[size.y - 1 - i][size.x - 1 - k] = cells[i][k];
+			cells[size.y - 1 - i][k] = cells[i][k];
+			cells[i][size.x - 1 - k] = cells[i][k];
 
 			idx++;
 		}
@@ -41,10 +43,10 @@ Field Field::Create(FilePath file)
 			switch (tiles[i].getString()[k])
 			{
 			case 'a':
-				cells[k][i].PaintedBy(TeamType::A);
+				cells[i][k].PaintedBy(TeamType::A);
 				break;
 			case 'b':
-				cells[k][i].PaintedBy(TeamType::B);
+				cells[i][k].PaintedBy(TeamType::B);
 				break;
 			default:
 				break;
@@ -68,7 +70,7 @@ int Field::GetAreaPoint(TileType tile)
 		{
 			if (_status[k][i])
 			{
-				area_point += _cells[k - 1][i - 1].GetPoint();
+				area_point += Abs(_cells[k - 1][i - 1].GetPoint());
 			}
 		}
 	}

@@ -8,7 +8,7 @@ struct CommonData
 {
 	Game game =
 	{
-		Field::Create(U"../TestField01.json"),
+		Field::Create(U"../Field01.json"),
 		std::shared_ptr<Team>(new RandomTeam(TeamType::A)),
 		std::shared_ptr<Team>(new RandomTeam(TeamType::B))
 	};

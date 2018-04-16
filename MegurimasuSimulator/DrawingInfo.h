@@ -5,5 +5,5 @@ class DrawingInfo
 {
 protected:
 	static constexpr Size cellSize = Size(32, 32);
-	static constexpr Point fieldOrigin = Point(16, 16);
+	static constexpr Point fieldOrigin = Point(16, 64);
 };
