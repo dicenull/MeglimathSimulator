@@ -50,6 +50,7 @@ void Main()
 	manager.add<Scenes::Game>(U"Game");
 	
 	FontAsset::Register(U"Cell", 16, Typeface::Black);
+	FontAsset::Register(U"Stat", 16, Typeface::Default);
 
 	while (System::Update())
 	{

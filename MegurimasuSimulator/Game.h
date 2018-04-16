@@ -2,6 +2,7 @@
 #include "Drawer.h"
 #include "Field.h"
 #include "Team.h"
+#include "DrawingInfo.h"
 
 class Game
 {
@@ -9,6 +10,7 @@ private:
 	Field _field;
 	Drawer _drawer;
 	Array<std::shared_ptr<Team>> _teams;
+	std::map<TeamType, Think> _thinks;
 	int _turn;
 
 private:

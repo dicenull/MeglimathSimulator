@@ -35,7 +35,7 @@ void Drawer::DrawAgents(std::map<TeamType, Array<Agent>> agents) const
 	color_map[TeamType::A] = Palette::Red;
 	color_map[TeamType::B] = Palette::Blue;
 
-	Point pos, top_left_pos, center_pos;
+	Point pos;
 	int32 edge_width = Sqrt(2) * cellSize.x / 2.0;
 
 	auto center = [=](Point pos) {return fieldOrigin + pos * cellSize + cellSize / 2; };
@@ -47,6 +47,32 @@ void Drawer::DrawAgents(std::map<TeamType, Array<Agent>> agents) const
 		// 二人目のエージェントを描画
 		Rect(Arg::center = center(agents[team][1].GetPosition()), edge_width).rotated(45_deg)
 			.drawFrame(2.0, color_map[team]);
+	}
+}
+
+void Drawer::DrawStat(const std::map<TeamType, Think> & thinks, int turn) const
+{
+	if (thinks.size() == 0)
+	{
+		return;
+	}
+	
+	Array<String> messages =
+	{
+		U"Team A : ",
+		String(U"Agent 1 : ") + Transform::ToString(thinks.at(TeamType::A).agents[0]),
+		String(U"Agent 2 : ") + Transform::ToString(thinks.at(TeamType::A).agents[1]),
+		String(U"\n"),
+		U"Team B : ",
+		String(U"Agent 1 : ") + Transform::ToString(thinks.at(TeamType::B).agents[0]),
+		String(U"Agent 2 : ") + Transform::ToString(thinks.at(TeamType::B).agents[1]),
+		String(U"\n"),
+		String(U"Turn : ") + ToString(turn)
+	};
+
+	for (int i : step(messages.size()))
+	{
+		FontAsset(U"Stat")(messages[i]).draw(statOrigin + Point(0, i * 16));
 	}
 }
 

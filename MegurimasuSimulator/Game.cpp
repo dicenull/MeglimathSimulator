@@ -72,15 +72,13 @@ void Game::Update()
 	{
 		return;
 	}
-
-	std::map<TeamType, Think> thinks;
 	
 	GameInfo info = getGameInfo();
 	auto agents_map = getAgentMap();
 	auto agents = getAgents();
 
-	thinks[TeamType::A] = _teams[0]->NextThink(info);
-	thinks[TeamType::B] = _teams[1]->NextThink(info);
+	_thinks[TeamType::A] = Think(_teams[0]->NextThink(info));
+	_thinks[TeamType::B] = Think(_teams[1]->NextThink(info));
 
 	// シミュレーション
 	Array<std::pair<Point, std::pair<Direction, TeamType>>> move_point_arr;
@@ -89,12 +87,12 @@ void Game::Update()
 	{
 		for (int i = 0; i < 2; i++)
 		{
-			Direction dir = thinks[team].agents[i].direction;
+			Direction dir = _thinks[team].agents[i].direction;
 			// エージェントを動かしたい方向に動かした場合の座標
 			Point pos = agents_map[team][i].GetPosition().movedBy(Transform::DirToDelta(dir));
 
 			// エージェントが動作する座標を追加
-			switch (thinks[team].agents[i].action)
+			switch (_thinks[team].agents[i].action)
 			{
 			case Action::Move:
 				move_point_arr.push_back(std::make_pair(pos, std::make_pair(dir, team)));
@@ -146,6 +144,7 @@ void Game::Draw() const
 {
 	_drawer.DrawField(_field);
 	_drawer.DrawAgents(getAgentMap());
+	_drawer.DrawStat(_thinks, _turn);
 }
 
 Game::Game(std::shared_ptr<Team> team_a, std::shared_ptr<Team> team_b)
