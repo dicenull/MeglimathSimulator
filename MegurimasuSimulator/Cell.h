@@ -41,6 +41,11 @@ public:
 
 public:
 	Cell();
+
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
+	/// <param name="point">セルの得点</param>
 	Cell(int point);
 	virtual ~Cell();
 

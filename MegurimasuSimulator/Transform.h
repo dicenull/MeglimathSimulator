@@ -5,6 +5,11 @@
 
 namespace Transform
 {
+	/// <summary>
+	/// 方向から移動方向に変換する
+	/// </summary>
+	/// <param name="dir">変換元の方向</param>
+	/// <returns>方向を変換した移動方向</returns>
 	constexpr Point DirToDelta(Direction dir)
 	{
 		switch (dir)
@@ -38,8 +43,10 @@ namespace Transform
 	}
 
 	/// <summary>
-	/// タイルの色を取得する
+	/// タイルの種類から色を取得する
 	/// </summary>
+	/// <param name="t_type">タイルの種類</param>
+	/// <returns>タイルの色</returns>
 	constexpr Color ColorOf(TileType t_type)
 	{
 		switch (t_type)

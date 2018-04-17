@@ -7,13 +7,34 @@
 class Team
 {
 private:
+	/// <summary>
+	/// チームの合計ポイント
+	/// </summary>
 	int _total_point;
+
+	/// <summary>
+	/// チームに所属するエージェント
+	/// </summary>
 	Agent _agents[2];
+
+	/// <summary>
+	/// チームA,Bを判断するためのチームの種類
+	/// </summary>
 	TeamType _type;
 
 public:
+	/// <summary>
+	/// エージェントの次の行動をゲーム情報を元に実装する
+	/// </summary>
+	/// <param name="info">公開されるゲーム情報</param>
+	/// <returns>エージェントの次の行動</returns>
 	virtual Think NextThink(GameInfo info) = 0;
 
+	/// <summary>
+	/// エージェントの初期位置を初期化する
+	/// </summary>
+	/// <param name="pos1">エージェント1の初期座標</param>
+	/// <param name="pos2">エージェント2の初期座標</param>
 	void InitAgentsPos(Point pos1, Point pos2);
 
 	Array<Agent> GetAgents() const;

@@ -7,8 +7,23 @@
 class Drawer : public DrawingInfo
 {
 public:
+	/// <summary>
+	/// フィールドを描画する
+	/// </summary>
+	/// <param name="field">描画するフィールド</param>
 	void DrawField(const Field & field) const;
+
+	/// <summary>
+	/// すべてのエージェントを描画する
+	/// </summary>
+	/// <param name="agents">エージェントリスト</param>
 	void DrawAgents(std::map<TeamType, Array<Agent>> agents) const;
+
+	/// <summary>
+	/// エージェントの行動やターン数を表示する
+	/// </summary>
+	/// <param name="thinks">すべてのエージェントの行動</param>
+	/// <param name="turn">残りターン数</param>
 	void DrawStat(const std::map<TeamType, Think> & thinks, int turn) const;
 
 public:

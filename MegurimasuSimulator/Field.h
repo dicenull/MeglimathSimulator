@@ -5,10 +5,22 @@
 class Field
 {
 private:
+	/// <summary>
+	/// フィールド情報
+	/// </summary>
 	Grid<Cell> _cells;
+
+	/// <summary>
+	/// 領域ポイントを計算するとき探索したかを格納する
+	/// </summary>
 	Grid<bool> _status;
 
 private:
+	/// <summary>
+	/// 囲まれている領域を探索する
+	/// </summary>
+	/// <param name="pos">探索を開始する座標</param>
+	/// <param name="tile">どのタイルで囲まれているか</param>
 	void dfsAreaPoint(Point pos, TileType tile);
 
 public:
@@ -26,6 +38,10 @@ public:
 	/// <returns>領域ポイント</returns>
 	int GetAreaPoint(TileType tile);
 
+	/// <summary>
+	/// セル情報を取得する
+	/// </summary>
+	/// <returns>フィールドのセル情報</returns>
 	Grid<Cell> GetCells() const;
 
 	/// <summary>
