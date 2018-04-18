@@ -24,7 +24,7 @@ public:
 	/// </summary>
 	/// <param name="thinks">すべてのエージェントの行動</param>
 	/// <param name="turn">残りターン数</param>
-	void DrawStat(const std::map<TeamType, Think> & thinks, int turn) const;
+	void DrawStatus(const std::map<TeamType, Think> & thinks, int turn) const;
 
 public:
 	Drawer();

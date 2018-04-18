@@ -50,7 +50,7 @@ void Drawer::DrawAgents(std::map<TeamType, Array<Agent>> agents) const
 	}
 }
 
-void Drawer::DrawStat(const std::map<TeamType, Think> & thinks, int turn) const
+void Drawer::DrawStatus(const std::map<TeamType, Think> & thinks, int turn) const
 {
 	if (thinks.size() == 0)
 	{
