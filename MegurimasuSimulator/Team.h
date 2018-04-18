@@ -30,6 +30,9 @@ public:
 	/// <returns>エージェントの次の行動</returns>
 	virtual Think NextThink(GameInfo info) = 0;
 
+	int GetTotalPoint() const;
+	void SetTotalPoint(int total_point);
+
 	/// <summary>
 	/// エージェントの初期位置を初期化する
 	/// </summary>

@@ -32,11 +32,20 @@ public:
 	static Field Create(FilePath file);
 
 	/// <summary>
-	/// 指定のタイルで囲まれた領域の得点を計算します
+	/// 指定のタイルで囲まれた領域の得点を集計します
 	/// </summary>
 	/// <param name="tile">どのタイルで囲まれているか</param>
 	/// <returns>領域ポイント</returns>
-	int GetAreaPoint(TileType tile);
+	int AggregateAreaPoint(TileType tile);
+
+	/// <summary>
+	/// 指定のタイルのタイルポイントを集計します
+	/// </summary>
+	/// <param name="tile">得点を集計するタイル</param>
+	/// <returns>タイルポイント</returns>
+	int AggregateTilePoint(TileType tile);
+
+	int AggregateTotalPoint(TileType tile);
 
 	/// <summary>
 	/// セル情報を取得する

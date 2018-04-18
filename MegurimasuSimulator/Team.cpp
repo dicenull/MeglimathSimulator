@@ -1,5 +1,15 @@
 #include "Team.h"
 
+int Team::GetTotalPoint() const
+{
+	return _total_point;
+}
+
+void Team::SetTotalPoint(int total_point)
+{
+	_total_point = total_point;
+}
+
 void Team::InitAgentsPos(Point pos1, Point pos2)
 {
 	_agents[0] = Agent(pos1);

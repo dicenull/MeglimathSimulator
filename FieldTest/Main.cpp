@@ -32,10 +32,10 @@ void Main()
 			index++;
 
 			points_a.first = json[U"TeamA"].get<int>();
-			points_a.second = field.GetAreaPoint(TileType::A);
+			points_a.second = field.AggregateAreaPoint(TileType::A);
 
 			points_b.first = json[U"TeamB"].get<int>();
-			points_b.second = field.GetAreaPoint(TileType::B);
+			points_b.second = field.AggregateAreaPoint(TileType::B);
 		}
 
 		drawer.DrawField(field);
