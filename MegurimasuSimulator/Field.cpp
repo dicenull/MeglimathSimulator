@@ -57,7 +57,7 @@ Field Field::Create(FilePath file)
 	return Field(cells);
 }
 
-int Field::GetAreaPoint(TileType tile)
+int Field::AggregateAreaPoint(TileType tile)
 {
 	_status = Grid<bool>(_cells.size() + Point(2, 2), true);
 
@@ -112,6 +112,30 @@ void Field::dfsAreaPoint(Point pos, TileType tile)
 	{
 		dfsAreaPoint(pos + delta[i], tile);
 	}
+}
+
+int Field::AggregateTilePoint(TileType tile)
+{
+	int sum_tile_point = 0;
+
+	//	タイルの種類が一致するセルの得点の合計を計算する
+	for (int i : step(_cells.width()))
+	{
+		for (int k : step(_cells.height()))
+		{
+			if (_cells[k][i].GetTile() == tile)
+			{
+				sum_tile_point += _cells[k][i].GetPoint();
+			}
+		}
+	}
+
+	return sum_tile_point;
+}
+
+int Field::AggregateTotalPoint(TileType tile)
+{
+	return AggregateAreaPoint(tile) + AggregateTilePoint(tile);
 }
 
 Grid<Cell> Field::GetCells() const
