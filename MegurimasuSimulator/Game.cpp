@@ -47,7 +47,7 @@ void Game::InitalizeFromJson(const String path)
 {
 	JSONReader json(path);
 
-	_field = Field::Create(path);
+	_field = Field(path);
 
 	if (json[U"InitPos"].isNull())
 	{
@@ -139,19 +139,15 @@ void Game::Update()
 	// ターンを進める
 	_turn--;
 
-	// チームごとの得点を更新
-	for (TeamType team : {TeamType::A, TeamType::B})
-	{
-		_teams[(int)team]->SetTotalPoint(
-			_field.AggregateTotalPoint(static_cast<TileType>(team)));
-	}
+	// チームの得点を更新
+	_field.UpdatePoint();
 }
 
 void Game::Draw() const
 {
 	_drawer.DrawField(_field);
 	_drawer.DrawAgents(getAgentMap());
-	_drawer.DrawStatus(_thinks, _turn);
+	_drawer.DrawStatus(_thinks, _field, _turn);
 }
 
 Game::Game(std::shared_ptr<Team> team_a, std::shared_ptr<Team> team_b)

@@ -21,11 +21,6 @@ int Field::aggregateAreaPoint(TileType tile)
 	return area_point;
 }
 
-void Field::initVariable()
-{
-	// 2ƒ`[ƒ€•ª‚Ì“¾“_‚ğ‰Šú‰»‚·‚é	
-	_total_point.append({ 0, 0 });
-}
 
 void Field::dfsAreaPoint(Point pos, TileType tile)
 {
@@ -100,7 +95,7 @@ Grid<Cell> Field::GetCells() const
 
 Array<int> Field::GetTotalPoint() const
 {
-	return _total_point;
+	return Array<int>().append({ _total_point[0], _total_point[1] });
 }
 
 void Field::PaintCell(Point pos, TeamType team)
@@ -134,14 +129,11 @@ Field::Field(Size size)
 
 Field::Field(Grid<Cell> cells)
 {
-	initVariable();
 	_cells = cells;
 }
 
 Field::Field(FilePath file)
 {
-	initVariable();
-
 	JSONReader json(file);
 
 	Size size = json[U"Size"].get<Size>();

@@ -15,14 +15,9 @@ private:
 	/// </summary>
 	Grid<bool> _status;
 
-	Array<int> _total_point;
+	int _total_point[2];
 
 private:
-	/// <summary>
-	/// プライベート変数の初期化を行う
-	/// </summary>
-	void initVariable();
-
 	/// <summary>
 	/// 囲まれている領域を探索する
 	/// </summary>

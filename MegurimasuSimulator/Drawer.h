@@ -24,7 +24,8 @@ public:
 	/// </summary>
 	/// <param name="thinks">すべてのエージェントの行動</param>
 	/// <param name="turn">残りターン数</param>
-	void DrawStatus(const std::map<TeamType, Think> & thinks, int turn) const;
+	/// <param name="field">チームの合計得点を描画するためのフィールド情報</param>
+	void DrawStatus(const std::map<TeamType, Think> & thinks, const Field & field, int turn) const;
 
 public:
 	Drawer();

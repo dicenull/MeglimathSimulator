@@ -50,7 +50,7 @@ void Drawer::DrawAgents(std::map<TeamType, Array<Agent>> agents) const
 	}
 }
 
-void Drawer::DrawStatus(const std::map<TeamType, Think> & thinks, int turn) const
+void Drawer::DrawStatus(const std::map<TeamType, Think> & thinks, const Field & field, int turn) const
 {
 	if (thinks.size() == 0)
 	{
@@ -62,10 +62,12 @@ void Drawer::DrawStatus(const std::map<TeamType, Think> & thinks, int turn) cons
 		U"Team A : ",
 		String(U"Agent 1 : ") + Transform::ToString(thinks.at(TeamType::A).steps[0]),
 		String(U"Agent 2 : ") + Transform::ToString(thinks.at(TeamType::A).steps[1]),
+		String(U"Total Point : ") + ToString(field.GetTotalPoint()[0]),
 		String(U"\n"),
 		U"Team B : ",
 		String(U"Agent 1 : ") + Transform::ToString(thinks.at(TeamType::B).steps[0]),
 		String(U"Agent 2 : ") + Transform::ToString(thinks.at(TeamType::B).steps[1]),
+		String(U"Total Point : ") + ToString(field.GetTotalPoint()[1]),
 		String(U"\n"),
 		String(U"Turn : ") + ToString(turn)
 	};
