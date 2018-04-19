@@ -19,14 +19,14 @@ Array<Agent> Game::getAgents() const
 	return _teams[0]->GetAgents().append(_teams[1]->GetAgents());
 }
 
-void Game::initAgents()
+void Game::initAgentsPos()
 {
 	Size size = _field.GetCells().size();
 
-	initAgents(Point(Random((size.x - 2) / 2), Random((size.y - 2) / 2)));
+	initAgentsPos(Point(Random((size.x - 2) / 2), Random((size.y - 2) / 2)));
 }
 
-void Game::initAgents(Point init_pos)
+void Game::initAgentsPos(Point init_pos)
 {
 	Size size = _field.GetCells().size();
 
@@ -38,6 +38,13 @@ void Game::initAgents(Point init_pos)
 		Point(init_pos.x, size.y - init_pos.y),
 		size - init_pos
 	};
+
+	// エージェントの初期位置のタイルを塗る
+	_field.PaintCell(agent_pos[0], TeamType::A);
+	_field.PaintCell(agent_pos[1], TeamType::A);
+
+	_field.PaintCell(agent_pos[2], TeamType::B);
+	_field.PaintCell(agent_pos[3], TeamType::B);
 
 	_teams[0]->InitAgentsPos(agent_pos[0], agent_pos[1]);
 	_teams[1]->InitAgentsPos(agent_pos[2], agent_pos[3]);
@@ -51,11 +58,11 @@ void Game::InitalizeFromJson(const String path)
 
 	if (json[U"InitPos"].isNull())
 	{
-		initAgents();
+		initAgentsPos();
 	}
 	else
 	{
-		initAgents(json[U"InitPos"].get<Point>());
+		initAgentsPos(json[U"InitPos"].get<Point>());
 	}
 
 	_turn = json[U"Turn"].get<int>();
@@ -119,11 +126,14 @@ void Game::Update()
 			auto dir = pos_map.second.first;
 			auto team = pos_map.second.second;
 
+			// 進んだセルを塗る
+			_field.PaintCell(pos, team);
+
 			// 元の座標に戻す
 			pos -= Transform::DirToDelta(dir);
 
+			// エージェントを動かす
 			_teams[static_cast<int>(team)]->MoveAgent(pos, dir);
-			_field.PaintCell(pos, team);
 		}
 	}
 
@@ -145,7 +155,7 @@ void Game::Update()
 
 void Game::Draw() const
 {
-	_drawer.DrawField(_field);
+	_drawer.DrawField(_field, getAgents());
 	_drawer.DrawAgents(getAgentMap());
 	_drawer.DrawStatus(_thinks, _field, _turn);
 }

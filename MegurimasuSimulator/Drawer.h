@@ -11,7 +11,7 @@ public:
 	/// フィールドを描画する
 	/// </summary>
 	/// <param name="field">描画するフィールド</param>
-	void DrawField(const Field & field) const;
+	void DrawField(const Field & field, Array<Agent> agents) const;
 
 	/// <summary>
 	/// すべてのエージェントを描画する

@@ -43,13 +43,13 @@ private:
 	/// <summary>
 	/// エージェントをランダムに初期化する
 	/// </summary>
-	void initAgents();
+	void initAgentsPos();
 
 	/// <summary>
 	/// エージェントの初期化処理を行う
 	/// </summary>
 	/// <param name="init_pos">エージェントの初期座標のもとになる左上の座標</param>
-	void initAgents(Point init_pos);
+	void initAgentsPos(Point init_pos);
 
 public:
 	/// <summary>
