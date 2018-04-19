@@ -15,7 +15,14 @@ private:
 	/// </summary>
 	Grid<bool> _status;
 
+	Array<int> _total_point;
+
 private:
+	/// <summary>
+	/// プライベート変数の初期化を行う
+	/// </summary>
+	void initVariable();
+
 	/// <summary>
 	/// 囲まれている領域を探索する
 	/// </summary>
@@ -23,35 +30,36 @@ private:
 	/// <param name="tile">どのタイルで囲まれているか</param>
 	void dfsAreaPoint(Point pos, TileType tile);
 
-public:
-	/// <summary>
-	/// フィールドを生成します
-	/// </summary>
-	/// <param name="file">フィールド情報のあるjsonファイル</param>
-	/// <returns>生成したフィールド</returns>
-	static Field Create(FilePath file);
-
 	/// <summary>
 	/// 指定のタイルで囲まれた領域の得点を集計します
 	/// </summary>
 	/// <param name="tile">どのタイルで囲まれているか</param>
 	/// <returns>領域ポイント</returns>
-	int AggregateAreaPoint(TileType tile);
+	int aggregateAreaPoint(TileType tile);
 
 	/// <summary>
 	/// 指定のタイルのタイルポイントを集計します
 	/// </summary>
 	/// <param name="tile">得点を集計するタイル</param>
 	/// <returns>タイルポイント</returns>
-	int AggregateTilePoint(TileType tile);
+	int aggregateTilePoint(TileType tile);
 
-	int AggregateTotalPoint(TileType tile);
+	int aggregateTotalPoint(TileType tile);
+
+public:
+
+	/// <summary>
+	/// タイルと領域のポイントを集計し、データを更新する
+	/// </summary>
+	void UpdatePoint();
 
 	/// <summary>
 	/// セル情報を取得する
 	/// </summary>
 	/// <returns>フィールドのセル情報</returns>
 	Grid<Cell> GetCells() const;
+
+	Array<int> GetTotalPoint() const;
 
 	/// <summary>
 	/// セルを塗る
@@ -89,6 +97,12 @@ public:
 	/// </summary>
 	/// <param name="cells">元となるセル</param>
 	Field(Grid<Cell> cells);
+
+	/// <summary>
+	/// フィールドを生成します
+	/// </summary>
+	/// <param name="file">フィールド情報のあるjsonファイル</param>
+	Field(FilePath file);
 
 	virtual ~Field();
 };
