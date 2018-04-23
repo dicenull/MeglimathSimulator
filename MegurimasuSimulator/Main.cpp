@@ -1,22 +1,62 @@
 ﻿
 # include <Siv3D.hpp> // OpenSiv3D v0.2.4
+#include <HamFramework.hpp>
+#include "Game.h"
+#include "RandomTeam.h"
+
+struct CommonData
+{
+	const String field_path = U"../Fields/LargeField.json";
+	Game game =
+	{
+		std::shared_ptr<Team>(new RandomTeam(TeamType::A)),
+		std::shared_ptr<Team>(new RandomTeam(TeamType::B))
+	};
+};
+
+using MyApp = SceneManager<String, CommonData>;
+
+namespace Scenes
+{
+	struct Game : MyApp::Scene
+	{
+	public:
+		Game(const InitData& init)
+			: IScene(init)
+		{
+			auto & data = getData();
+
+			data.game.InitalizeFromJson(data.field_path);
+		}
+
+		void update() override
+		{
+			if (MouseL.down() || KeyEnter.pressed())
+			{
+				getData().game.Update();
+			}
+		}
+
+		void draw() const override
+		{
+			getData().game.Draw();
+		}
+	};
+}
 
 void Main()
 {
-	Graphics::SetBackground(ColorF(0.8, 0.9, 1.0));
-
-	const Font font(50);
-
-	const Texture textureCat(Emoji(U"🐈"), TextureDesc::Mipped);
+	MyApp manager;
+	manager.add<Scenes::Game>(U"Game");
+	
+	FontAsset::Register(U"Cell", 16, Typeface::Black);
+	FontAsset::Register(U"Stat", 16, Typeface::Default);
 
 	while (System::Update())
 	{
-		font(U"Hello, Siv3D!🐣").drawAt(Window::Center(), Palette::Black);
-
-		font(Cursor::Pos()).draw(20, 400, ColorF(0.6));
-
-		textureCat.resized(80).draw(540, 380);
-
-		Circle(Cursor::Pos(), 60).draw(ColorF(1, 0, 0, 0.5));
+		if (!manager.update())
+		{
+			break;
+		}
 	}
 }
