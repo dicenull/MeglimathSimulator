@@ -6,7 +6,7 @@
 
 class Team
 {
-private:
+protected:
 	/// <summary>
 	/// チームの合計ポイント
 	/// </summary>

@@ -12,6 +12,7 @@ struct CommonData
 		std::shared_ptr<Team>(new RandomTeam(TeamType::A)),
 		std::shared_ptr<Team>(new RandomTeam(TeamType::B))
 	};
+	Drawer drawer;
 };
 
 using MyApp = SceneManager<String, CommonData>;
@@ -39,7 +40,12 @@ namespace Scenes
 
 		void draw() const override
 		{
-			getData().game.Draw();
+			auto & game = getData().game;
+			auto & drawer = getData().drawer;
+
+			drawer.DrawField(game.GetField(), game.GetAgents());
+			drawer.DrawAgents(game.GetAgentMap());
+			drawer.DrawStatus(game.GetThinks(), game.GetField(), game.GetTurn());
 		}
 	};
 }

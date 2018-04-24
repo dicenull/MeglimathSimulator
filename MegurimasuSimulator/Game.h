@@ -8,7 +8,6 @@ class Game
 {
 private:
 	Field _field;
-	Drawer _drawer;
 	int _turn;
 
 	/// <summary>
@@ -27,18 +26,6 @@ private:
 	/// </summary>
 	/// <returns>フィールドとエージェントの情報</returns>
 	GameInfo getGameInfo() const;
-
-	/// <summary>
-	/// チームごとのエージェントの情報を取得する
-	/// </summary>
-	/// <returns>チームごとのエージェント情報</returns>
-	std::map<TeamType, Array<Agent>> getAgentMap() const;
-
-	/// <summary>
-	/// すべてのエージェント情報を取得する
-	/// </summary>
-	/// <returns>すべてのエージェント情報リスト</returns>
-	Array<Agent> getAgents() const;
 
 	/// <summary>
 	/// エージェントをランダムに初期化する
@@ -64,15 +51,26 @@ public:
 	/// <returns>現在のターン</returns>
 	int GetTurn() const;
 
+	Field GetField() const;
+
+	std::map<TeamType, Think> GetThinks() const;
+
+	/// <summary>
+	/// すべてのエージェント情報を取得する
+	/// </summary>
+	/// <returns>すべてのエージェント情報リスト</returns>
+	Array<Agent> GetAgents() const;
+
+	/// <summary>
+	/// チームごとのエージェントの情報を取得する
+	/// </summary>
+	/// <returns>チームごとのエージェント情報</returns>
+	std::map<TeamType, Array<Agent>> GetAgentMap() const;
+
 	/// <summary>
 	/// ゲームを更新する
 	/// </summary>
 	void Update();
-
-	/// <summary>
-	/// ゲームを描画する
-	/// </summary>
-	void Draw() const;
 
 public:
 	/// <summary>

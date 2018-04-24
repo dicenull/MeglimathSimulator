@@ -2,10 +2,10 @@
 
 GameInfo Game::getGameInfo() const
 {
-	return GameInfo(_field, getAgentMap());
+	return GameInfo(_field, GetAgentMap());
 }
 
-std::map<TeamType, Array<Agent>> Game::getAgentMap() const
+std::map<TeamType, Array<Agent>> Game::GetAgentMap() const
 {
 	std::map<TeamType, Array<Agent>> agents;
 	agents[TeamType::A] = _teams[0]->GetAgents();
@@ -14,7 +14,7 @@ std::map<TeamType, Array<Agent>> Game::getAgentMap() const
 	return agents;
 }
 
-Array<Agent> Game::getAgents() const
+Array<Agent> Game::GetAgents() const
 {
 	return _teams[0]->GetAgents().append(_teams[1]->GetAgents());
 }
@@ -73,6 +73,16 @@ int Game::GetTurn() const
 	return _turn;
 }
 
+Field Game::GetField() const
+{
+	return _field;
+}
+
+std::map<TeamType, Think> Game::GetThinks() const
+{
+	return _thinks;
+}
+
 void Game::Update()
 {
 	if (_turn <= 0)
@@ -81,8 +91,8 @@ void Game::Update()
 	}
 	
 	GameInfo info = getGameInfo();
-	auto agents_map = getAgentMap();
-	auto agents = getAgents();
+	auto agents_map = GetAgentMap();
+	auto agents = GetAgents();
 
 	_thinks[TeamType::A] = Think(_teams[0]->NextThink(info));
 	_thinks[TeamType::B] = Think(_teams[1]->NextThink(info));
@@ -151,13 +161,6 @@ void Game::Update()
 
 	// チームの得点を更新
 	_field.UpdatePoint();
-}
-
-void Game::Draw() const
-{
-	_drawer.DrawField(_field, getAgents());
-	_drawer.DrawAgents(getAgentMap());
-	_drawer.DrawStatus(_thinks, _field, _turn);
 }
 
 Game::Game(std::shared_ptr<Team> team_a, std::shared_ptr<Team> team_b)
