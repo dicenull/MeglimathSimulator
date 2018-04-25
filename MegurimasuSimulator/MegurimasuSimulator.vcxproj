@@ -270,6 +270,7 @@
     <ClInclude Include="Drawer.h" />
     <ClInclude Include="KeyBoardTeam.h" />
     <ClInclude Include="RandomTeam.h" />
+    <ClInclude Include="TeamColor.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="Field.h" />
     <ClInclude Include="Game.h" />

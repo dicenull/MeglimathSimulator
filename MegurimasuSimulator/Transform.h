@@ -2,6 +2,7 @@
 #include <Siv3D.hpp>
 #include "Types.h"
 #include "Action.h"
+#include "TeamColor.h"
 
 namespace Transform
 {
@@ -52,9 +53,9 @@ namespace Transform
 		switch (t_type)
 		{
 		case TileType::A:
-			return Palette::Blue;
+			return TeamColor::A;
 		case TileType::B:
-			return Palette::Blue;
+			return TeamColor::B;
 		case TileType::None:
 		default:
 			return Palette::White;
@@ -66,9 +67,9 @@ namespace Transform
 		switch (t_type)
 		{
 		case TeamType::A:
-			return Palette::Red;
+			return TeamColor::A;
 		case TeamType::B:
-			return Palette::Blue;
+			return TeamColor::B;
 		default:
 			return Palette::Darkgray;
 		}

@@ -45,6 +45,12 @@ void KeyBoardTeam::Update(const Field & field)
 	// エージェントの座標から指定の方向に進んだ座標
 	Point next_pos = _agents[index].GetPosition().moveBy(Transform::DirToDelta(next_dir.value()));
 
+	if (next_dir.value() == Direction::Stop)
+	{
+		_next_steps[index] = Step{ Action::Stop, next_dir.value() };
+		return;
+	}
+
 	// 進んだ先のタイルの有無でアクションを決める
 	if (field.GetCells()[next_pos.y][next_pos.x].GetTile() == TileType::None)
 	{
