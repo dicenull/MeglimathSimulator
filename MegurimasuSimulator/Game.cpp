@@ -78,7 +78,7 @@ int Game::GetTurn() const
 	return _turn;
 }
 
-void Game::Update()
+void Game::NextTurn()
 {
 	if (_turn <= 0)
 	{
@@ -164,6 +164,15 @@ void Game::Update()
 	_teams[1]->Update(_field);
 }
 
+Field Game::GetField() const
+{
+	return _field;
+}
+
+std::map<TeamType, Think> Game::GetThinks() const
+{
+	return _thinks;
+}
 
 Game::Game(std::shared_ptr<Team> team_a, std::shared_ptr<Team> team_b)
 {
