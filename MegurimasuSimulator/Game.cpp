@@ -68,12 +68,17 @@ void Game::InitalizeFromJson(const String path)
 	_turn = json[U"Turn"].get<int>();
 }
 
+bool Game::IsReady()
+{
+	return _teams[0]->IsReady() && _teams[1]->IsReady();
+}
+
 int Game::GetTurn() const
 {
 	return _turn;
 }
 
-void Game::Update()
+void Game::NextTurn()
 {
 	if (_turn <= 0)
 	{
@@ -151,6 +156,12 @@ void Game::Update()
 
 	// チームの得点を更新
 	_field.UpdatePoint();
+}
+
+void Game::Update()
+{
+	_teams[0]->Update(_field);
+	_teams[1]->Update(_field);
 }
 
 void Game::Draw() const

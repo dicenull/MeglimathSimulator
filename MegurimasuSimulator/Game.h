@@ -58,6 +58,8 @@ public:
 	/// <param name="path">jsonファイルへのパス</param>
 	void InitalizeFromJson(const String path);
 
+	bool IsReady();
+
 	/// <summary>
 	/// ターン数を取得する
 	/// </summary>
@@ -67,6 +69,8 @@ public:
 	/// <summary>
 	/// ゲームを更新する
 	/// </summary>
+	void NextTurn();
+
 	void Update();
 
 	/// <summary>

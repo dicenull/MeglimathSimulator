@@ -6,7 +6,7 @@
 
 class Team
 {
-private:
+protected:
 	/// <summary>
 	/// チームの合計ポイント
 	/// </summary>
@@ -29,6 +29,13 @@ public:
 	/// <param name="info">公開されるゲーム情報</param>
 	/// <returns>エージェントの次の行動</returns>
 	virtual Think NextThink(GameInfo info) = 0;
+
+	/// <summary>
+	/// チームのThinkデータの格納が完了しているか
+	/// </summary>
+	virtual bool IsReady() = 0;
+
+	virtual void Update(const Field & field) = 0;
 
 	int GetTotalPoint() const;
 	void SetTotalPoint(int total_point);

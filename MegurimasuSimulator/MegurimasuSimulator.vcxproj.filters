@@ -81,6 +81,9 @@
     <ClCompile Include="Transform.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="KeyBoardTeam.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\icon.ico">
@@ -259,6 +262,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Drawer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyBoardTeam.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -3,6 +3,7 @@
 #include <HamFramework.hpp>
 #include "Game.h"
 #include "RandomTeam.h"
+#include "KeyBoardTeam.h"
 
 struct CommonData
 {
@@ -10,7 +11,7 @@ struct CommonData
 	Game game =
 	{
 		std::shared_ptr<Team>(new RandomTeam(TeamType::A)),
-		std::shared_ptr<Team>(new RandomTeam(TeamType::B))
+		std::shared_ptr<Team>(new KeyBoardTeam(TeamType::B))
 	};
 };
 
@@ -31,9 +32,11 @@ namespace Scenes
 
 		void update() override
 		{
-			if (MouseL.down() || KeyEnter.pressed())
+			getData().game.Update();
+
+			if (getData().game.IsReady())
 			{
-				getData().game.Update();
+				getData().game.NextTurn();
 			}
 		}
 

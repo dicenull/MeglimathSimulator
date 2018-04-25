@@ -14,6 +14,16 @@ public:
 		};
 	}
 
+	bool IsReady() override
+	{
+		return true;
+	}
+
+	void Update(const Field & field) override
+	{
+
+	}
+
 public:
 	RandomTeam(TeamType type);
 	RandomTeam(TeamType type, Agent agent1, Agent agent2);
