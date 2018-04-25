@@ -39,10 +39,6 @@ void Drawer::DrawField(const Field & field, Array<Agent> agents) const
 
 void Drawer::DrawAgents(std::map<TeamType, Array<Agent>> agents) const
 {
-	std::map<TeamType, Color> color_map;
-	color_map[TeamType::A] = Palette::Red;
-	color_map[TeamType::B] = Palette::Blue;
-
 	Point pos;
 	int32 edge_width = Sqrt(2) * cellSize.x / 2.0;
 
@@ -51,11 +47,11 @@ void Drawer::DrawAgents(std::map<TeamType, Array<Agent>> agents) const
 	{
 		// 一人目のエージェントを描画
 		Circle(center(agents[team][0].GetPosition()), cellSize.x / 2)
-			.drawFrame(2.0, color_map[team]);
+			.drawFrame(2.0, Transform::ColorOf(team));
 
 		// 二人目のエージェントを描画
 		Rect(Arg::center = center(agents[team][1].GetPosition()), edge_width).rotated(45_deg)
-			.drawFrame(2.0, color_map[team]);
+			.drawFrame(2.0, Transform::ColorOf(team));
 	}
 }
 

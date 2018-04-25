@@ -45,6 +45,8 @@ public:
 	/// <param name="path">jsonファイルへのパス</param>
 	void InitalizeFromJson(const String path);
 
+	bool IsReady();
+
 	/// <summary>
 	/// ターン数を取得する
 	/// </summary>
@@ -56,6 +58,12 @@ public:
 	std::map<TeamType, Think> GetThinks() const;
 
 	/// <summary>
+	/// ゲームを次のターンに進める
+	/// </summary>
+	void NextTurn();
+
+	/// <summary>
+	/// ゲームの状態を更新する
 	/// すべてのエージェント情報を取得する
 	/// </summary>
 	/// <returns>すべてのエージェント情報リスト</returns>

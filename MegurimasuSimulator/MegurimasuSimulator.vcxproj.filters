@@ -81,6 +81,9 @@
     <ClCompile Include="Transform.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="KeyBoardTeam.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\icon.ico">
@@ -222,9 +225,6 @@
     <ClInclude Include="Cell.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TeamType.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Agent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -259,6 +259,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Drawer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyBoardTeam.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Types.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TeamColor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

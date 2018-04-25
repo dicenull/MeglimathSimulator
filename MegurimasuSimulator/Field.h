@@ -76,6 +76,14 @@ public:
 	/// <returns>座標がフィールド内であるか</returns>
 	bool IsInField(Point pos);
 
+	/// <summary>
+	/// 座標と方向、フィールド状態から必要な行動を決める
+	/// </summary>
+	/// <param name="pos">指定方向に動く前の座標</param>
+	/// <param name="dir">行動する方向</param>
+	/// <returns>必要な行動</returns>
+	Step DecideStepByDirection(Point pos, Direction dir) const;
+
 public:
 	Field();
 

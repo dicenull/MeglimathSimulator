@@ -68,19 +68,14 @@ void Game::InitalizeFromJson(const String path)
 	_turn = json[U"Turn"].get<int>();
 }
 
+bool Game::IsReady()
+{
+	return _teams[0]->IsReady() && _teams[1]->IsReady();
+}
+
 int Game::GetTurn() const
 {
 	return _turn;
-}
-
-Field Game::GetField() const
-{
-	return _field;
-}
-
-std::map<TeamType, Think> Game::GetThinks() const
-{
-	return _thinks;
 }
 
 void Game::Update()
@@ -162,6 +157,13 @@ void Game::Update()
 	// チームの得点を更新
 	_field.UpdatePoint();
 }
+
+void Game::Update()
+{
+	_teams[0]->Update(_field);
+	_teams[1]->Update(_field);
+}
+
 
 Game::Game(std::shared_ptr<Team> team_a, std::shared_ptr<Team> team_b)
 {
