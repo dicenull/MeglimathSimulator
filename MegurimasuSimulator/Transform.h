@@ -1,6 +1,6 @@
 #pragma once
 #include <Siv3D.hpp>
-#include "TeamType.h"
+#include "Types.h"
 #include "Action.h"
 
 namespace Transform
@@ -52,12 +52,25 @@ namespace Transform
 		switch (t_type)
 		{
 		case TileType::A:
-			return Palette::Red;
+			return Palette::Blue;
 		case TileType::B:
 			return Palette::Blue;
 		case TileType::None:
 		default:
 			return Palette::White;
+		}
+	}
+
+	constexpr Color ColorOf(TeamType t_type)
+	{
+		switch (t_type)
+		{
+		case TeamType::A:
+			return Palette::Red;
+		case TeamType::B:
+			return Palette::Blue;
+		default:
+			return Palette::Darkgray;
 		}
 	}
 

@@ -275,7 +275,7 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameInfo.h" />
     <ClInclude Include="Team.h" />
-    <ClInclude Include="TeamType.h" />
+    <ClInclude Include="Types.h" />
     <ClInclude Include="Think.h" />
     <ClInclude Include="TyokushinTeam.h" />
   </ItemGroup>

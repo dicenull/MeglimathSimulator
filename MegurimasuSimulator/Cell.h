@@ -1,6 +1,6 @@
 #pragma once
 #include "Agent.h"
-#include "TeamType.h"
+#include "Types.h"
 
 class Cell
 {

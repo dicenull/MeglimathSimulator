@@ -1,7 +1,7 @@
 #pragma once
 #include "GameInfo.h"
 #include "Think.h"
-#include "TeamType.h"
+#include "Types.h"
 #include "Agent.h"
 
 class Team
