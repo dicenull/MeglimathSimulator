@@ -67,10 +67,13 @@ public:
 	int GetTurn() const;
 
 	/// <summary>
-	/// ゲームを更新する
+	/// ゲームを次のターンに進める
 	/// </summary>
 	void NextTurn();
 
+	/// <summary>
+	/// ゲームの状態を更新する
+	/// </summary>
 	void Update();
 
 	/// <summary>

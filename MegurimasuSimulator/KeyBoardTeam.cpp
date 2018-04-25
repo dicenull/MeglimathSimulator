@@ -6,7 +6,7 @@ Optional<Direction> KeyBoardTeam::DecideDirectionByKey()
 {
 	Optional<Direction> dir = none;
 
-	// Rightから反時計回り
+	// Rightから反時計回りに方向キーを指定
 	Array<Key> keys = { KeyD, KeyE, KeyW, KeyQ, KeyA, KeyZ, KeyX, KeyC, KeyS };
 
 	for (int i : step(9))
@@ -22,11 +22,13 @@ Optional<Direction> KeyBoardTeam::DecideDirectionByKey()
 
 void KeyBoardTeam::Update(const Field & field)
 {
+	// すでに行動が決定していた場合終了
 	if (_next_steps[0].has_value() && _next_steps[1].has_value())
 	{
 		return;
 	}
 
+	// 次にどちらの行動を決定するのかを設定
 	int index = (_next_steps[0].has_value() ? 1 : 0);
 
 	Optional<Direction> next_dir = DecideDirectionByKey();

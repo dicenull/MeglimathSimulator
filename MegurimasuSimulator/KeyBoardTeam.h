@@ -15,6 +15,7 @@ public:
 			}
 
 			think.steps[i] = _next_steps[i].value();
+			// 次の更新のために初期化
 			_next_steps[i].reset();
 		}
 		_is_ready = false;
@@ -28,10 +29,21 @@ public:
 	}
 
 private:
+	/// <summary>
+	/// キー入力がされた時の行動を格納しておく
+	/// </summary>
 	Optional<Step> _next_steps[2];
+
+	/// <summary>
+	/// すべての行動が選択済みであるかを判定する
+	/// </summary>
 	bool _is_ready = false;
 
 private:
+	/// <summary>
+	/// キー入力によって行動する方向を決める。入力が得られなかった場合のためにOptionalとした
+	/// </summary>
+	/// <returns>キー入力によって決められた方向</returns>
 	Optional<Direction> DecideDirectionByKey();
 
 public:
