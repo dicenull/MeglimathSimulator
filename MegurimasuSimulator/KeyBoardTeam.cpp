@@ -42,25 +42,8 @@ void KeyBoardTeam::Update(const Field & field)
 		_is_ready = true;
 	}
 
-	// エージェントの座標から指定の方向に進んだ座標
-	Point next_pos = _agents[index].GetPosition().moveBy(Transform::DirToDelta(next_dir.value()));
-
-	if (next_dir.value() == Direction::Stop)
-	{
-		_next_steps[index] = Step{ Action::Stop, next_dir.value() };
-		return;
-	}
-
-	// 進んだ先のタイルの有無でアクションを決める
-	if (field.GetCells()[next_pos.y][next_pos.x].GetTile() == TileType::None)
-	{
-		_next_steps[index] = Step{ Action::Move, next_dir.value() };
-	}
-	else
-	{
-		_next_steps[index] = Step{ Action::RemoveTile, next_dir.value() };
-	}
-
+	_next_steps[index] =
+		field.DecideStepByDirection(_agents[index].GetPosition(), next_dir.value());
 }
 
 KeyBoardTeam::KeyBoardTeam(TeamType type)

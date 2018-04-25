@@ -113,6 +113,27 @@ bool Field::IsInField(Point pos)
 	return (0 <= pos.x && pos.x < _cells.width()) && (0 <= pos.y && pos.y < _cells.height());
 }
 
+Step Field::DecideStepByDirection(Point pos, Direction dir) const
+{
+	if (dir == Direction::Stop)
+	{
+		return Step{ Action::Stop, Direction::Stop };
+	}
+
+	// 座標から指定の方向に進んだ後の座標
+	Point next_pos = pos.moveBy(Transform::DirToDelta(dir));
+
+	// 進んだ先のタイルの有無でアクションを決める
+	if (GetCells()[next_pos.y][next_pos.x].GetTile() == TileType::None)
+	{
+		return Step{ Action::Move, dir };
+	}
+	else
+	{
+		return Step{ Action::RemoveTile, dir };
+	}
+}
+
 Field::Field()
 {
 }
