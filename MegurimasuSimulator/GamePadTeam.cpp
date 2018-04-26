@@ -24,9 +24,13 @@ Optional<Direction> GamePadTeam::decideDirectionByGamePad()
 	// 右から反時計回りのキーの方向リスト
 	Array<Point> dir_delta = { {1, 0}, {1, -1}, {0, -1}, {-1, -1}, {-1, 0}, {-1, 1}, {0, 1}, {1, 1} };
 
+	double threshold = 0.1;
+
 	for (int i : step(dir_delta.count()))
 	{
-		if (d_pad.x == dir_delta[i].x && d_pad.y == dir_delta[i].y)
+		Point delta = dir_delta[i];
+		if (delta.x - threshold < d_pad.x && d_pad.x <= delta.x
+			&& delta.y - threshold < d_pad.y && d_pad.y <= dir_delta[i].y)
 		{
 			return (Direction)i;
 		}
