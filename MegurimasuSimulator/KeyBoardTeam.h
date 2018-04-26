@@ -39,6 +39,8 @@ private:
 	/// </summary>
 	bool _is_ready = false;
 
+	Array<Key> _operation_keys;
+
 private:
 	/// <summary>
 	/// キー入力によって行動する方向を決める。入力が得られなかった場合のためにOptionalとした
@@ -50,8 +52,21 @@ public:
 	void Update(const Field & field);
 
 public:
-	KeyBoardTeam(TeamType type);
-	KeyBoardTeam(TeamType type, Agent agent1, Agent agent2);
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="type"></param>
+	/// <param name="operation_keys">Rightから反時計回りに方向キーを指定</param>
+	KeyBoardTeam(TeamType type, Array<Key> operation_keys);
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="type"></param>
+	/// <param name="agent1"></param>
+	/// <param name="agent2"></param>
+	/// <param name="operation_keys">Rightから反時計回りに方向キーを指定</param>
+	KeyBoardTeam(TeamType type, Agent agent1, Agent agent2, Array<Key> operation_keys);
 	~KeyBoardTeam();
 };
 

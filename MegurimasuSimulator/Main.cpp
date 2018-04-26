@@ -10,8 +10,10 @@ struct CommonData
 	const String field_path = U"../Fields/LargeField.json";
 	Game game =
 	{
-		std::shared_ptr<Team>(new RandomTeam(TeamType::A)),
-		std::shared_ptr<Team>(new KeyBoardTeam(TeamType::B))
+		std::shared_ptr<Team>(new KeyBoardTeam(TeamType::A,
+			{KeySemicolon_JP, KeyP, KeyO, KeyI, KeyK, KeyM, KeyComma, KeyPeriod, KeyL})),
+		std::shared_ptr<Team>(new KeyBoardTeam(TeamType::B,
+			{ KeyD, KeyE, KeyW, KeyQ, KeyA, KeyZ, KeyX, KeyC, KeyS }))
 	};
 	Drawer drawer;
 };

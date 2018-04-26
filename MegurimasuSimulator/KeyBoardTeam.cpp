@@ -7,11 +7,9 @@ Optional<Direction> KeyBoardTeam::DecideDirectionByKey()
 	Optional<Direction> dir = none;
 
 	// Rightから反時計回りに方向キーを指定
-	Array<Key> keys = { KeyD, KeyE, KeyW, KeyQ, KeyA, KeyZ, KeyX, KeyC, KeyS };
-
 	for (int i : step(9))
 	{
-		if (keys[i].down())
+		if (_operation_keys[i].down())
 		{
 			return Optional<Direction>(static_cast<Direction>(i));
 		}
@@ -48,15 +46,17 @@ void KeyBoardTeam::Update(const Field & field)
 		field.DecideStepByDirection(_agents[index].GetPosition(), next_dir.value());
 }
 
-KeyBoardTeam::KeyBoardTeam(TeamType type)
+KeyBoardTeam::KeyBoardTeam(TeamType type, Array<Key> operation_keys)
 	: Team(type, Agent(), Agent())
 {
+	_operation_keys = operation_keys;
 	_is_ready = false;
 }
 
-KeyBoardTeam::KeyBoardTeam(TeamType type, Agent agent1, Agent agent2)
+KeyBoardTeam::KeyBoardTeam(TeamType type, Agent agent1, Agent agent2, Array<Key> operation_keys)
 	: Team(type, agent1, agent2)
 {
+	_operation_keys = operation_keys;
 	_is_ready = false;
 }
 
