@@ -1,6 +1,7 @@
 #pragma once
 #include "Cell.h"
 #include "Transform.h"
+#include "GamePoints.h"
 
 class Field
 {
@@ -15,8 +16,8 @@ private:
 	/// </summary>
 	Grid<bool> _status;
 
-	int _total_point[2];
-
+	GamePoints _points[2];
+	
 private:
 	/// <summary>
 	/// 囲まれている領域を探索する
@@ -54,7 +55,9 @@ public:
 	/// <returns>フィールドのセル情報</returns>
 	Grid<Cell> GetCells() const;
 
-	Array<int> GetTotalPoint() const;
+	Array<int> GetAreaPoints() const;
+	Array<int> GetTilePoints() const;
+	Array<int> GetTotalPoints() const;
 
 	/// <summary>
 	/// セルを塗る

@@ -84,8 +84,11 @@ int Field::aggregateTotalPoint(TileType tile)
 
 void Field::UpdatePoint()
 {
-	_total_point[0] = aggregateTotalPoint(TileType::A);
-	_total_point[1] = aggregateTotalPoint(TileType::B);
+	for (int i : step(2))
+	{
+		_points[i] = 
+		{ aggregateAreaPoint((TileType)i), aggregateTilePoint((TileType)i) };
+	}
 }
 
 Grid<Cell> Field::GetCells() const
@@ -93,9 +96,19 @@ Grid<Cell> Field::GetCells() const
 	return _cells;
 }
 
-Array<int> Field::GetTotalPoint() const
+Array<int> Field::GetAreaPoints() const
 {
-	return Array<int>().append({ _total_point[0], _total_point[1] });
+	return Array<int>().append({ _points[0].GetArea(), _points[1].GetArea() });
+}
+
+Array<int> Field::GetTilePoints() const
+{
+	return Array<int>().append({ _points[0].GetTile(), _points[1].GetTile() });
+}
+
+Array<int> Field::GetTotalPoints() const
+{
+	return Array<int>().append({ _points[0].GetTotal(), _points[1].GetTotal() });
 }
 
 void Field::PaintCell(Point pos, TeamType team)
