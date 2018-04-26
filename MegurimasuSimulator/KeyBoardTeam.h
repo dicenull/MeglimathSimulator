@@ -6,12 +6,12 @@ class KeyBoardTeam :
 public:
 	Think NextThink(GameInfo info) override
 	{
-		Think think;
+		Think think = { Step{ Action::Stop }, Step{ Action::Stop } };
 		for (int i : step(2))
 		{
 			if (!_next_steps[i].has_value())
 			{
-				return Think{ Step{Action::Stop}, Step{Action::Stop} };
+				return think;
 			}
 
 			think.steps[i] = _next_steps[i].value();

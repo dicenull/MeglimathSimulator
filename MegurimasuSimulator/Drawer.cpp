@@ -39,7 +39,6 @@ void Drawer::DrawField(const Field & field, Array<Agent> agents) const
 
 void Drawer::DrawAgents(std::map<TeamType, Array<Agent>> agents) const
 {
-	Point pos;
 	int32 edge_width = Sqrt(2) * cellSize.x / 2.0;
 
 	auto center = [=](Point pos) {return fieldOrigin + pos * cellSize + cellSize / 2; };
@@ -67,12 +66,16 @@ void Drawer::DrawStatus(const std::map<TeamType, Think> & thinks, const Field & 
 		U"Team A : ",
 		String(U"Agent 1 : ") + Transform::ToString(thinks.at(TeamType::A).steps[0]),
 		String(U"Agent 2 : ") + Transform::ToString(thinks.at(TeamType::A).steps[1]),
-		String(U"Total Point : ") + ToString(field.GetTotalPoint()[0]),
+		String(U"Area Point : ") + ToString(field.GetAreaPoints()[0]),
+		String(U"Tile Point : ") + ToString(field.GetTilePoints()[0]),
+		String(U"Total Point : ") + ToString(field.GetTotalPoints()[0]),
 		String(U"\n"),
 		U"Team B : ",
 		String(U"Agent 1 : ") + Transform::ToString(thinks.at(TeamType::B).steps[0]),
 		String(U"Agent 2 : ") + Transform::ToString(thinks.at(TeamType::B).steps[1]),
-		String(U"Total Point : ") + ToString(field.GetTotalPoint()[1]),
+		String(U"Area Point : ") + ToString(field.GetAreaPoints()[1]),
+		String(U"Tile Point : ") + ToString(field.GetTilePoints()[1]),
+		String(U"Total Point : ") + ToString(field.GetTotalPoints()[1]),
 		String(U"\n"),
 		String(U"Turn : ") + ToString(turn)
 	};
@@ -91,6 +94,3 @@ Drawer::Drawer()
 Drawer::~Drawer()
 {
 }
-
-void Drawer::operator=(const Drawer & other)
-{}

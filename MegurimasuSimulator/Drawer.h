@@ -30,7 +30,5 @@ public:
 public:
 	Drawer();
 	~Drawer();
-
-	void operator=(const Drawer& other);
 };
 
