@@ -2,7 +2,7 @@
 
 
 
-Optional<Direction> KeyBoardTeam::DecideDirectionByKey()
+Optional<Direction> KeyBoardTeam::decideDirectionByKey()
 {
 	Optional<Direction> dir = none;
 
@@ -29,7 +29,7 @@ void KeyBoardTeam::Update(const Field & field)
 	// Ÿ‚É‚Ç‚¿‚ç‚Ìs“®‚ğŒˆ’è‚·‚é‚Ì‚©‚ğİ’è
 	int index = (_next_steps[0].has_value() ? 1 : 0);
 
-	Optional<Direction> next_dir = DecideDirectionByKey();
+	Optional<Direction> next_dir = decideDirectionByKey();
 
 	if (!next_dir.has_value())
 	{
@@ -47,14 +47,14 @@ void KeyBoardTeam::Update(const Field & field)
 }
 
 KeyBoardTeam::KeyBoardTeam(TeamType type, Array<Key> operation_keys)
-	: Team(type, Agent(), Agent())
+	: WaitingForInputTeam(type, Agent(), Agent())
 {
 	_operation_keys = operation_keys;
 	_is_ready = false;
 }
 
 KeyBoardTeam::KeyBoardTeam(TeamType type, Agent agent1, Agent agent2, Array<Key> operation_keys)
-	: Team(type, agent1, agent2)
+	: WaitingForInputTeam(type, agent1, agent2)
 {
 	_operation_keys = operation_keys;
 	_is_ready = false;
