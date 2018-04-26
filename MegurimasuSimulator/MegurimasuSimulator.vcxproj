@@ -203,6 +203,7 @@
     <ClCompile Include="Drawer.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameInfo.cpp" />
+    <ClCompile Include="GamePoints.cpp" />
     <ClCompile Include="KeyBoardTeam.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="RandomTeam.cpp" />
@@ -268,6 +269,7 @@
     <ClInclude Include="Cell.h" />
     <ClInclude Include="DrawingInfo.h" />
     <ClInclude Include="Drawer.h" />
+    <ClInclude Include="GamePoints.h" />
     <ClInclude Include="KeyBoardTeam.h" />
     <ClInclude Include="RandomTeam.h" />
     <ClInclude Include="TeamColor.h" />
