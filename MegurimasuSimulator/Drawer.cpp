@@ -1,6 +1,6 @@
 #include "Drawer.h"
 
-void Drawer::DrawField(const Field & field, Array<Agent> agents) const
+void Drawer::DrawField(const Field & field) const
 {
 	// セルとタイルポイントの描画
 	Rect r;
@@ -16,23 +16,17 @@ void Drawer::DrawField(const Field & field, Array<Agent> agents) const
 			
 			r = Rect(top_left_pos, cellSize);
 
-			// エージェントがいる場合タイルを描画しない
-			Color tile_color;
-			auto is_in_agent = [pos](const Agent & agent) {return agent.GetPosition() == pos; };
-			if (agents.includes_if(is_in_agent))
-			{
-				tile_color = Palette::White;
-			}
-			else
-			{
-				tile_color = Transform::ColorOf(cells[k][i].GetTile());
-			}
+			r.draw(Palette::White);
 
-			r.draw(tile_color);
-
+			if (cells[k][i].GetTile() != TileType::None)
+			{
+				r.draw(Color(Transform::ColorOf(cells[k][i].GetTile()), 50U));
+			}
+			
 			r.drawFrame(1.0, Palette::Gray);
-
-			FontAsset(U"Cell")(cells[k][i].GetPoint()).drawAt(r.center(), Palette::Black);
+			
+			FontAsset(U"Cell")(cells[k][i].GetPoint())
+				.drawAt(r.center(), Palette::Black);
 		}
 	}
 }
