@@ -48,7 +48,7 @@ namespace Scenes
 			auto & game = getData().game;
 			auto & drawer = getData().drawer;
 
-			drawer.DrawField(game.GetField(), game.GetAgents());
+			drawer.DrawField(game.GetField());
 			drawer.DrawAgents(game.GetAgentMap());
 			drawer.DrawStatus(game.GetThinks(), game.GetField(), game.GetTurn());
 		}

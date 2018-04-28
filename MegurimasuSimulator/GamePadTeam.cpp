@@ -6,6 +6,11 @@ Optional<Direction> GamePadTeam::decideDirectionByGamePad()
 {
 	Optional<Direction> dir = none;
 
+	if (!Gamepad(0).isConnected())
+	{
+		return dir;
+	}
+
 	// Bƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚½‚çStop
 	if (Gamepad(0).buttons[1].down())
 	{
