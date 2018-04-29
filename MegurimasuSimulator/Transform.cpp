@@ -51,3 +51,16 @@ const String Transform::ToString(Step step)
 {
 	return ToString(step.action) + U" " + ToString(step.direction);
 }
+
+const String Transform::ToString(TeamType team)
+{
+	switch (team)
+	{
+	case TeamType::A:
+		return U"Team A";
+	case TeamType::B:
+		return U"Team B";
+	default:
+		return U"";
+	}
+}
