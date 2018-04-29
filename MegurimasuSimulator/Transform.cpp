@@ -10,9 +10,9 @@ const String Transform::ToString(Action action)
 		return U"Remove";
 	case Action::Stop:
 		return U"Stop";
-	default:
-		U"";
 	}
+
+	return U"";
 }
 
 const String Transform::ToString(Direction dir)
@@ -60,7 +60,7 @@ const String Transform::ToString(TeamType team)
 		return U"Team A";
 	case TeamType::B:
 		return U"Team B";
-	default:
-		return U"";
 	}
+
+	return U"";
 }

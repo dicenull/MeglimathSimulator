@@ -7,9 +7,9 @@ int Field::aggregateAreaPoint(TileType tile)
 	dfsAreaPoint(Point(0, 0), tile);
 
 	int area_point = 0;
-	for (int i : step(_status.width()))
+	for (size_t i : step(_status.width()))
 	{
-		for (int k : step(_status.height()))
+		for (size_t k : step(_status.height()))
 		{
 			if (_status[k][i])
 			{
@@ -63,9 +63,9 @@ int Field::aggregateTilePoint(TileType tile)
 	int sum_tile_point = 0;
 
 	//	タイルの種類が一致するセルの得点の合計を計算する
-	for (int i : step(_cells.width()))
+	for (size_t i : step(_cells.width()))
 	{
-		for (int k : step(_cells.height()))
+		for (size_t k : step(_cells.height()))
 		{
 			if (_cells[k][i].GetTile() == tile)
 			{

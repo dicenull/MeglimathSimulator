@@ -80,13 +80,13 @@ void Drawer::DrawStatus(const std::map<TeamType, Think> & thinks, const Field & 
 	auto draw_pos = [&](Point origin) {return origin + Point(0, index * 24); };
 	for (int i : step(2))
 	{
-		auto& text = FontAsset(U"Stat")(Transform::ToString((TeamType)i));
+		auto text = FontAsset(U"Stat")(Transform::ToString((TeamType)i));
 		text.region(draw_pos(statOrigin)).draw(Palette::Gray);
 		text.draw(draw_pos(statOrigin), team_colors[i]);
 
 		index++;
 
-		for (int k : step(messages[i].count()))
+		for (size_t k : step(messages[i].count()))
 		{
 			text = FontAsset(U"Stat")(messages[i][k]);
 			text.region(draw_pos(statOrigin)).draw(Palette::Gray);
@@ -95,7 +95,7 @@ void Drawer::DrawStatus(const std::map<TeamType, Think> & thinks, const Field & 
 		}
 	}
 
-	for (int i : step(messages[2].count()))
+	for (size_t i : step(messages[2].count()))
 	{
 		FontAsset(U"Stat")(messages[2][i])
 			.draw(draw_pos(statOrigin));
