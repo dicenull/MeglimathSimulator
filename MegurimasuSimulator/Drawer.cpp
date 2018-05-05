@@ -31,7 +31,7 @@ void Drawer::DrawField(const Field & field) const
 	}
 }
 
-void Drawer::DrawAgents(std::map<TeamType, Array<Agent>> agents) const
+void Drawer::DrawAgents(HashTable<TeamType, Array<Agent>> agents) const
 {
 	int32 edge_width = Sqrt(2) * cellSize.x / 2.0;
 
@@ -48,7 +48,7 @@ void Drawer::DrawAgents(std::map<TeamType, Array<Agent>> agents) const
 	}
 }
 
-void Drawer::DrawStatus(const std::map<TeamType, Think> & thinks, const Field & field, int turn) const
+void Drawer::DrawStatus(const HashTable<TeamType, Think> & thinks, const Field & field, int turn) const
 {
 	if (thinks.size() == 0)
 	{

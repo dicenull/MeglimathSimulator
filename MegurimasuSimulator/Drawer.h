@@ -17,7 +17,7 @@ public:
 	/// すべてのエージェントを描画する
 	/// </summary>
 	/// <param name="agents">エージェントリスト</param>
-	void DrawAgents(std::map<TeamType, Array<Agent>> agents) const;
+	void DrawAgents(HashTable<TeamType, Array<Agent>> agents) const;
 
 	/// <summary>
 	/// エージェントの行動やターン数を表示する
@@ -25,7 +25,7 @@ public:
 	/// <param name="thinks">すべてのエージェントの行動</param>
 	/// <param name="turn">残りターン数</param>
 	/// <param name="field">チームの合計得点を描画するためのフィールド情報</param>
-	void DrawStatus(const std::map<TeamType, Think> & thinks, const Field & field, int turn) const;
+	void DrawStatus(const HashTable<TeamType, Think> & thinks, const Field & field, int turn) const;
 
 public:
 	Drawer();

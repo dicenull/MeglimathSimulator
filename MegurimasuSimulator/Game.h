@@ -18,7 +18,7 @@ private:
 	/// <summary>
 	/// チームごとのすべてのエージェントの行動リスト
 	/// </summary>
-	std::map<TeamType, Think> _thinks;
+	HashTable<TeamType, Think> _thinks;
 
 private:
 	/// <summary>
@@ -55,7 +55,7 @@ public:
 
 	Field GetField() const;
 
-	std::map<TeamType, Think> GetThinks() const;
+	HashTable<TeamType, Think> GetThinks() const;
 
 	/// <summary>
 	/// ゲームを次のターンに進める
@@ -73,7 +73,7 @@ public:
 	/// チームごとのエージェントの情報を取得する
 	/// </summary>
 	/// <returns>チームごとのエージェント情報</returns>
-	std::map<TeamType, Array<Agent>> GetAgentMap() const;
+	HashTable<TeamType, Array<Agent>> GetAgentMap() const;
 
 	/// <summary>
 	/// ゲームを更新する
