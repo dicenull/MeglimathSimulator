@@ -210,7 +210,6 @@
     <ClCompile Include="RandomTeam.cpp" />
     <ClCompile Include="Team.cpp" />
     <ClCompile Include="Transform.cpp" />
-    <ClCompile Include="TyokushinTeam.cpp" />
     <ClCompile Include="WaitingForInputTeam.cpp" />
   </ItemGroup>
   <ItemGroup>

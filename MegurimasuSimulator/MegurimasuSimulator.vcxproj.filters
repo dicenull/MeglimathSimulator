@@ -93,9 +93,6 @@
     <ClCompile Include="Transform.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TyokushinTeam.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="WaitingForInputTeam.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
