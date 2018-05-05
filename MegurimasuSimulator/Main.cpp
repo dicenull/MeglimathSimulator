@@ -12,7 +12,7 @@ struct CommonData
 	Game game =
 	{
 		std::shared_ptr<Team>(new KeyBoardTeam(TeamType::A,
-			{ KeyD, KeyE, KeyW, KeyQ, KeyA, KeyZ, KeyX, KeyC, KeyS })),
+			{ KeyL, KeyO, KeyI, KeyU, KeyJ, KeyM, KeyComma, KeyPeriod, KeyK })),
 		std::shared_ptr<Team>(new KeyBoardTeam(TeamType::B,
 			{ KeyD, KeyE, KeyW, KeyQ, KeyA, KeyZ, KeyX, KeyC, KeyS }))
 	};
