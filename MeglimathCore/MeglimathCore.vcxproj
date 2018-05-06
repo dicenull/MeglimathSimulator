@@ -249,6 +249,7 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameInfo.h" />
     <ClInclude Include="GamePoints.h" />
+    <ClInclude Include="CreateJsonData.h" />
     <ClInclude Include="Team.h" />
     <ClInclude Include="TeamColor.h" />
     <ClInclude Include="Think.h" />
@@ -263,6 +264,7 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameInfo.cpp" />
     <ClCompile Include="GamePoints.cpp" />
+    <ClCompile Include="CreateJsonData.cpp" />
     <ClCompile Include="Team.cpp" />
     <ClCompile Include="Transform.cpp" />
   </ItemGroup>
