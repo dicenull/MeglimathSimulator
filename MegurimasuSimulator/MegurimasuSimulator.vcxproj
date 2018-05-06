@@ -201,7 +201,6 @@
     <ClCompile Include="KeyBoardTeam.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="RandomTeam.cpp" />
-    <ClCompile Include="Team.cpp" />
     <ClCompile Include="WaitingForInputTeam.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -242,8 +241,6 @@
     <None Include="App\engine\shader\sprite.vs" />
     <None Include="App\engine\shader\sprite_sdf.ps" />
     <None Include="App\engine\soundfont\GMGSx.sf2.zst" />
-    <None Include="Fields\Field01.json" />
-    <None Include="Fields\LargeField.json" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="App\engine\font\fontawesome\LICENSE.txt" />
@@ -253,7 +250,6 @@
     <ClInclude Include="GamePadTeam.h" />
     <ClInclude Include="KeyBoardTeam.h" />
     <ClInclude Include="RandomTeam.h" />
-    <ClInclude Include="Team.h" />
     <ClInclude Include="TyokushinTeam.h" />
     <ClInclude Include="WaitingForInputTeam.h" />
   </ItemGroup>

@@ -2,9 +2,12 @@
 # include <Siv3D.hpp> // OpenSiv3D v0.2.5
 #include <HamFramework.hpp>
 #include "../MeglimathCore/Game.h"
+#include "../MeglimathCore/CreateJsonData.h"
 
 struct GameData
 {
+	const FilePath field_path = U"../Fields/LargeField.json";
+	Game game = { field_path };
 	TCPServer server;
 };
 
@@ -37,7 +40,8 @@ namespace Scenes
 	{
 		Game(const InitData& init) : IScene(init)
 		{
-
+			String json = Transform::ToJSON(getData().game.GetGameInfo());
+			//TODO jsonデータをclientに送信
 		}
 
 		void update() override
