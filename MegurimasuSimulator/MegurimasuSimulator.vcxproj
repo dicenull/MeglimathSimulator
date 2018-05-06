@@ -197,19 +197,11 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Agent.cpp" />
-    <ClCompile Include="Cell.cpp" />
-    <ClCompile Include="Drawer.cpp" />
-    <ClCompile Include="Field.cpp" />
-    <ClCompile Include="Game.cpp" />
-    <ClCompile Include="GameInfo.cpp" />
     <ClCompile Include="GamePadTeam.cpp" />
-    <ClCompile Include="GamePoints.cpp" />
     <ClCompile Include="KeyBoardTeam.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="RandomTeam.cpp" />
     <ClCompile Include="Team.cpp" />
-    <ClCompile Include="Transform.cpp" />
     <ClCompile Include="WaitingForInputTeam.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -258,24 +250,11 @@
     <Text Include="App\engine\font\noto\LICENSE_OFL.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Action.h" />
-    <ClInclude Include="Agent.h" />
-    <ClInclude Include="Cell.h" />
-    <ClInclude Include="Drawer.h" />
-    <ClInclude Include="DrawingInfo.h" />
-    <ClInclude Include="Field.h" />
-    <ClInclude Include="Game.h" />
-    <ClInclude Include="GameInfo.h" />
     <ClInclude Include="GamePadTeam.h" />
-    <ClInclude Include="GamePoints.h" />
     <ClInclude Include="KeyBoardTeam.h" />
     <ClInclude Include="RandomTeam.h" />
     <ClInclude Include="Team.h" />
-    <ClInclude Include="TeamColor.h" />
-    <ClInclude Include="Think.h" />
-    <ClInclude Include="Transform.h" />
     <ClInclude Include="TyokushinTeam.h" />
-    <ClInclude Include="Types.h" />
     <ClInclude Include="WaitingForInputTeam.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
