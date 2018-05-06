@@ -17,35 +17,9 @@ protected:
 	/// </summary>
 	Agent _agents[2];
 
-	/// <summary>
-	/// チームA,Bを判断するためのチームの種類
-	/// </summary>
-	TeamType _type;
-
 public:
-	/// <summary>
-	/// エージェントの次の行動をゲーム情報を元に実装する
-	/// </summary>
-	/// <param name="info">公開されるゲーム情報</param>
-	/// <returns>エージェントの次の行動</returns>
-	virtual Think NextThink(GameInfo info) = 0;
-
-	/// <summary>
-	/// チームのThinkデータの格納が完了しているか
-	/// </summary>
-	virtual bool IsReady() = 0;
-
-	virtual void Update(const Field & field) = 0;
-
 	int GetTotalPoint() const;
 	void SetTotalPoint(int total_point);
-
-	/// <summary>
-	/// エージェントの初期位置を初期化する
-	/// </summary>
-	/// <param name="pos1">エージェント1の初期座標</param>
-	/// <param name="pos2">エージェント2の初期座標</param>
-	void InitAgentsPos(Point pos1, Point pos2);
 
 	Array<Agent> GetAgents() const;
 	
@@ -69,10 +43,10 @@ public:
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	/// <param name="type">チームの種類</param>
-	/// <param name="agent1">一人目のエージェント</param>
-	/// <param name="agent2">二人目のエージェント</param>
-	Team(TeamType type, Agent agent1, Agent agent2);
+	/// <param name="agent1">一人目のエージェントの初期座標</param>
+	/// <param name="agent2">二人目のエージェントの初期座標</param>
+	Team(Point pos1, Point pos2);
+
 	virtual ~Team();
 };
 

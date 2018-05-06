@@ -1,6 +1,6 @@
 #include "Game.h"
 
-GameInfo Game::getGameInfo() const
+GameInfo Game::GetGameInfo() const
 {
 	return GameInfo(_field, GetAgentMap());
 }
@@ -8,15 +8,15 @@ GameInfo Game::getGameInfo() const
 HashTable<TeamType, Array<Agent>> Game::GetAgentMap() const
 {
 	HashTable<TeamType, Array<Agent>> agents;
-	agents[TeamType::A] = _teams[0]->GetAgents();
-	agents[TeamType::B] = _teams[1]->GetAgents();
+	agents[TeamType::A] = _teams[0].GetAgents();
+	agents[TeamType::B] = _teams[1].GetAgents();
 
 	return agents;
 }
 
 Array<Agent> Game::GetAgents() const
 {
-	return _teams[0]->GetAgents().append(_teams[1]->GetAgents());
+	return _teams[0].GetAgents().append(_teams[1].GetAgents());
 }
 
 void Game::initAgentsPos()
@@ -46,36 +46,8 @@ void Game::initAgentsPos(Point init_pos)
 	_field.PaintCell(agent_pos[2], TeamType::B);
 	_field.PaintCell(agent_pos[3], TeamType::B);
 
-	_teams[0]->InitAgentsPos(agent_pos[0], agent_pos[1]);
-	_teams[1]->InitAgentsPos(agent_pos[2], agent_pos[3]);
-}
-
-void Game::InitalizeFromJson(const String path)
-{
-	JSONReader json(path);
-
-	_field = Field(path);
-
-	if (json[U"InitPos"].isNull())
-	{
-		initAgentsPos();
-	}
-	else
-	{
-		initAgentsPos(json[U"InitPos"].get<Point>());
-	}
-
-	_turn = json[U"Turn"].get<int>();
-}
-
-bool Game::IsReady()
-{
-	return _teams[0]->IsReady() && _teams[1]->IsReady();
-}
-
-int Game::GetTurn() const
-{
-	return _turn;
+	_teams[0] = { agent_pos[0], agent_pos[1] };
+	_teams[1] = { agent_pos[2], agent_pos[3] };
 }
 
 void Game::NextTurn()
@@ -85,12 +57,9 @@ void Game::NextTurn()
 		return;
 	}
 	
-	GameInfo info = getGameInfo();
+	GameInfo info = GetGameInfo();
 	auto agents_map = GetAgentMap();
 	auto agents = GetAgents();
-
-	_thinks[TeamType::A] = Think(_teams[0]->NextThink(info));
-	_thinks[TeamType::B] = Think(_teams[1]->NextThink(info));
 
 	// シミュレーション
 	Array<std::pair<Point, std::pair<Direction, TeamType>>> move_point_arr;
@@ -138,7 +107,7 @@ void Game::NextTurn()
 			pos -= Transform::DirToDelta(dir);
 
 			// エージェントを動かす
-			_teams[static_cast<int>(team)]->MoveAgent(pos, dir);
+			_teams[static_cast<int>(team)].MoveAgent(pos, dir);
 		}
 	}
 
@@ -160,8 +129,7 @@ void Game::NextTurn()
 
 void Game::Update()
 {
-	_teams[0]->Update(_field);
-	_teams[1]->Update(_field);
+
 }
 
 Field Game::GetField() const
@@ -174,9 +142,20 @@ HashTable<TeamType, Think> Game::GetThinks() const
 	return _thinks;
 }
 
-Game::Game(std::shared_ptr<Team> team_a, std::shared_ptr<Team> team_b)
+Game::Game(const String path)
 {
-	_teams.append({ team_a, team_b });
+	JSONReader json(path);
+
+	_field = Field(path);
+
+	if (json[U"InitPos"].isNull())
+	{
+		initAgentsPos();
+	}
+	else
+	{
+		initAgentsPos(json[U"InitPos"].get<Point>());
+	}
 }
 
 Game::~Game()
