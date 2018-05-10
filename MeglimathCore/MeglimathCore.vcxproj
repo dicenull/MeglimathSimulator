@@ -240,31 +240,35 @@
     <Text Include="App\engine\font\noto\LICENSE_OFL.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Action.h" />
-    <ClInclude Include="Agent.h" />
-    <ClInclude Include="Cell.h" />
     <ClInclude Include="Drawer.h" />
     <ClInclude Include="DrawingInfo.h" />
-    <ClInclude Include="Field.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameInfo.h" />
-    <ClInclude Include="GamePoints.h" />
+    <ClInclude Include="GameLogic\Action.h" />
+    <ClInclude Include="GameLogic\Agent.h" />
+    <ClInclude Include="GameLogic\Cell.h" />
+    <ClInclude Include="GameLogic\Field.h" />
+    <ClInclude Include="GameLogic\GameLogic.h" />
+    <ClInclude Include="GameLogic\GamePoints.h" />
+    <ClInclude Include="GameLogic\TeamLogic.h" />
+    <ClInclude Include="GameLogic\Think.h" />
+    <ClInclude Include="GameLogic\Transform.h" />
+    <ClInclude Include="GameLogic\Types.h" />
     <ClInclude Include="Team.h" />
     <ClInclude Include="TeamColor.h" />
-    <ClInclude Include="Think.h" />
-    <ClInclude Include="Transform.h" />
-    <ClInclude Include="Types.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Agent.cpp" />
-    <ClCompile Include="Cell.cpp" />
     <ClCompile Include="Drawer.cpp" />
-    <ClCompile Include="Field.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameInfo.cpp" />
-    <ClCompile Include="GamePoints.cpp" />
+    <ClCompile Include="GameLogic\Agent.cpp" />
+    <ClCompile Include="GameLogic\Cell.cpp" />
+    <ClCompile Include="GameLogic\Field.cpp" />
+    <ClCompile Include="GameLogic\GameLogic.cpp" />
+    <ClCompile Include="GameLogic\GamePoints.cpp" />
+    <ClCompile Include="GameLogic\TeamLogic.cpp" />
+    <ClCompile Include="GameLogic\Transform.cpp" />
     <ClCompile Include="Team.cpp" />
-    <ClCompile Include="Transform.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
