@@ -1,6 +1,4 @@
 #pragma once
-#include "GameInfo.h"
-#include "Think.h"
 #include "Types.h"
 #include "Agent.h"
 

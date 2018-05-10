@@ -1,8 +1,6 @@
 #pragma once
-#include "Drawer.h"
+#include"Think.h"
 #include "Field.h"
-#include "Team.h"
-#include "DrawingInfo.h"
 #include"TeamLogic.h"
 class GameLogic
 {

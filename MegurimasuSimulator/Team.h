@@ -1,9 +1,9 @@
 #pragma once
 #include "GameInfo.h"
-#include "Think.h"
-#include "Types.h"
-#include "Agent.h"
-#include "TeamLogic.h"
+#include "GameLogic/Think.h"
+#include "GameLogic/Types.h"
+#include "GameLogic/Agent.h"
+#include "GameLogic/TeamLogic.h"
 class Team
 {
 protected:

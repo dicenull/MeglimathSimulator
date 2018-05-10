@@ -1,7 +1,7 @@
 #pragma once
-#include "Field.h"
+#include "GameLogic/Field.h"
 #include "DrawingInfo.h"
-#include "Think.h"
+#include "GameLogic/Think.h"
 #include <Siv3D.hpp>
 
 class Drawer : public DrawingInfo

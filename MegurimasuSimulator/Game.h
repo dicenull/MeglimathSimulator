@@ -1,10 +1,10 @@
 #pragma once
 #include "Drawer.h"
-#include "Field.h"
+#include "GameLogic/Field.h"
 #include "Team.h"
 #include "DrawingInfo.h"
-#include"TeamLogic.h"
-#include"GameLogic.h"
+#include"GameLogic/TeamLogic.h"
+#include"GameLogic/GameLogic.h"
 class Game
 {
 private:

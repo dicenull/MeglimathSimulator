@@ -1,6 +1,6 @@
 #pragma once
 #include <map>
-#include "Field.h"
+#include "GameLogic/Field.h"
 
 class GameInfo
 {
