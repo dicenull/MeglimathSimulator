@@ -1,14 +1,18 @@
 ﻿
 # include <Siv3D.hpp> // OpenSiv3D v0.2.5
 #include <HamFramework.hpp>
+
+#include <cereal\cereal.hpp>
+#include <cereal\archives\json.hpp>
+
 #include "../MeglimathCore/Game.h"
-#include "../MeglimathCore/CreateJsonData.h"
+#include "../MeglimathCore/TCPString.hpp"
 
 struct GameData
 {
 	const FilePath field_path = U"../Fields/LargeField.json";
 	Game game = { field_path };
-	TCPServer server;
+	asc::TCPStringServer server;
 };
 
 using MyApp = SceneManager<String, GameData>;
@@ -40,8 +44,15 @@ namespace Scenes
 	{
 		Game(const InitData& init) : IScene(init)
 		{
-			String json = Transform::ToJSON(getData().game.GetGameInfo());
-			//TODO jsonデータをclientに送信
+			std::stringstream ss;
+
+			{
+				cereal::JSONOutputArchive o_archive(ss);
+
+				o_archive(cereal::make_nvp("info", getData().game.GetGameInfo()));
+			}
+
+			getData().server.sendString(Format(ss.str()));
 		}
 
 		void update() override

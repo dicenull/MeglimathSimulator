@@ -1,10 +1,11 @@
 ﻿
 # include <Siv3D.hpp> // OpenSiv3D v0.2.5
+#include "../MeglimathCore/TCPString.hpp"
 #include <HamFramework.hpp>
 
 struct GameData
 {
-	TCPClient client;
+	asc::TCPStringClient client;
 };
 
 using MyApp = SceneManager<String, GameData>;
@@ -36,7 +37,10 @@ namespace Scenes
 	{
 		Game(const InitData& init) : IScene(init)
 		{
+			String json_dat;
+			getData().client.readLine(json_dat);
 
+			Print << json_dat;
 		}
 
 		void update() override

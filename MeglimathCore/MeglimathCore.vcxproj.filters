@@ -206,7 +206,7 @@
     <ClInclude Include="Team.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CreateJsonData.h">
+    <ClInclude Include="TCPString.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -238,8 +238,8 @@
     <ClCompile Include="Team.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CreateJsonData.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="SerializeModel.cpp">
+      <Filter>Header Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
