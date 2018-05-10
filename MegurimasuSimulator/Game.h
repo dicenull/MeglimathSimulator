@@ -4,17 +4,16 @@
 #include "Team.h"
 #include "DrawingInfo.h"
 #include"TeamLogic.h"
+#include"GameLogic.h"
 class Game
 {
 private:
-	Field _field;
-	int _turn;
+	GameLogic _gamelogic;
 
 	/// <summary>
 	/// 2チームの情報
 	/// </summary>
 	Array<std::shared_ptr<Team>> _teams;
-	Array<TeamLogic> _teamlogics;
 
 	/// <summary>
 	/// チームごとのすべてのエージェントの行動リスト
