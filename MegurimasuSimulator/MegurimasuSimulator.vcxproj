@@ -203,6 +203,7 @@
     <ClCompile Include="Field.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameInfo.cpp" />
+    <ClCompile Include="GameLogic.cpp" />
     <ClCompile Include="GamePadTeam.cpp" />
     <ClCompile Include="GamePoints.cpp" />
     <ClCompile Include="KeyBoardTeam.cpp" />
@@ -266,6 +267,7 @@
     <ClInclude Include="Field.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameInfo.h" />
+    <ClInclude Include="GameLogic.h" />
     <ClInclude Include="GamePadTeam.h" />
     <ClInclude Include="GamePoints.h" />
     <ClInclude Include="KeyBoardTeam.h" />
