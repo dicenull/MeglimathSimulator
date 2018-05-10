@@ -1,5 +1,5 @@
 ﻿
-# include <Siv3D.hpp> // OpenSiv3D v0.2.4
+# include <Siv3D.hpp> // OpenSiv3D v0.2.5
 #include "../MegurimasuSimulator/Field.h"
 #include "../MegurimasuSimulator/Drawer.h"
 
@@ -26,16 +26,17 @@ void Main()
 	{
 		if (index < paths.size() && MouseL.down())
 		{
-			field = Field::Create(paths[index]);
+			field = Field{ paths[index] };
 			json = JSONReader(paths[index]);
 
 			index++;
 
+			field.UpdatePoint();
 			points_a.first = json[U"TeamA"].get<int>();
-			points_a.second = field.aggregateAreaPoint(TileType::A);
+			points_a.second = field.GetAreaPoints()[0];
 
 			points_b.first = json[U"TeamB"].get<int>();
-			points_b.second = field.aggregateAreaPoint(TileType::B);
+			points_b.second = field.GetAreaPoints()[1];
 		}
 
 		drawer.DrawField(field);

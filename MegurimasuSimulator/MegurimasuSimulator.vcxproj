@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{a8ba830c-67b4-4bc8-9666-d7739734cc12}</ProjectGuid>
+    <ProjectGuid>{9fd34e7f-8726-4e0c-8c0f-fa2818b2b748}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>MegurimasuSimulator</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
@@ -71,8 +71,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SIV3D_0_2_4)\include;$(SIV3D_0_2_4)\include\ThirdParty;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SIV3D_0_2_4)\lib\Windows(x86);$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SIV3D_0_2_5)\include;$(SIV3D_0_2_5)\include\ThirdParty;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SIV3D_0_2_5)\lib\Windows(x86);$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)Intermediate\$(ProjectName)\Debug-x86\</OutDir>
     <IntDir>$(SolutionDir)Intermediate\$(ProjectName)\Debug-x86\Intermediate\</IntDir>
     <TargetName>$(ProjectName)(debug_32-bit)</TargetName>
@@ -80,8 +80,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SIV3D_0_2_4)\include;$(SIV3D_0_2_4)\include\ThirdParty;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SIV3D_0_2_4)\lib\Windows(x64);$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SIV3D_0_2_5)\include;$(SIV3D_0_2_5)\include\ThirdParty;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SIV3D_0_2_5)\lib\Windows(x64);$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)Intermediate\$(ProjectName)\Debug-x64\</OutDir>
     <IntDir>$(SolutionDir)Intermediate\$(ProjectName)\Debug-x64\Intermediate\</IntDir>
     <TargetName>$(ProjectName)(debug_64-bit)</TargetName>
@@ -89,8 +89,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SIV3D_0_2_4)\include;$(SIV3D_0_2_4)\include\ThirdParty;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SIV3D_0_2_4)\lib\Windows(x86);$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SIV3D_0_2_5)\include;$(SIV3D_0_2_5)\include\ThirdParty;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SIV3D_0_2_5)\lib\Windows(x86);$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)Intermediate\$(ProjectName)\Release-x86\</OutDir>
     <IntDir>$(SolutionDir)Intermediate\$(ProjectName)\Release-x86\Intermediate\</IntDir>
     <TargetName>$(ProjectName)(32-bit)</TargetName>
@@ -98,8 +98,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SIV3D_0_2_4)\include;$(SIV3D_0_2_4)\include\ThirdParty;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SIV3D_0_2_4)\lib\Windows(x64);$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SIV3D_0_2_5)\include;$(SIV3D_0_2_5)\include\ThirdParty;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SIV3D_0_2_5)\lib\Windows(x64);$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)Intermediate\$(ProjectName)\Release-x64\</OutDir>
     <IntDir>$(SolutionDir)Intermediate\$(ProjectName)\Release-x64\Intermediate\</IntDir>
     <TargetName>$(ProjectName)(64-bit)</TargetName>
@@ -197,21 +197,11 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Agent.cpp" />
-    <ClCompile Include="Cell.cpp" />
-    <ClCompile Include="Field.cpp" />
-    <ClCompile Include="Drawer.cpp" />
-    <ClCompile Include="Game.cpp" />
-    <ClCompile Include="GameInfo.cpp" />
     <ClCompile Include="GamePadTeam.cpp" />
-    <ClCompile Include="GamePoints.cpp" />
-    <ClCompile Include="WaitingForInputTeam.cpp" />
     <ClCompile Include="KeyBoardTeam.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="RandomTeam.cpp" />
-    <ClCompile Include="Team.cpp" />
-    <ClCompile Include="Transform.cpp" />
-    <ClCompile Include="TyokushinTeam.cpp" />
+    <ClCompile Include="WaitingForInputTeam.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\engine\texture\box-shadow\128.png" />
@@ -220,20 +210,15 @@
     <Image Include="App\engine\texture\box-shadow\32.png" />
     <Image Include="App\engine\texture\box-shadow\64.png" />
     <Image Include="App\engine\texture\box-shadow\8.png" />
-    <Image Include="App\example\siv3d-kun.png" />
-    <Image Include="App\example\windmill.png" />
     <Image Include="App\icon.ico" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="App\Resource.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Media Include="App\example\shot.mp3" />
-    <Media Include="App\example\test.mp3" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="App\engine\emoji\noto7_dictionary.dat" />
-    <None Include="App\engine\font\fontawesome\FontAwesome.otf.zst" />
+    <None Include="App\engine\font\fontawesome\brands.otf.zst" />
+    <None Include="App\engine\font\fontawesome\solid.otf.zst" />
     <None Include="App\engine\font\mplus\LICENSE_E" />
     <None Include="App\engine\font\mplus\mplus-1p-black.ttf.zst" />
     <None Include="App\engine\font\mplus\mplus-1p-bold.ttf.zst" />
@@ -244,47 +229,29 @@
     <None Include="App\engine\font\mplus\mplus-1p-thin.ttf.zst" />
     <None Include="App\engine\font\noto\NotoColorEmoji.ttf.zst" />
     <None Include="App\engine\font\noto\NotoEmoji-Regular.ttf.zst" />
+    <None Include="App\engine\objdetect\haarcascade\eye.xml.zst" />
+    <None Include="App\engine\objdetect\haarcascade\eye_eyeglasses.xml.zst" />
+    <None Include="App\engine\objdetect\haarcascade\face_anime.xml.zst" />
+    <None Include="App\engine\objdetect\haarcascade\frontal_catface.xml.zst" />
+    <None Include="App\engine\objdetect\haarcascade\frontal_face_alt2.xml.zst" />
     <None Include="App\engine\shader\line_dot.ps" />
     <None Include="App\engine\shader\line_round_dot.ps" />
     <None Include="App\engine\shader\shape.ps" />
     <None Include="App\engine\shader\sprite.ps" />
     <None Include="App\engine\shader\sprite.vs" />
     <None Include="App\engine\shader\sprite_sdf.ps" />
-    <None Include="App\example\a1a_testing" />
-    <None Include="App\example\a1a_training" />
-    <None Include="App\example\empty.bin" />
-    <None Include="App\example\test.ini" />
-    <None Include="App\example\test.json" />
-    <None Include="App\example\test.toml" />
-    <None Include="Fields\Field01.json" />
+    <None Include="App\engine\soundfont\GMGSx.sf2.zst" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="App\engine\font\fontawesome\LICENSE_OFL.txt" />
+    <Text Include="App\engine\font\fontawesome\LICENSE.txt" />
     <Text Include="App\engine\font\noto\LICENSE_OFL.txt" />
-    <Text Include="App\example\LICENSE.txt" />
-    <Text Include="App\example\script.txt" />
-    <Text Include="App\example\test.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Action.h" />
-    <ClInclude Include="Agent.h" />
-    <ClInclude Include="Cell.h" />
-    <ClInclude Include="DrawingInfo.h" />
-    <ClInclude Include="Drawer.h" />
     <ClInclude Include="GamePadTeam.h" />
-    <ClInclude Include="GamePoints.h" />
-    <ClInclude Include="WaitingForInputTeam.h" />
     <ClInclude Include="KeyBoardTeam.h" />
     <ClInclude Include="RandomTeam.h" />
-    <ClInclude Include="TeamColor.h" />
-    <ClInclude Include="Transform.h" />
-    <ClInclude Include="Field.h" />
-    <ClInclude Include="Game.h" />
-    <ClInclude Include="GameInfo.h" />
-    <ClInclude Include="Team.h" />
-    <ClInclude Include="Types.h" />
-    <ClInclude Include="Think.h" />
     <ClInclude Include="TyokushinTeam.h" />
+    <ClInclude Include="WaitingForInputTeam.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
