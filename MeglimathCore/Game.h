@@ -11,22 +11,11 @@ private:
 	GameLogic _gamelogic;
 
 	/// <summary>
-	/// 2チームの情報
-	/// </summary>
-	Array<std::shared_ptr<Team>> _teams;
-
-	/// <summary>
 	/// チームごとのすべてのエージェントの行動リスト
 	/// </summary>
 	HashTable<TeamType, Think> _thinks;
 
 private:
-	/// <summary>
-	/// ゲーム情報を取得する
-	/// </summary>
-	/// <returns>フィールドとエージェントの情報</returns>
-	GameInfo getGameInfo() const;
-
 	/// <summary>
 	/// エージェントをランダムに初期化する
 	/// </summary>
@@ -42,18 +31,10 @@ public:
 	void setTeam(std::shared_ptr<Team> team_a, std::shared_ptr<Team> team_b);
 	Array<TeamLogic>& getTeamLogics();
 	/// <summary>
-	/// jsonからゲームを初期化する
+	/// ゲーム情報を取得する
 	/// </summary>
-	/// <param name="path">jsonファイルへのパス</param>
-	void InitalizeFromJson(const String path);
-
-	bool IsReady();
-
-	/// <summary>
-	/// ターン数を取得する
-	/// </summary>
-	/// <returns>現在のターン</returns>
-	int GetTurn() const;
+	/// <returns>フィールドとエージェントの情報</returns>
+	GameInfo GetGameInfo() const;
 
 	Field GetField() const;
 
@@ -89,6 +70,7 @@ public:
 	/// <param name="team_a">チームAの情報</param>
 	/// <param name="team_b">チームBの情報</param>
 	Game();
+	Game(const String path);
 
 	virtual ~Game();
 };

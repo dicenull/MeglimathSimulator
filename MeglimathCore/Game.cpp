@@ -1,6 +1,6 @@
 #include "Game.h"
 
-GameInfo Game::getGameInfo() const
+GameInfo Game::GetGameInfo() const
 {
 	return GameInfo(_gamelogic.GetField(), _gamelogic.GetAgentMap());
 }
@@ -33,9 +33,15 @@ void Game::setTeam(std::shared_ptr<Team> team_a, std::shared_ptr<Team> team_b)
 	_teams.append({ team_a, team_b });
 }
 
-Array<TeamLogic>& Game::getTeamLogics()
-{
-	return _gamelogic.getTeamLogics();
+	// エージェントの初期位置のタイルを塗る
+	_field.PaintCell(agent_pos[0], TeamType::A);
+	_field.PaintCell(agent_pos[1], TeamType::A);
+
+	_field.PaintCell(agent_pos[2], TeamType::B);
+	_field.PaintCell(agent_pos[3], TeamType::B);
+
+	_teams[0]->InitAgentsPos(agent_pos[0], agent_pos[1]);
+	_teams[1]->InitAgentsPos(agent_pos[2], agent_pos[3]);
 }
 
 void Game::InitalizeFromJson(const String path)
@@ -60,7 +66,7 @@ void Game::NextTurn()
 		return;
 	}
 	
-	GameInfo info = getGameInfo();
+	GameInfo info = GetGameInfo();
 	auto agents_map = GetAgentMap();
 	auto agents = GetAgents();
 
@@ -73,8 +79,7 @@ void Game::NextTurn()
 
 void Game::Update()
 {
-	_teams[0]->Update(_gamelogic.GetField());
-	_teams[1]->Update(_gamelogic.GetField());
+
 }
 
 Field Game::GetField() const

@@ -82,4 +82,6 @@ namespace Transform
 	const String ToString(Step step);
 
 	const String ToString(TeamType team);
+
+	const char ToString(TileType tile);
 }

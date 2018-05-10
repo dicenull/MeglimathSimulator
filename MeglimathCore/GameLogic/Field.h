@@ -17,6 +17,8 @@ private:
 	Grid<bool> _status;
 
 	GamePoints _points[2];
+
+	int _turn;
 	
 private:
 	/// <summary>
@@ -58,6 +60,8 @@ public:
 	Array<int> GetAreaPoints() const;
 	Array<int> GetTilePoints() const;
 	Array<int> GetTotalPoints() const;
+
+	int GetTurn() const;
 
 	/// <summary>
 	/// ƒZƒ‹‚ð“h‚é

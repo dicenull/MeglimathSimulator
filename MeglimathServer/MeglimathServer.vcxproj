@@ -212,6 +212,8 @@
     <ResourceCompile Include="App\Resource.rc" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\MeglimathCore\Fields\Field01.json" />
+    <None Include="..\MeglimathCore\Fields\LargeField.json" />
     <None Include="App\engine\emoji\noto7_dictionary.dat" />
     <None Include="App\engine\font\fontawesome\brands.otf.zst" />
     <None Include="App\engine\font\fontawesome\solid.otf.zst" />

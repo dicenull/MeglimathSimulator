@@ -49,6 +49,9 @@
     <Filter Include="Resource Files\engine\objdetect\haarcascade">
       <UniqueIdentifier>{e3d7a277-272a-4561-b375-8f74e98bcfeb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Fields">
+      <UniqueIdentifier>{642ca2cc-a296-45ae-ab99-9782cbc92acc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -158,6 +161,12 @@
     </None>
     <None Include="App\engine\soundfont\GMGSx.sf2.zst">
       <Filter>Resource Files\engine\soundfont</Filter>
+    </None>
+    <None Include="..\MeglimathCore\Fields\LargeField.json">
+      <Filter>Fields</Filter>
+    </None>
+    <None Include="..\MeglimathCore\Fields\Field01.json">
+      <Filter>Fields</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

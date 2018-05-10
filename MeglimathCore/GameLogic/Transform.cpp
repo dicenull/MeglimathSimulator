@@ -64,3 +64,17 @@ const String Transform::ToString(TeamType team)
 
 	return U"";
 }
+
+const char Transform::ToString(TileType tile)
+{
+	switch (tile)
+	{
+	case TileType::A:
+		return 'a';
+	case TileType::B:
+		return 'b';
+	case TileType::None:
+		return '-';
+	}
+
+}
