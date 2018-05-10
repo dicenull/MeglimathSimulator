@@ -10,8 +10,7 @@ public:
 	void Update(const Field & field);
 
 public:
-	GamePadTeam(TeamType type);
-	GamePadTeam();
+	GamePadTeam(TeamLogic &team);
 	~GamePadTeam();
 };
 

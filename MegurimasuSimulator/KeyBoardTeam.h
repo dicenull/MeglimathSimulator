@@ -21,18 +21,10 @@ public:
 	/// <summary>
 	/// 
 	/// </summary>
-	/// <param name="type"></param>
+	/// <param name="team"></param>
 	/// <param name="operation_keys">Rightから反時計回りに方向キーを指定</param>
-	KeyBoardTeam(TeamType type, Array<Key> operation_keys);
+	KeyBoardTeam(TeamLogic &team, Array<Key> operation_keys);
 
-	/// <summary>
-	/// 
-	/// </summary>
-	/// <param name="type"></param>
-	/// <param name="agent1"></param>
-	/// <param name="agent2"></param>
-	/// <param name="operation_keys">Rightから反時計回りに方向キーを指定</param>
-	KeyBoardTeam(TeamType type, Agent agent1, Agent agent2, Array<Key> operation_keys);
 	~KeyBoardTeam();
 };
 

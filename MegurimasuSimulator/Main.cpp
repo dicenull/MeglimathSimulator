@@ -9,14 +9,15 @@
 struct CommonData
 {
 	const String field_path = U"../Fields/LargeField.json";
-	Game game =
-	{
-		std::shared_ptr<Team>(new KeyBoardTeam(TeamType::A,
-			{ KeyL, KeyO, KeyI, KeyU, KeyJ, KeyM, KeyComma, KeyPeriod, KeyK })),
-		std::shared_ptr<Team>(new KeyBoardTeam(TeamType::B,
-			{ KeyD, KeyE, KeyW, KeyQ, KeyA, KeyZ, KeyX, KeyC, KeyS }))
-	};
+	Game game{};
 	Drawer drawer;
+
+	CommonData() {
+		game.setTeam(std::shared_ptr<Team>(new KeyBoardTeam(game.getTeamLogics()[0],
+			{ KeyL, KeyO, KeyI, KeyU, KeyJ, KeyM, KeyComma, KeyPeriod, KeyK })),
+			std::shared_ptr<Team>(new KeyBoardTeam(game.getTeamLogics()[1],
+				{ KeyD, KeyE, KeyW, KeyQ, KeyA, KeyZ, KeyX, KeyC, KeyS })));
+	}
 };
 
 using MyApp = SceneManager<String, CommonData>;
