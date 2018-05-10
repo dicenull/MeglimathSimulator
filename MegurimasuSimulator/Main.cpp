@@ -1,5 +1,5 @@
 ﻿
-# include <Siv3D.hpp> // OpenSiv3D v0.2.4
+# include <Siv3D.hpp> // OpenSiv3D v0.2.5
 #include <HamFramework.hpp>
 #include "Game.h"
 #include "RandomTeam.h"
@@ -11,7 +11,8 @@ struct CommonData
 	const String field_path = U"../Fields/LargeField.json";
 	Game game =
 	{
-		std::shared_ptr<Team>(new GamePadTeam(TeamType::A)),
+		std::shared_ptr<Team>(new KeyBoardTeam(TeamType::A,
+			{ KeyL, KeyO, KeyI, KeyU, KeyJ, KeyM, KeyComma, KeyPeriod, KeyK })),
 		std::shared_ptr<Team>(new KeyBoardTeam(TeamType::B,
 			{ KeyD, KeyE, KeyW, KeyQ, KeyA, KeyZ, KeyX, KeyC, KeyS }))
 	};

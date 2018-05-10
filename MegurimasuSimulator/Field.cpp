@@ -121,7 +121,7 @@ void Field::RemoveTile(Point pos)
 	_cells[pos.y][pos.x].RemoveTile();
 }
 
-bool Field::IsInField(Point pos)
+bool Field::IsInField(Point pos) const
 {
 	return (0 <= pos.x && pos.x < _cells.width()) && (0 <= pos.y && pos.y < _cells.height());
 }
@@ -136,8 +136,13 @@ Step Field::DecideStepByDirection(Point pos, Direction dir) const
 	// 座標から指定の方向に進んだ後の座標
 	Point next_pos = pos.moveBy(Transform::DirToDelta(dir));
 
+	if (!IsInField(next_pos))
+	{
+		return Step{ Action::Stop };
+	}
+
 	// 進んだ先のタイルの有無でアクションを決める
-	if (GetCells()[next_pos.y][next_pos.x].GetTile() == TileType::None)
+	if (_cells[next_pos.y][next_pos.x].GetTile() == TileType::None)
 	{
 		return Step{ Action::Move, dir };
 	}

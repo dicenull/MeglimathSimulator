@@ -77,7 +77,7 @@ public:
 	/// </summary>
 	/// <param name="pos">フィールド内か判定する座標</param>
 	/// <returns>座標がフィールド内であるか</returns>
-	bool IsInField(Point pos);
+	bool IsInField(Point pos) const;
 
 	/// <summary>
 	/// 座標と方向、フィールド状態から必要な行動を決める
