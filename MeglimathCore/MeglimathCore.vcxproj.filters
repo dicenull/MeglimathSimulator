@@ -218,21 +218,12 @@
     <ClInclude Include="GameLogic\Types.h">
       <Filter>Header Files\GameLogic</Filter>
     </ClInclude>
-    <ClInclude Include="TCPString.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Drawer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GameInfo.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Team.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GameLogic\Agent.cpp">
@@ -256,8 +247,11 @@
     <ClCompile Include="GameLogic\Transform.cpp">
       <Filter>Source Files\GameLogic</Filter>
     </ClCompile>
-    <ClCompile Include="SerializeModel.cpp">
-      <Filter>Header Files</Filter>
+    <ClCompile Include="Drawer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Team.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

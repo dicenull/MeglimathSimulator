@@ -2,7 +2,7 @@
 #include <map>
 #include "GameLogic/Field.h"
 #include <cereal/cereal.hpp>
-#include <cereal/archives/json.hpp>
+//#include <cereal/archives/json.hpp>
 
 class GameInfo
 {

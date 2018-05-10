@@ -11,6 +11,11 @@ private:
 	GameLogic _gamelogic;
 
 	/// <summary>
+	/// 2チームの情報
+	/// </summary>
+	Array<std::shared_ptr<Team>> _teams;
+
+	/// <summary>
 	/// チームごとのすべてのエージェントの行動リスト
 	/// </summary>
 	HashTable<TeamType, Think> _thinks;
@@ -35,6 +40,20 @@ public:
 	/// </summary>
 	/// <returns>フィールドとエージェントの情報</returns>
 	GameInfo GetGameInfo() const;
+
+	/// <summary>
+	/// jsonからゲームを初期化する
+	/// </summary>
+	/// <param name="path">jsonファイルへのパス</param>
+	void InitalizeFromJson(const String path);
+
+	bool IsReady();
+
+	/// <summary>
+	/// ターン数を取得する
+	/// </summary>
+	/// <returns>現在のターン</returns>
+	int GetTurn() const;
 
 	Field GetField() const;
 

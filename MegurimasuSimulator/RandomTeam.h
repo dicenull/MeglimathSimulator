@@ -1,6 +1,6 @@
 #pragma once
 #include <Siv3D.hpp>
-#include "Team.h"
+#include "../MeglimathCore/Team.h"
 
 class  RandomTeam : public Team
 {

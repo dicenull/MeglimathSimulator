@@ -1,7 +1,7 @@
 ﻿
 # include <Siv3D.hpp> // OpenSiv3D v0.2.5
 #include <HamFramework.hpp>
-#include "Game.h"
+#include "../MeglimathCore/Game.h"
 #include "RandomTeam.h"
 #include "KeyBoardTeam.h"
 #include "GamePadTeam.h"

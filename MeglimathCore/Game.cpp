@@ -33,17 +33,16 @@ void Game::setTeam(std::shared_ptr<Team> team_a, std::shared_ptr<Team> team_b)
 	_teams.append({ team_a, team_b });
 }
 
-	// エージェントの初期位置のタイルを塗る
-	_field.PaintCell(agent_pos[0], TeamType::A);
-	_field.PaintCell(agent_pos[1], TeamType::A);
-
-	_field.PaintCell(agent_pos[2], TeamType::B);
-	_field.PaintCell(agent_pos[3], TeamType::B);
-
-	_teams[0]->InitAgentsPos(agent_pos[0], agent_pos[1]);
-	_teams[1]->InitAgentsPos(agent_pos[2], agent_pos[3]);
-}
-
+//	// エージェントの初期位置のタイルを塗る
+//	_field.PaintCell(agent_pos[0], TeamType::A);
+//	_field.PaintCell(agent_pos[1], TeamType::A);
+//
+//	_field.PaintCell(agent_pos[2], TeamType::B);
+//	_field.PaintCell(agent_pos[3], TeamType::B);
+//
+//	_teams[0]->InitAgentsPos(agent_pos[0], agent_pos[1]);
+//	_teams[1]->InitAgentsPos(agent_pos[2], agent_pos[3]);
+//}
 void Game::InitalizeFromJson(const String path)
 {
 	_gamelogic.InitalizeFromJson(path);
@@ -58,7 +57,6 @@ int Game::GetTurn() const
 {
 	return _gamelogic.GetTurn();
 }
-
 void Game::NextTurn()
 {
 	if (_gamelogic.GetTurn() <= 0)
