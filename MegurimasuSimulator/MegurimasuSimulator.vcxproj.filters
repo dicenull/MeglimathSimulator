@@ -99,6 +99,9 @@
     <ClCompile Include="GameLogic.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TeamLogic.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\icon.ico">
@@ -278,6 +281,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GameLogic.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TeamLogic.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -8,15 +8,15 @@ GameInfo Game::getGameInfo() const
 HashTable<TeamType, Array<Agent>> Game::GetAgentMap() const
 {
 	HashTable<TeamType, Array<Agent>> agents;
-	agents[TeamType::A] = _teams[0]->GetAgents();
-	agents[TeamType::B] = _teams[1]->GetAgents();
+	agents[TeamType::A] = _teamlogics[0].GetAgents();
+	agents[TeamType::B] = _teamlogics[1].GetAgents();
 
 	return agents;
 }
 
 Array<Agent> Game::GetAgents() const
 {
-	return _teams[0]->GetAgents().append(_teams[1]->GetAgents());
+	return _teamlogics[0].GetAgents().append(_teamlogics[1].GetAgents());
 }
 
 void Game::initAgentsPos()
@@ -46,8 +46,18 @@ void Game::initAgentsPos(Point init_pos)
 	_field.PaintCell(agent_pos[2], TeamType::B);
 	_field.PaintCell(agent_pos[3], TeamType::B);
 
-	_teams[0]->InitAgentsPos(agent_pos[0], agent_pos[1]);
-	_teams[1]->InitAgentsPos(agent_pos[2], agent_pos[3]);
+	_teamlogics[0].InitAgentsPos(agent_pos[0], agent_pos[1]);
+	_teamlogics[1].InitAgentsPos(agent_pos[2], agent_pos[3]);
+}
+
+void Game::setTeam(std::shared_ptr<Team> team_a, std::shared_ptr<Team> team_b)
+{
+	_teams.append({ team_a, team_b });
+}
+
+Array<TeamLogic>& Game::getTeamLogics()
+{
+	return _teamlogics;
 }
 
 void Game::InitalizeFromJson(const String path)
@@ -138,7 +148,7 @@ void Game::NextTurn()
 			pos -= Transform::DirToDelta(dir);
 
 			// エージェントを動かす
-			_teams[static_cast<int>(team)]->MoveAgent(pos, dir);
+			_teamlogics[static_cast<int>(team)].MoveAgent(pos, dir);
 		}
 	}
 
@@ -174,9 +184,9 @@ HashTable<TeamType, Think> Game::GetThinks() const
 	return _thinks;
 }
 
-Game::Game(std::shared_ptr<Team> team_a, std::shared_ptr<Team> team_b)
+Game::Game():_teamlogics({TeamLogic(),TeamLogic()})
 {
-	_teams.append({ team_a, team_b });
+
 }
 
 Game::~Game()

@@ -3,7 +3,7 @@
 #include "Field.h"
 #include "Team.h"
 #include "DrawingInfo.h"
-
+#include"TeamLogic.h"
 class Game
 {
 private:
@@ -14,6 +14,7 @@ private:
 	/// 2チームの情報
 	/// </summary>
 	Array<std::shared_ptr<Team>> _teams;
+	Array<TeamLogic> _teamlogics;
 
 	/// <summary>
 	/// チームごとのすべてのエージェントの行動リスト
@@ -39,6 +40,8 @@ private:
 	void initAgentsPos(Point init_pos);
 
 public:
+	void setTeam(std::shared_ptr<Team> team_a, std::shared_ptr<Team> team_b);
+	Array<TeamLogic>& getTeamLogics();
 	/// <summary>
 	/// jsonからゲームを初期化する
 	/// </summary>
@@ -86,7 +89,7 @@ public:
 	/// </summary>
 	/// <param name="team_a">チームAの情報</param>
 	/// <param name="team_b">チームBの情報</param>
-	Game(std::shared_ptr<Team> team_a, std::shared_ptr<Team> team_b);
+	Game();
 
 	virtual ~Game();
 };
