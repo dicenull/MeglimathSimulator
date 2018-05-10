@@ -1,8 +1,8 @@
 #pragma once
 #include <map>
+#include "GameLogic/Field.h"
 #include <cereal/cereal.hpp>
-#include <cereal/archives/json.hpp>
-#include "Field.h"
+//#include <cereal/archives/json.hpp>
 
 class GameInfo
 {

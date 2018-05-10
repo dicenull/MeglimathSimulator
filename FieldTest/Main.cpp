@@ -1,7 +1,7 @@
 ﻿
 # include <Siv3D.hpp> // OpenSiv3D v0.2.5
-#include "../MegurimasuSimulator/Field.h"
-#include "../MegurimasuSimulator/Drawer.h"
+#include "../MeglimathCore/GameLogic/Field.h"
+#include "../MeglimathCore/Drawer.h"
 
 void Main()
 {

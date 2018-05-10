@@ -49,6 +49,9 @@
     <Filter Include="Resource Files\engine\objdetect\haarcascade">
       <UniqueIdentifier>{e3d7a277-272a-4561-b375-8f74e98bcfeb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Fields">
+      <UniqueIdentifier>{0a46d20a-9e66-4835-af9b-9125cddff5c0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -170,6 +173,12 @@
     </None>
     <None Include="App\engine\soundfont\GMGSx.sf2.zst">
       <Filter>Resource Files\engine\soundfont</Filter>
+    </None>
+    <None Include="Fields\Field01.json">
+      <Filter>Fields</Filter>
+    </None>
+    <None Include="Fields\LargeField.json">
+      <Filter>Fields</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

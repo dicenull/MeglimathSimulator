@@ -43,18 +43,11 @@ void KeyBoardTeam::Update(const Field & field)
 	}
 
 	_next_steps[index] =
-		field.DecideStepByDirection(_agents[index].GetPosition(), next_dir.value());
+		field.DecideStepByDirection(_team.GetAgents()[index].GetPosition(), next_dir.value());
 }
 
-KeyBoardTeam::KeyBoardTeam(TeamType type, Array<Key> operation_keys)
-	: WaitingForInputTeam(type, Agent(), Agent())
-{
-	_operation_keys = operation_keys;
-	_is_ready = false;
-}
-
-KeyBoardTeam::KeyBoardTeam(TeamType type, Agent agent1, Agent agent2, Array<Key> operation_keys)
-	: WaitingForInputTeam(type, agent1, agent2)
+KeyBoardTeam::KeyBoardTeam(TeamLogic &team, Array<Key> operation_keys)
+	: WaitingForInputTeam(team)
 {
 	_operation_keys = operation_keys;
 	_is_ready = false;

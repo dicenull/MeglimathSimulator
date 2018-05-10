@@ -2,7 +2,7 @@
 #include <Siv3D.hpp>
 #include "Types.h"
 #include "Action.h"
-#include "TeamColor.h"
+#include "../TeamColor.h"
 
 namespace Transform
 {

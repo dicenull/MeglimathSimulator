@@ -249,11 +249,6 @@
     <Text Include="App\engine\font\fontawesome\LICENSE.txt" />
     <Text Include="App\engine\font\noto\LICENSE_OFL.txt" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\MegurimasuSimulator\MegurimasuSimulator.vcxproj">
-      <Project>{9fd34e7f-8726-4e0c-8c0f-fa2818b2b748}</Project>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

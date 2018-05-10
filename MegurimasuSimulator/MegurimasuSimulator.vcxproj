@@ -241,6 +241,8 @@
     <None Include="App\engine\shader\sprite.vs" />
     <None Include="App\engine\shader\sprite_sdf.ps" />
     <None Include="App\engine\soundfont\GMGSx.sf2.zst" />
+    <None Include="Fields\Field01.json" />
+    <None Include="Fields\LargeField.json" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="App\engine\font\fontawesome\LICENSE.txt" />
