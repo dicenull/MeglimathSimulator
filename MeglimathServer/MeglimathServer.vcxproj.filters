@@ -52,10 +52,49 @@
     <Filter Include="Fields">
       <UniqueIdentifier>{642ca2cc-a296-45ae-ab99-9782cbc92acc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core">
+      <UniqueIdentifier>{21f9a7b3-0d00-494d-a44d-a08d3f153c82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Header Files">
+      <UniqueIdentifier>{8dd8d214-b1eb-4959-8b3b-7b7dbf8b75d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Source Files">
+      <UniqueIdentifier>{e7ab954e-74d0-4380-ac56-c272754a007b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\MeglimathCore\Game.cpp">
+      <Filter>Core\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\MeglimathCore\GameInfo.cpp">
+      <Filter>Core\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\MeglimathCore\Team.cpp">
+      <Filter>Core\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\MeglimathCore\GameLogic\Agent.cpp">
+      <Filter>Core\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\MeglimathCore\GameLogic\Cell.cpp">
+      <Filter>Core\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\MeglimathCore\GameLogic\Field.cpp">
+      <Filter>Core\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\MeglimathCore\GameLogic\GameLogic.cpp">
+      <Filter>Core\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\MeglimathCore\GameLogic\GamePoints.cpp">
+      <Filter>Core\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\MeglimathCore\GameLogic\TeamLogic.cpp">
+      <Filter>Core\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\MeglimathCore\GameLogic\Transform.cpp">
+      <Filter>Core\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -176,5 +215,52 @@
     <Text Include="App\engine\font\fontawesome\LICENSE.txt">
       <Filter>Resource Files\engine\font\fontawesome</Filter>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\MeglimathCore\Game.h">
+      <Filter>Core\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\MeglimathCore\GameInfo.h">
+      <Filter>Core\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\MeglimathCore\TCPString.hpp">
+      <Filter>Core\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\MeglimathCore\Team.h">
+      <Filter>Core\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\MeglimathCore\TeamColor.h">
+      <Filter>Core\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\MeglimathCore\GameLogic\Action.h">
+      <Filter>Core\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\MeglimathCore\GameLogic\Agent.h">
+      <Filter>Core\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\MeglimathCore\GameLogic\Cell.h">
+      <Filter>Core\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\MeglimathCore\GameLogic\Field.h">
+      <Filter>Core\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\MeglimathCore\GameLogic\GameLogic.h">
+      <Filter>Core\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\MeglimathCore\GameLogic\GamePoints.h">
+      <Filter>Core\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\MeglimathCore\GameLogic\TeamLogic.h">
+      <Filter>Core\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\MeglimathCore\GameLogic\Think.h">
+      <Filter>Core\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\MeglimathCore\GameLogic\Transform.h">
+      <Filter>Core\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\MeglimathCore\GameLogic\Types.h">
+      <Filter>Core\Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -39,7 +39,7 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
@@ -80,7 +80,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SIV3D_0_2_5)\include;$(SIV3D_0_2_5)\include\ThirdParty;$(IncludePath)</IncludePath>
+    <IncludePath>$(SIV3D_0_2_5)\include;$(SIV3D_0_2_5)\include\ThirdParty;$(RAPIDJSON);$(IncludePath)</IncludePath>
     <LibraryPath>$(SIV3D_0_2_5)\lib\Windows(x64);$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)Intermediate\$(ProjectName)\Debug-x64\</OutDir>
     <IntDir>$(SolutionDir)Intermediate\$(ProjectName)\Debug-x64\Intermediate\</IntDir>
@@ -139,6 +139,8 @@
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <MinimalRebuild>false</MinimalRebuild>
+      <AdditionalIncludeDirectories>
+      </AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
