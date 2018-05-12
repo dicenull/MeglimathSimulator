@@ -41,12 +41,6 @@ public:
 	/// <returns>フィールドとエージェントの情報</returns>
 	GameInfo GetGameInfo() const;
 
-	/// <summary>
-	/// jsonからゲームを初期化する
-	/// </summary>
-	/// <param name="path">jsonファイルへのパス</param>
-	void InitalizeFromJson(const String path);
-
 	bool IsReady();
 
 	/// <summary>
@@ -89,6 +83,12 @@ public:
 	/// <param name="team_a">チームAの情報</param>
 	/// <param name="team_b">チームBの情報</param>
 	Game();
+
+
+	/// <summary>
+	/// jsonからゲームを初期化する
+	/// </summary>
+	/// <param name="path">jsonファイルへのパス</param>
 	Game(const String path);
 
 	virtual ~Game();

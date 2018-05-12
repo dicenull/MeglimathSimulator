@@ -10,10 +10,16 @@ Array<Agent> GameInfo::GetAgents(TeamType type) const
 	return _agents.find(type)->second;
 }
 
-GameInfo::GameInfo(Field field, HashTable<TeamType, Array<Agent>> agents)
+int GameInfo::GetTurn() const
+{
+	return _turn;
+}
+
+GameInfo::GameInfo(Field field, int turn, HashTable<TeamType, Array<Agent>> agents)
 {
 	_field = field;
 	_agents = agents;
+	_turn = turn;
 }
 
 GameInfo::~GameInfo()
@@ -83,7 +89,9 @@ std::string GameInfo::CreateJson()
 	writer.Int(_field.GetTotalPoints()[1]);
 
 	writer.Key("RemainingTurn");
-	writer.Int(_field.GetTurn());
+	writer.Int(_turn);
+
+	writer.EndObject();
 
 	return buffer.GetString();
 }
