@@ -2,9 +2,6 @@
 # include <Siv3D.hpp> // OpenSiv3D v0.2.5
 #include <HamFramework.hpp>
 
-#include <cereal\cereal.hpp>
-#include <cereal\archives\json.hpp>
-
 #include "../MeglimathCore/Game.h"
 #include "../MeglimathCore/TCPString.hpp"
 
@@ -44,15 +41,11 @@ namespace Scenes
 	{
 		Game(const InitData& init) : IScene(init)
 		{
-			std::stringstream ss;
+			auto str = Unicode::Widen(getData().game.GetGameInfo().CreateJson());
+			str.push_back('\n');
 
-			{
-				cereal::JSONOutputArchive o_archive(ss);
-
-				o_archive(cereal::make_nvp("info", getData().game.GetGameInfo()));
-			}
-
-			getData().server.sendString(Format(ss.str()));
+			getData().server
+				.sendString(str);
 		}
 
 		void update() override

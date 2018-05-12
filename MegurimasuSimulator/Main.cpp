@@ -9,7 +9,7 @@
 struct CommonData
 {
 	const String field_path = U"../Fields/LargeField.json";
-	Game game{};
+	Game game{ field_path };
 	Drawer drawer;
 
 	CommonData() {
@@ -30,9 +30,6 @@ namespace Scenes
 		Game(const InitData& init)
 			: IScene(init)
 		{
-			auto & data = getData();
-
-			data.game.InitalizeFromJson(data.field_path);
 		}
 
 		void update() override
