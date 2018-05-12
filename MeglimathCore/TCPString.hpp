@@ -207,13 +207,24 @@ namespace asc
 		/// <remarks>
 		/// 日本語などの 1 バイトではない文字も扱えます。
 		/// </remarks>
-		bool sendString(const String& data)
-		{
-			const auto str = data.toUTF8();
-			return send(str.data(), str.length());
-		}
-
+		bool sendString(const String& data);
 	};
+
+	template<>
+	bool TCPString<TCPServer>::sendString(const String& data)
+	{
+		const auto str = data.toUTF8();
+
+		return send(str.data(), str.length(), unspecified);
+	}
+
+	template<>
+	bool TCPString<TCPClient>::sendString(const String& data)
+	{
+		const auto str = data.toUTF8();
+
+		return send(str.data(), str.length());
+	}
 
 	using TCPStringClient = TCPString<TCPClient>;
 	using TCPStringServer = TCPString<TCPServer>;

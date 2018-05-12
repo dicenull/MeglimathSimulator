@@ -83,5 +83,5 @@ namespace Transform
 
 	const String ToString(TeamType team);
 
-	const char ToString(TileType tile);
+	const char ToChar(TileType tile);
 }
