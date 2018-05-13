@@ -1,5 +1,5 @@
 #include "Drawer.h"
-
+#include "LogicUtil.h"
 void Drawer::DrawField(const Field & field) const
 {
 	// セルとタイルポイントの描画

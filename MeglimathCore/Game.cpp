@@ -1,5 +1,5 @@
 #include "Game.h"
-
+#include"LogicUtil.h"
 GameInfo Game::GetGameInfo() const
 {
 	return GameInfo(_gamelogic.GetField(), _gamelogic.GetTurn(), LogicUtil::toS3dHashTable(_gamelogic.GetAgentMap()));

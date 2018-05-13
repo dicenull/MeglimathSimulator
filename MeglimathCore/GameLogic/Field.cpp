@@ -1,5 +1,6 @@
 #include "Field.h"
 #include<rapidjson/document.h>
+#include"util.h"
 int Field::aggregateAreaPoint(TileType tile)
 {
 	_status = _Grid<bool>(_cells.size() + _Point(2, 2));

@@ -99,8 +99,3 @@ public:
 	_Grid(const _Grid& g) :component(g.component), _size(g._size) {};
 };
 
-static std::vector<int> step(size_t n) {
-	std::vector<int> ret;
-	for (int i = 0; i < n; i++)ret.push_back(i);
-	return ret;
-}
