@@ -2,12 +2,14 @@
 #include"Think.h"
 #include "Field.h"
 #include"TeamLogic.h"
+#include<unordered_map>
+#include<vector>
 class GameLogic
 {
 private:
 	Field _field;
 	int _turn;
-	Array<TeamLogic> _teamlogics;
+	std::vector<TeamLogic> _teamlogics;
 
 public:
 
@@ -20,15 +22,15 @@ public:
 	/// エージェントの初期化処理を行う
 	/// </summary>
 	/// <param name="init_pos">エージェントの初期座標のもとになる左上の座標</param>
-	void initAgentsPos(Point init_pos);
+	void initAgentsPos(_Point<> init_pos);
 
 public:
-	Array<TeamLogic>& getTeamLogics();
+	std::vector<TeamLogic>& getTeamLogics();
 	/// <summary>
 	/// jsonからゲームを初期化する
 	/// </summary>
 	/// <param name="path">jsonファイルへのパス</param>
-	void InitalizeFromJson(const String path);
+	void InitalizeFromJson(const std::u32string path);
 
 	int GetTurn() const;
 
@@ -39,18 +41,18 @@ public:
 	/// すべてのエージェント情報を取得する
 	/// </summary>
 	/// <returns>すべてのエージェント情報リスト</returns>
-	Array<Agent> GetAgents() const;
+	std::vector<Agent> GetAgents() const;
 
 	/// <summary>
 	/// チームごとのエージェントの情報を取得する
 	/// </summary>
 	/// <returns>チームごとのエージェント情報</returns>
-	HashTable<TeamType, Array<Agent>> GetAgentMap() const;
+	std::unordered_map<TeamType, std::vector<Agent>> GetAgentMap() const;
 
 	/// <summary>
 	/// ゲームを次のターンに進める
 	/// </summary>
-	void NextTurn(HashTable<TeamType, Think> &_thinks);
+	void NextTurn(std::unordered_map<TeamType, Think> &_thinks);
 
 
 public:

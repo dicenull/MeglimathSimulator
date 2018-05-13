@@ -30,9 +30,9 @@ public:
 	/// </summary>
 	/// <param name="pos1">エージェント1の初期座標</param>
 	/// <param name="pos2">エージェント2の初期座標</param>
-	void InitAgentsPos(Point pos1, Point pos2);
+	void InitAgentsPos(_Point<> pos1, _Point <>pos2);
 
-	Array<Agent> GetAgents() const;
+	std::vector<Agent> GetAgents() const;
 
 	/// <summary>
 	/// 指定のエージェントを動かす
@@ -46,7 +46,7 @@ public:
 	/// </summary>
 	/// <param name="pos">エージェントのいる座標</param>
 	/// <param name="dir">動かす方向</param>
-	void MoveAgent(Point pos, Direction dir);
+	void MoveAgent(_Point<> pos, Direction dir);
 
 public:
 	TeamLogic();

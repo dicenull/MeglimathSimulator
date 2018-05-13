@@ -1,6 +1,6 @@
 #pragma once
 #include <Siv3D.hpp>
-#include"GameLogic/Types.h"
+#include"GameLogic/GameLogic.h"
 namespace TeamColor
 {
 	constexpr Color A = Palette::Blue;

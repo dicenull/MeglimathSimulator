@@ -10,15 +10,15 @@ void TeamLogic::SetTotalPoint(int total_point)
 	_total_point = total_point;
 }
 
-void TeamLogic::InitAgentsPos(Point pos1, Point pos2)
+void TeamLogic::InitAgentsPos(_Point<> pos1, _Point<> pos2)
 {
 	_agents[0] = Agent(pos1);
 	_agents[1] = Agent(pos2);
 }
 
-Array<Agent> TeamLogic::GetAgents() const
+std::vector<Agent> TeamLogic::GetAgents() const
 {
-	return Array<Agent>({ _agents[0], _agents[1] });
+	return std::vector<Agent>({ _agents[0], _agents[1] });
 }
 
 void TeamLogic::MoveAgent(int idx, Direction dir)
@@ -26,7 +26,7 @@ void TeamLogic::MoveAgent(int idx, Direction dir)
 	_agents[idx].Move(dir);
 }
 
-void TeamLogic::MoveAgent(Point pos, Direction dir)
+void TeamLogic::MoveAgent(_Point<> pos, Direction dir)
 {
 	for (auto & agent : _agents)
 	{

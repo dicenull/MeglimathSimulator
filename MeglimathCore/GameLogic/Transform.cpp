@@ -1,6 +1,6 @@
 #include "Transform.h"
 
-const String Transform::ToString(Action action)
+const std::u32string Transform::ToString(Action action)
 {
 	switch (action)
 	{
@@ -15,7 +15,7 @@ const String Transform::ToString(Action action)
 	return U"";
 }
 
-const String Transform::ToString(Direction dir)
+const std::u32string Transform::ToString(Direction dir)
 {
 	switch (dir)
 	{
@@ -47,12 +47,12 @@ const String Transform::ToString(Direction dir)
 	return U"";
 }
 
-const String Transform::ToString(Step step)
+const std::u32string Transform::ToString(Step step)
 {
 	return ToString(step.action) + U" " + ToString(step.direction);
 }
 
-const String Transform::ToString(TeamType team)
+const std::u32string Transform::ToString(TeamType team)
 {
 	switch (team)
 	{

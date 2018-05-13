@@ -1,4 +1,5 @@
 #pragma once
+#include<Siv3D.hpp>
 #include "Drawer.h"
 #include "Team.h"
 #include "DrawingInfo.h"
