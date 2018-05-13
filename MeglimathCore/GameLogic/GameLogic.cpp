@@ -1,6 +1,6 @@
 #include "GameLogic.h"
 #include<random>
-#include <rapidjson/document.h>
+#include <../include/rapidjson/document.h>
 std::unordered_map<TeamType, std::vector<Agent>> GameLogic::GetAgentMap() const
 {
 	std::unordered_map<TeamType, std::vector<Agent>> agents;
@@ -30,7 +30,7 @@ void GameLogic::initAgentsPos(_Point<> init_pos)
 {
 	_Size size = _field.GetCells().size();
 
-	size -= _Point(1, 1);
+	size -= _Point<int>(1, 1);
 	_Point<> agent_pos[] =
 	{
 		init_pos,
@@ -60,7 +60,7 @@ void GameLogic::InitalizeFromJson(const std::string json)
 
 	_field = Field(json);
 	if (document.HasMember("InitPos")) {
-		initAgentsPos(_Point{ document["InitPos"].GetString() });
+		initAgentsPos(_Point<int>{ document["InitPos"].GetString() });
 	}
 	else {
 		initAgentsPos();
@@ -101,7 +101,7 @@ void GameLogic::NextTurn(std::unordered_map<TeamType, Think> &_thinks)
 		{
 			Direction dir = _thinks[team].steps[i].direction;
 			// エージェントを動かしたい方向に動かした場合の座標
-			_Point pos = agents_map[team][i].GetPosition()+Transform::DirToDelta(dir);
+			_Point<int> pos = agents_map[team][i].GetPosition()+Transform::DirToDelta(dir);
 
 			// エージェントが動作する座標を追加
 			switch (_thinks[team].steps[i].action)
