@@ -108,7 +108,7 @@ public:
 	/// フィールドを生成します
 	/// </summary>
 	/// <param name="file">フィールド情報のあるjsonファイル</param>
-	Field(std::u32string file);
+	Field(std::string json);
 
 	virtual ~Field();
 };

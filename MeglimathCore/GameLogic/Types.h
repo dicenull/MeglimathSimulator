@@ -1,7 +1,7 @@
 #pragma once
-#include<string>
 #include<assert.h>
 #include<vector>
+#include<string.h>
 enum class TileType
 {
 	A, B, None
@@ -17,15 +17,16 @@ class _Point {
 public:
 	Component x;
 	Component y;
-	constexpr _Point(Component x=0, Component y=0):x(x),y(y){}
+	constexpr _Point(Component x = 0, Component y = 0) :x(x), y(y) {}
 
-	_Point(std::string str) {
+	_Point(const char * str) {
 		assert(str[0] == '(');
-		assert(str[str.length()] == ')');
-		auto comma = str.find(',');
-		assert(comma < str.length() - 2);
-		sscanf_s(&str[1], "%d", &x);
-		sscanf_s(&str[comma + 1], "%d", &y);
+		assert(str[std::strlen(str)-1] == ')');
+		auto comma = std::strchr(str, ',');
+		int _x, _y;
+		sscanf_s(str + 1, "%d", &_x);
+		sscanf_s(comma + 1, "%d", &_y);
+		x = _x; y = _y;
 	}
 	template <class Comp = int>
 	_Point operator+(const _Point<Comp>& r)const {
@@ -36,7 +37,7 @@ public:
 		return _Point(x - r.x, y - r.y);
 	}
 	template <class Comp = int>
-	_Point& operator+=(const _Point<Comp>& r){
+	_Point& operator+=(const _Point<Comp>& r) {
 		*this = *this + r;
 		return *this;
 	}
@@ -62,7 +63,7 @@ public:
 typedef _Point<size_t> _Size;
 
 template <class Component>
-class _Grid{
+class _Grid {
 	std::vector<std::vector<Component>> component;
 	_Size _size;
 public:
@@ -85,14 +86,21 @@ public:
 		return _size;
 	}
 
-	_Grid():_Grid(_Size(0,0)){}
-	_Grid(_Size size):_size(size){}
+	_Grid() :_Grid(_Size(0, 0)) {}
+	_Grid(_Size size) :_size(size) { 
+		for (int i=0; i < size.x; i++) {
+			std::vector<Component> v;
+			for (int j=0; j < size.y; j++) {
+				v.emplace_back();
+			}
+			component.emplace_back(v);
+		}
+	}
 	_Grid(const _Grid& g) :component(g.component), _size(g._size) {};
 };
 
 static std::vector<int> step(size_t n) {
 	std::vector<int> ret;
-	ret.reserve(n);
-	for (int i = 0; i < n; i++)ret[n] = i;
+	for (int i = 0; i < n; i++)ret.push_back(i);
 	return ret;
 }

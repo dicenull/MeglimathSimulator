@@ -1,5 +1,5 @@
 #include "Field.h"
-
+#include<rapidjson/document.h>
 int Field::aggregateAreaPoint(TileType tile)
 {
 	_status = _Grid<bool>(_cells.size() + _Point(2, 2));
@@ -171,59 +171,64 @@ Field::Field(_Grid<Cell> cells):_cells(cells)
 	//_cells = cells;
 }
 
-Field::Field(std::u32string file)
+Field::Field(std::string json)
 {
+	rapidjson::Document document;
+	document.Parse(json.data());
+	_Size size = _Size{ document["Size"].GetString() };
+	auto points = document["Points"].GetArray();
 	//JSONReader json(file);
 
 	//Size size = json[U"Size"].get<Size>();
 	//auto points = json[U"Points"].arrayView();
 
-	//// 入力されるタイルポイントの数
-	//Size data_size = Size((size.x + 1) / 2, (size.y + 1) / 2);
+	// 入力されるタイルポイントの数
+	_Size data_size = _Size((size.x + 1) / 2, (size.y + 1) / 2);
 
-	//_cells = Grid<Cell>(size);
+	_cells = _Grid<Cell>(size);
 
-	//// タイルポイントをグリッド状に成型して入力
-	//int idx = 0;
-	//for (int i : step(data_size.y))
-	//{
-	//	for (int k : step(data_size.x))
-	//	{
-	//		_cells[i][k] = points[idx].get<int>();
-	//		// データをコピー
-	//		_cells[size.y - 1 - i][size.x - 1 - k] = _cells[i][k];
-	//		_cells[size.y - 1 - i][k] = _cells[i][k];
-	//		_cells[i][size.x - 1 - k] = _cells[i][k];
+	// タイルポイントをグリッド状に成型して入力
+	int idx = 0;
+	for (int i : step(data_size.y))
+	{
+		for (int k : step(data_size.x))
+		{
+			_cells[i][k] = points[idx].GetInt();
+			// データをコピー
+			_cells[size.y - 1 - i][size.x - 1 - k] = _cells[i][k];
+			_cells[size.y - 1 - i][k] = _cells[i][k];
+			_cells[i][size.x - 1 - k] = _cells[i][k];
 
-	//		idx++;
-	//	}
-	//}
+			idx++;
+		}
+	}
+	if (!document.HasMember("Tiles"))return;
 
 	//if (json[U"Tiles"].isEmpty())
 	//{
 	//	return;
 	//}
 
-	//// テスト用にタイル情報がある場合読み込んで入力する
+	// テスト用にタイル情報がある場合読み込んで入力する
 	//auto tiles = json[U"Tiles"].arrayView();
-
-	//for (int i : step(size.y))
-	//{
-	//	for (int k : step(size.x))
-	//	{
-	//		switch (tiles[i].getString()[k])
-	//		{
-	//		case 'a':
-	//			_cells[i][k].PaintedBy(TeamType::A);
-	//			break;
-	//		case 'b':
-	//			_cells[i][k].PaintedBy(TeamType::B);
-	//			break;
-	//		default:
-	//			break;
-	//		}
-	//	}
-	//}
+	auto tiles = document["Tiles"].GetArray();
+	for (int i : step(size.y))
+	{
+		for (int k : step(size.x))
+		{
+			switch (tiles[i].GetString()[k])
+			{
+			case 'a':
+				_cells[i][k].PaintedBy(TeamType::A);
+				break;
+			case 'b':
+				_cells[i][k].PaintedBy(TeamType::B);
+				break;
+			default:
+				break;
+			}
+		}
+	}
 
 }
 

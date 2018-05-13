@@ -1,5 +1,6 @@
 #include "GameLogic.h"
 #include<random>
+#include <rapidjson/document.h>
 std::unordered_map<TeamType, std::vector<Agent>> GameLogic::GetAgentMap() const
 {
 	std::unordered_map<TeamType, std::vector<Agent>> agents;
@@ -50,12 +51,20 @@ void GameLogic::initAgentsPos(_Point<> init_pos)
 }
 
 
-void GameLogic::InitalizeFromJson(const std::u32string path)
+void GameLogic::InitalizeFromJson(const std::string json)
 {
+	rapidjson::Document document;
+	document.Parse(json.data());
+
 	//JSONReader json(path);
 
-	//_field = Field(path);
-
+	_field = Field(json);
+	if (document.HasMember("InitPos")) {
+		initAgentsPos(_Point{ document["InitPos"].GetString() });
+	}
+	else {
+		initAgentsPos();
+	}
 	//if (json[U"InitPos"].isNull())
 	//{
 	//	initAgentsPos();
@@ -64,7 +73,7 @@ void GameLogic::InitalizeFromJson(const std::u32string path)
 	//{
 	//	initAgentsPos(json[U"InitPos"].get<Point>());
 	//}
-
+	_turn = document["Turn"].GetInt();
 	//_turn = json[U"Turn"].get<int>();
 }
 

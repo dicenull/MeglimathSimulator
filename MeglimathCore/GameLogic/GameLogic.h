@@ -29,8 +29,8 @@ public:
 	/// <summary>
 	/// jsonからゲームを初期化する
 	/// </summary>
-	/// <param name="path">jsonファイルへのパス</param>
-	void InitalizeFromJson(const std::u32string path);
+	/// <param name="path">json</param>
+	void InitalizeFromJson(const std::string json);
 
 	int GetTurn() const;
 

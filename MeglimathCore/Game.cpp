@@ -34,7 +34,8 @@ void Game::setTeam(std::shared_ptr<Team> team_a, std::shared_ptr<Team> team_b)
 
 Game::Game(const String path)
 {
-	_gamelogic.InitalizeFromJson(path.toUTF32());
+	TextReader reader{ path };
+	_gamelogic.InitalizeFromJson(reader.readAll().narrow());
 }
 
 bool Game::IsReady()
