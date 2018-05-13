@@ -2,7 +2,6 @@
 #include <Siv3D.hpp>
 #include "Types.h"
 #include "Action.h"
-#include "../TeamColor.h"
 
 namespace Transform
 {
@@ -41,38 +40,6 @@ namespace Transform
 			
 		}
 		return Point(0, 0);
-	}
-
-	/// <summary>
-	/// タイルの種類から色を取得する
-	/// </summary>
-	/// <param name="t_type">タイルの種類</param>
-	/// <returns>タイルの色</returns>
-	constexpr Color ColorOf(TileType t_type)
-	{
-		switch (t_type)
-		{
-		case TileType::A:
-			return TeamColor::A;
-		case TileType::B:
-			return TeamColor::B;
-		case TileType::None:
-		default:
-			return Palette::White;
-		}
-	}
-
-	constexpr Color ColorOf(TeamType t_type)
-	{
-		switch (t_type)
-		{
-		case TeamType::A:
-			return TeamColor::A;
-		case TeamType::B:
-			return TeamColor::B;
-		default:
-			return Palette::Darkgray;
-		}
 	}
 
 	const String ToString(Action action);

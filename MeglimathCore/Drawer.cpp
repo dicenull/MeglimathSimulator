@@ -20,7 +20,7 @@ void Drawer::DrawField(const Field & field) const
 
 			if (cells[k][i].GetTile() != TileType::None)
 			{
-				r.draw(Color(Transform::ColorOf(cells[k][i].GetTile()), 50U));
+				r.draw(Color(TeamColor::ColorOf(cells[k][i].GetTile()), 50U));
 			}
 			
 			r.drawFrame(1.0, Palette::Gray);
@@ -40,11 +40,11 @@ void Drawer::DrawAgents(HashTable<TeamType, Array<Agent>> agents) const
 	{
 		// 一人目のエージェントを描画
 		Circle(center(agents[team][0].GetPosition()), cellSize.x / 2)
-			.drawFrame(2.0, Transform::ColorOf(team));
+			.drawFrame(2.0, TeamColor::ColorOf(team));
 
 		// 二人目のエージェントを描画
 		Rect(Arg::center = center(agents[team][1].GetPosition()), edge_width).rotated(45_deg)
-			.drawFrame(2.0, Transform::ColorOf(team));
+			.drawFrame(2.0, TeamColor::ColorOf(team));
 	}
 }
 
@@ -75,7 +75,7 @@ void Drawer::DrawStatus(const HashTable<TeamType, Think> & thinks, const Field &
 
 	// ステータスを描画
 	int index = 0;
-	Color team_colors[] = { Transform::ColorOf(TeamType::A), Transform::ColorOf(TeamType::B) };
+	Color team_colors[] = { TeamColor::ColorOf(TeamType::A), TeamColor::ColorOf(TeamType::B) };
 
 	auto draw_pos = [&](Point origin) {return origin + Point(0, index * 24); };
 	for (int i : step(2))
@@ -90,7 +90,7 @@ void Drawer::DrawStatus(const HashTable<TeamType, Think> & thinks, const Field &
 		{
 			text = FontAsset(U"Stat")(messages[i][k]);
 			text.region(draw_pos(statOrigin)).draw(Palette::Gray);
-			text.draw(draw_pos(statOrigin), Transform::ColorOf((TeamType)i));
+			text.draw(draw_pos(statOrigin), TeamColor::ColorOf((TeamType)i));
 			index++;
 		}
 	}

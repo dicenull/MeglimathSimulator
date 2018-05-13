@@ -3,7 +3,7 @@
 #include "DrawingInfo.h"
 #include "GameLogic/Think.h"
 #include <Siv3D.hpp>
-
+#include"TeamColor.h"
 class Drawer : public DrawingInfo
 {
 public:
