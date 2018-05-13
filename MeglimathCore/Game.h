@@ -1,14 +1,19 @@
 #pragma once
 #include "Drawer.h"
-#include "Field.h"
+#include "GameLogic/Field.h"
 #include "Team.h"
 #include "DrawingInfo.h"
-
+#include"GameLogic/TeamLogic.h"
+#include"GameLogic/GameLogic.h"
 class Game
 {
 private:
-	Field _field;
-	Team _teams[2];
+	GameLogic _gamelogic;
+
+	/// <summary>
+	/// 2チームの情報
+	/// </summary>
+	Array<std::shared_ptr<Team>> _teams;
 
 	/// <summary>
 	/// チームごとのすべてのエージェントの行動リスト
@@ -28,11 +33,21 @@ private:
 	void initAgentsPos(Point init_pos);
 
 public:
+	void setTeam(std::shared_ptr<Team> team_a, std::shared_ptr<Team> team_b);
+	Array<TeamLogic>& getTeamLogics();
 	/// <summary>
 	/// ゲーム情報を取得する
 	/// </summary>
 	/// <returns>フィールドとエージェントの情報</returns>
 	GameInfo GetGameInfo() const;
+
+	bool IsReady();
+
+	/// <summary>
+	/// ターン数を取得する
+	/// </summary>
+	/// <returns>現在のターン</returns>
+	int GetTurn() const;
 
 	Field GetField() const;
 
@@ -62,6 +77,18 @@ public:
 	void Update();
 
 public:
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
+	/// <param name="team_a">チームAの情報</param>
+	/// <param name="team_b">チームBの情報</param>
+	Game();
+
+
+	/// <summary>
+	/// jsonからゲームを初期化する
+	/// </summary>
+	/// <param name="path">jsonファイルへのパス</param>
 	Game(const String path);
 
 	virtual ~Game();

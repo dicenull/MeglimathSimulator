@@ -65,7 +65,7 @@ const String Transform::ToString(TeamType team)
 	return U"";
 }
 
-const char Transform::ToString(TileType tile)
+const char Transform::ToChar(TileType tile)
 {
 	switch (tile)
 	{

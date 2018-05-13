@@ -1,6 +1,6 @@
 #pragma once
 #include <Siv3D.hpp>
-#include "Team.h"
+#include "../MeglimathCore/Team.h"
 
 class WaitingForInputTeam : public Team
 {
@@ -41,10 +41,7 @@ protected:
 	bool _is_ready = false;
 
 public:
-	WaitingForInputTeam(TeamType type);
-	WaitingForInputTeam(TeamType type, Agent agent1, Agent agent2);
-
-	WaitingForInputTeam();
+	WaitingForInputTeam(TeamLogic &team );
 	virtual ~WaitingForInputTeam();
 };
 

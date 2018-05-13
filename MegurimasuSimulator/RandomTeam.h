@@ -1,6 +1,6 @@
 #pragma once
 #include <Siv3D.hpp>
-#include "Team.h"
+#include "../MeglimathCore/Team.h"
 
 class  RandomTeam : public Team
 {
@@ -25,6 +25,5 @@ public:
 	}
 
 public:
-	RandomTeam(TeamType type);
-	RandomTeam(TeamType type, Agent agent1, Agent agent2);
+	RandomTeam(TeamLogic & team);
 };

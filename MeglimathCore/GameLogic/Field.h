@@ -18,8 +18,6 @@ private:
 
 	GamePoints _points[2];
 
-	int _turn;
-	
 private:
 	/// <summary>
 	/// ˆÍ‚Ü‚ê‚Ä‚¢‚é—Ìˆæ‚ğ’Tõ‚·‚é
@@ -60,8 +58,6 @@ public:
 	Array<int> GetAreaPoints() const;
 	Array<int> GetTilePoints() const;
 	Array<int> GetTotalPoints() const;
-
-	int GetTurn() const;
 
 	/// <summary>
 	/// ƒZƒ‹‚ğ“h‚é

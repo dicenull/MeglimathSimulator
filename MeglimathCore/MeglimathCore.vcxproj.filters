@@ -49,6 +49,12 @@
     <Filter Include="Resource Files\engine\objdetect\haarcascade">
       <UniqueIdentifier>{e3d7a277-272a-4561-b375-8f74e98bcfeb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\GameLogic">
+      <UniqueIdentifier>{407d6830-a994-410a-845b-206a767a223f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameLogic">
+      <UniqueIdentifier>{d5c4c633-70ad-4009-b42c-5f56e013d60f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\icon.ico">
@@ -164,22 +170,10 @@
     </Text>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Action.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Agent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Cell.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Drawer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DrawingInfo.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Field.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Game.h">
@@ -188,58 +182,76 @@
     <ClInclude Include="GameInfo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GamePoints.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="TeamColor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Think.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Transform.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Types.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Team.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TCPString.hpp">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="GameLogic\Action.h">
+      <Filter>Header Files\GameLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="GameLogic\Agent.h">
+      <Filter>Header Files\GameLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="GameLogic\Cell.h">
+      <Filter>Header Files\GameLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="GameLogic\Field.h">
+      <Filter>Header Files\GameLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="GameLogic\GameLogic.h">
+      <Filter>Header Files\GameLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="GameLogic\GamePoints.h">
+      <Filter>Header Files\GameLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="GameLogic\TeamLogic.h">
+      <Filter>Header Files\GameLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="GameLogic\Think.h">
+      <Filter>Header Files\GameLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="GameLogic\Transform.h">
+      <Filter>Header Files\GameLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="GameLogic\Types.h">
+      <Filter>Header Files\GameLogic</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Agent.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Cell.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Drawer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Field.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GameInfo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GamePoints.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="GameLogic\Agent.cpp">
+      <Filter>Source Files\GameLogic</Filter>
     </ClCompile>
-    <ClCompile Include="Transform.cpp">
+    <ClCompile Include="GameLogic\Cell.cpp">
+      <Filter>Source Files\GameLogic</Filter>
+    </ClCompile>
+    <ClCompile Include="GameLogic\Field.cpp">
+      <Filter>Source Files\GameLogic</Filter>
+    </ClCompile>
+    <ClCompile Include="GameLogic\GameLogic.cpp">
+      <Filter>Source Files\GameLogic</Filter>
+    </ClCompile>
+    <ClCompile Include="GameLogic\GamePoints.cpp">
+      <Filter>Source Files\GameLogic</Filter>
+    </ClCompile>
+    <ClCompile Include="GameLogic\TeamLogic.cpp">
+      <Filter>Source Files\GameLogic</Filter>
+    </ClCompile>
+    <ClCompile Include="GameLogic\Transform.cpp">
+      <Filter>Source Files\GameLogic</Filter>
+    </ClCompile>
+    <ClCompile Include="Drawer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Team.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SerializeModel.cpp">
-      <Filter>Header Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

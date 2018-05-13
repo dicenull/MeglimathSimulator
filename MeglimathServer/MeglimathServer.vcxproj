@@ -137,7 +137,7 @@
       <SDLCheck>true</SDLCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <LanguageStandard>stdcpp17</LanguageStandard>
       <MinimalRebuild>false</MinimalRebuild>
     </ClCompile>
     <Link>
@@ -197,6 +197,16 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\MeglimathCore\Game.cpp" />
+    <ClCompile Include="..\MeglimathCore\GameInfo.cpp" />
+    <ClCompile Include="..\MeglimathCore\GameLogic\Agent.cpp" />
+    <ClCompile Include="..\MeglimathCore\GameLogic\Cell.cpp" />
+    <ClCompile Include="..\MeglimathCore\GameLogic\Field.cpp" />
+    <ClCompile Include="..\MeglimathCore\GameLogic\GameLogic.cpp" />
+    <ClCompile Include="..\MeglimathCore\GameLogic\GamePoints.cpp" />
+    <ClCompile Include="..\MeglimathCore\GameLogic\TeamLogic.cpp" />
+    <ClCompile Include="..\MeglimathCore\GameLogic\Transform.cpp" />
+    <ClCompile Include="..\MeglimathCore\Team.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -243,6 +253,28 @@
   <ItemGroup>
     <Text Include="App\engine\font\fontawesome\LICENSE.txt" />
     <Text Include="App\engine\font\noto\LICENSE_OFL.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MeglimathCore\MeglimathCore.vcxproj">
+      <Project>{d7f2c72d-cdc8-43af-bdc8-2b12a04c9c3e}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\MeglimathCore\Game.h" />
+    <ClInclude Include="..\MeglimathCore\GameInfo.h" />
+    <ClInclude Include="..\MeglimathCore\GameLogic\Action.h" />
+    <ClInclude Include="..\MeglimathCore\GameLogic\Agent.h" />
+    <ClInclude Include="..\MeglimathCore\GameLogic\Cell.h" />
+    <ClInclude Include="..\MeglimathCore\GameLogic\Field.h" />
+    <ClInclude Include="..\MeglimathCore\GameLogic\GameLogic.h" />
+    <ClInclude Include="..\MeglimathCore\GameLogic\GamePoints.h" />
+    <ClInclude Include="..\MeglimathCore\GameLogic\TeamLogic.h" />
+    <ClInclude Include="..\MeglimathCore\GameLogic\Think.h" />
+    <ClInclude Include="..\MeglimathCore\GameLogic\Transform.h" />
+    <ClInclude Include="..\MeglimathCore\GameLogic\Types.h" />
+    <ClInclude Include="..\MeglimathCore\TCPString.hpp" />
+    <ClInclude Include="..\MeglimathCore\Team.h" />
+    <ClInclude Include="..\MeglimathCore\TeamColor.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -69,15 +69,11 @@ void GamePadTeam::Update(const Field & field)
 	}
 
 	_next_steps[index] =
-		field.DecideStepByDirection(_agents[index].GetPosition(), next_dir.value());
+		field.DecideStepByDirection(_team.GetAgents()[index].GetPosition(), next_dir.value());
 }
 
-GamePadTeam::GamePadTeam(TeamType type)
-	:WaitingForInputTeam(type) {}
-
-GamePadTeam::GamePadTeam()
-{
-}
+GamePadTeam::GamePadTeam(TeamLogic &team)
+	:WaitingForInputTeam(team) {}
 
 
 GamePadTeam::~GamePadTeam()

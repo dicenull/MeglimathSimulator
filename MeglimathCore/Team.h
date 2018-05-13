@@ -1,52 +1,33 @@
 #pragma once
 #include "GameInfo.h"
-#include "Think.h"
-#include "Types.h"
-#include "Agent.h"
-
+#include "GameLogic/Think.h"
+#include "GameLogic/Types.h"
+#include "GameLogic/Agent.h"
+#include "GameLogic/TeamLogic.h"
 class Team
 {
 protected:
-	/// <summary>
-	/// チームの合計ポイント
-	/// </summary>
-	int _total_point;
-
-	/// <summary>
-	/// チームに所属するエージェント
-	/// </summary>
-	Agent _agents[2];
-
+	TeamLogic & _team;
 public:
-	int GetTotalPoint() const;
-	void SetTotalPoint(int total_point);
+	/// <summary>
+	/// エージェントの次の行動をゲーム情報を元に実装する
+	/// </summary>
+	/// <param name="info">公開されるゲーム情報</param>
+	/// <returns>エージェントの次の行動</returns>
+	virtual Think NextThink(GameInfo info) = 0;
 
-	Array<Agent> GetAgents() const;
+	/// <summary>
+	/// チームのThinkデータの格納が完了しているか
+	/// </summary>
+	virtual bool IsReady() = 0;
+
+	virtual void Update(const Field & field) = 0;
 	
-	/// <summary>
-	/// 指定のエージェントを動かす
-	/// </summary>
-	/// <param name="idx">エージェントの番号</param>
-	/// <param name="dir">動かす方向</param>
-	void MoveAgent(int idx, Direction dir);
-
-	/// <summary>
-	/// 指定座標にいるエージェントを動かす
-	/// </summary>
-	/// <param name="pos">エージェントのいる座標</param>
-	/// <param name="dir">動かす方向</param>
-	void MoveAgent(Point pos, Direction dir);
-
 public:
-	Team();
-
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	/// <param name="agent1">一人目のエージェントの初期座標</param>
-	/// <param name="agent2">二人目のエージェントの初期座標</param>
-	Team(Point pos1, Point pos2);
-
+	Team(TeamLogic & team);
 	virtual ~Team();
 };
 

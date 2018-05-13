@@ -111,11 +111,6 @@ Array<int> Field::GetTotalPoints() const
 	return Array<int>().append({ _points[0].GetTotal(), _points[1].GetTotal() });
 }
 
-int Field::GetTurn() const
-{
-	return _turn;
-}
-
 void Field::PaintCell(Point pos, TeamType team)
 {
 	_cells[pos.y][pos.x].PaintedBy(team);
@@ -203,8 +198,6 @@ Field::Field(FilePath file)
 			idx++;
 		}
 	}
-
-	_turn = json[U"Turn"].get<int>();
 
 	if (json[U"Tiles"].isEmpty())
 	{
