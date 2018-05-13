@@ -39,11 +39,11 @@ void Drawer::DrawAgents(HashTable<TeamType, Array<Agent>> agents) const
 	for(TeamType team : {TeamType::A, TeamType::B})
 	{
 		// 一人目のエージェントを描画
-		Circle(center(Point{ agents[team][0].GetPosition().x, agents[team][0].GetPosition().y }), cellSize.x / 2)
+		Circle(center(LogicUtil::toS3dPoint(agents[team][0].GetPosition())), cellSize.x / 2)
 			.drawFrame(2.0, TeamColor::ColorOf(team));
 
 		// 二人目のエージェントを描画
-		Rect(Arg::center = center(Point{ agents[team][1].GetPosition().x, agents[team][1].GetPosition().y }), edge_width).rotated(45_deg)
+		Rect(Arg::center = center(LogicUtil::toS3dPoint(agents[team][0].GetPosition())), edge_width).rotated(45_deg)
 			.drawFrame(2.0, TeamColor::ColorOf(team));
 	}
 }

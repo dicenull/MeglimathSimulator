@@ -171,7 +171,7 @@ Field::Field(_Grid<Cell> cells):_cells(cells)
 	//_cells = cells;
 }
 
-Field::Field(std::string file)
+Field::Field(std::u32string file)
 {
 	//JSONReader json(file);
 

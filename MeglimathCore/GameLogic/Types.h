@@ -53,6 +53,10 @@ public:
 	operator _Point<Comp>() {
 		return _Point<Comp>{(Comp)this->x, (Comp)this->y};
 	}
+	template <class Comp = int>
+	operator const _Point<Comp>()const {
+		return _Point<Comp>{(Comp)this->x, (Comp)this->y};
+	}
 };
 
 typedef _Point<size_t> _Size;

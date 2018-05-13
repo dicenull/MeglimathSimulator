@@ -256,6 +256,7 @@
     <ClInclude Include="GameLogic\Think.h" />
     <ClInclude Include="GameLogic\Transform.h" />
     <ClInclude Include="GameLogic\Types.h" />
+    <ClInclude Include="LogicUtil.h" />
     <ClInclude Include="Team.h" />
     <ClInclude Include="TeamColor.h" />
   </ItemGroup>

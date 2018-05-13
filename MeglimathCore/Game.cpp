@@ -2,28 +2,22 @@
 
 GameInfo Game::GetGameInfo() const
 {
-	HashTable<TeamType, Array<Agent>> agentmap;
-	for (auto k : _gamelogic.GetAgentMap())agentmap[k.first] = k.second;
-	return GameInfo(_gamelogic.GetField(), _gamelogic.GetTurn(), agentmap);
+	return GameInfo(_gamelogic.GetField(), _gamelogic.GetTurn(), LogicUtil::toS3dHashTable(_gamelogic.GetAgentMap()));
 }
 
 HashTable<TeamType, Array<Agent>> Game::GetAgentMap() const
 {
-	HashTable<TeamType, Array<Agent>> agentmap;
-	for (auto k : _gamelogic.GetAgentMap())agentmap[k.first] = k.second;
-	return agentmap;
+	return LogicUtil::toS3dHashTable(_gamelogic.GetAgentMap());
 }
 
 Array<Agent> Game::GetAgents() const
 {
-	Array<Agent> agents;
-	for (auto a : _gamelogic.GetAgents())agents.push_back(a);
-	return agents;
+	return LogicUtil::toS3dArray(_gamelogic.GetAgents());
 }
 
 void Game::initAgentsPos()
 {
-	Size size = Point(_gamelogic.GetField().GetCells().size().x, _gamelogic.GetField().GetCells().size().y);
+	Size size = LogicUtil::toS3dPoint(_gamelogic.GetField().GetCells().size());
 
 	initAgentsPos(Point(Random((size.x - 2) / 2), Random((size.y - 2) / 2)));
 }
@@ -40,7 +34,7 @@ void Game::setTeam(std::shared_ptr<Team> team_a, std::shared_ptr<Team> team_b)
 
 Game::Game(const String path)
 {
-	_gamelogic.InitalizeFromJson(path.toUTF32);
+	_gamelogic.InitalizeFromJson(path.toUTF32());
 }
 
 bool Game::IsReady()
@@ -65,10 +59,8 @@ void Game::NextTurn()
 
 	_thinks[TeamType::A] = Think(_teams[0]->NextThink(info));
 	_thinks[TeamType::B] = Think(_teams[1]->NextThink(info));
-	
-	std::unordered_map<TeamType,Think> th{};
-	for (auto t = _thinks.cbegin(); t != _thinks.cend(); t++)th[t.key()] = t.value();
-	_gamelogic.NextTurn(th);
+
+	_gamelogic.NextTurn(LogicUtil::fromS3dHashTable(_thinks));
 
 }
 
