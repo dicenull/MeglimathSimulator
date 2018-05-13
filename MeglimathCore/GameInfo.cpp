@@ -39,7 +39,8 @@ std::string GameInfo::CreateJson()
 	writer.StartObject();
 
 	writer.Key("Size");
-	writer.String(Format(cells.size()).narrow().data());
+	Point s(cells.size().x,cells.size().y);
+	writer.String(Format(s).narrow().data());
 
 	writer.Key("Cells");
 	writer.StartArray();
@@ -70,7 +71,8 @@ std::string GameInfo::CreateJson()
 	writer.StartArray();
 	for (int i : step(2))
 	{
-		writer.String(Format(_agents[TeamType::A][i].GetPosition()).narrow().data());
+		Point pos{ _agents[TeamType::A][i].GetPosition().x,_agents[TeamType::A][i].GetPosition().y };
+		writer.String(Format(pos).narrow().data());
 	}
 	writer.EndArray();
 
@@ -78,7 +80,8 @@ std::string GameInfo::CreateJson()
 	writer.StartArray();
 	for (int i : step(2))
 	{
-		writer.String(Format(_agents[TeamType::B][i].GetPosition()).narrow().data());
+		Point pos{ _agents[TeamType::B][i].GetPosition().x,_agents[TeamType::A][i].GetPosition().y };
+		writer.String(Format(pos).narrow().data());
 	}
 	writer.EndArray();
 

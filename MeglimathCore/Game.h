@@ -1,9 +1,8 @@
 #pragma once
+#include<Siv3D.hpp>
 #include "Drawer.h"
-#include "GameLogic/Field.h"
 #include "Team.h"
 #include "DrawingInfo.h"
-#include"GameLogic/TeamLogic.h"
 #include"GameLogic/GameLogic.h"
 class Game
 {

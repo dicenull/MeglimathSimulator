@@ -1,8 +1,8 @@
 #pragma once
-#include "GameLogic/Field.h"
 #include "DrawingInfo.h"
-#include "GameLogic/Think.h"
+#include "GameLogic/GameLogic.h"
 #include <Siv3D.hpp>
+#include"TeamColor.h"
 
 class Drawer : public DrawingInfo
 {

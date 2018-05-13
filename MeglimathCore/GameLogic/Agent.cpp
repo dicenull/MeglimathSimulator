@@ -2,21 +2,21 @@
 #include "Transform.h"
 
 
-Point Agent::GetPosition() const
+_Point<> Agent::GetPosition() const
 {
 	return _position;
 }
 
 void Agent::Move(Direction dir)
 {
-	_position.moveBy(Transform::DirToDelta(dir));
+	_position+=Transform::DirToDelta(dir);
 }
 
 Agent::Agent()
-	: Agent(Point(0,0))
+	: Agent(_Point<>(0,0))
 {}
 
-Agent::Agent(Point position)
+Agent::Agent(_Point<> position)
 {
 	_position = position;
 }

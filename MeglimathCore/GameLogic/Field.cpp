@@ -1,10 +1,11 @@
 #include "Field.h"
-
+#include<rapidjson/document.h>
+#include"util.h"
 int Field::aggregateAreaPoint(TileType tile)
 {
-	_status = Grid<bool>(_cells.size() + Point(2, 2), true);
+	_status = _Grid<bool>(_cells.size() + _Point(2, 2));
 
-	dfsAreaPoint(Point(0, 0), tile);
+	dfsAreaPoint(_Point(0, 0), tile);
 
 	int area_point = 0;
 	for (size_t i : step(_status.width()))
@@ -13,7 +14,7 @@ int Field::aggregateAreaPoint(TileType tile)
 		{
 			if (_status[k][i])
 			{
-				area_point += Abs(_cells[k - 1][i - 1].GetPoint());
+				area_point += std::abs(_cells[k - 1][i - 1].GetPoint());
 			}
 		}
 	}
@@ -22,7 +23,7 @@ int Field::aggregateAreaPoint(TileType tile)
 }
 
 
-void Field::dfsAreaPoint(Point pos, TileType tile)
+void Field::dfsAreaPoint(_Point<> pos, TileType tile)
 {
 	// 範囲外なら終了
 	if (pos.x < 0 || pos.x > _cells.width() + 1
@@ -49,7 +50,7 @@ void Field::dfsAreaPoint(Point pos, TileType tile)
 		return;
 	}
 
-	Point delta[] = { Point(0, 1), Point(1, 0), Point(0, -1), Point(-1, 0) };
+	_Point<> delta[] = { _Point(0, 1), _Point(1, 0), _Point(0, -1), _Point(-1, 0) };
 
 	// 四方へ探索する
 	for (int i : step(4))
@@ -91,42 +92,42 @@ void Field::UpdatePoint()
 	}
 }
 
-Grid<Cell> Field::GetCells() const
+_Grid<Cell> Field::GetCells() const
 {
 	return _cells;
 }
 
-Array<int> Field::GetAreaPoints() const
+std::vector<int> Field::GetAreaPoints() const
 {
-	return Array<int>().append({ _points[0].GetArea(), _points[1].GetArea() });
+	return std::vector<int>{_points[0].GetArea(), _points[1].GetArea() };
 }
 
-Array<int> Field::GetTilePoints() const
+std::vector<int> Field::GetTilePoints() const
 {
-	return Array<int>().append({ _points[0].GetTile(), _points[1].GetTile() });
+	return std::vector<int>{ _points[0].GetTile(), _points[1].GetTile() };
 }
 
-Array<int> Field::GetTotalPoints() const
+std::vector<int> Field::GetTotalPoints() const
 {
-	return Array<int>().append({ _points[0].GetTotal(), _points[1].GetTotal() });
+	return std::vector<int>{ _points[0].GetTotal(), _points[1].GetTotal() };
 }
 
-void Field::PaintCell(Point pos, TeamType team)
+void Field::PaintCell(_Point<> pos, TeamType team)
 {
 	_cells[pos.y][pos.x].PaintedBy(team);
 }
 
-void Field::RemoveTile(Point pos)
+void Field::RemoveTile(_Point<> pos)
 {
 	_cells[pos.y][pos.x].RemoveTile();
 }
 
-bool Field::IsInField(Point pos) const
+bool Field::IsInField(_Point<> pos) const
 {
 	return (0 <= pos.x && pos.x < _cells.width()) && (0 <= pos.y && pos.y < _cells.height());
 }
 
-Step Field::DecideStepByDirection(Point pos, Direction dir) const
+Step Field::DecideStepByDirection(_Point<> pos, Direction dir) const
 {
 	if (dir == Direction::Stop)
 	{
@@ -134,7 +135,7 @@ Step Field::DecideStepByDirection(Point pos, Direction dir) const
 	}
 
 	// 座標から指定の方向に進んだ後の座標
-	Point next_pos = pos.moveBy(Transform::DirToDelta(dir));
+	_Point next_pos = pos+Transform::DirToDelta(dir);
 
 	if (!IsInField(next_pos))
 	{
@@ -162,26 +163,30 @@ void Field::operator=(const Field & other)
 }
 
 
-Field::Field(Size size)
-	:Field(Grid<Cell>(size))
+Field::Field(_Size size)
+	:Field(_Grid<Cell>(size))
 {}
 
-Field::Field(Grid<Cell> cells)
+Field::Field(_Grid<Cell> cells):_cells(cells)
 {
-	_cells = cells;
+	//_cells = cells;
 }
 
-Field::Field(FilePath file)
+Field::Field(std::string json)
 {
-	JSONReader json(file);
+	rapidjson::Document document;
+	document.Parse(json.data());
+	_Size size = _Size{ document["Size"].GetString() };
+	auto points = document["Points"].GetArray();
+	//JSONReader json(file);
 
-	Size size = json[U"Size"].get<Size>();
-	auto points = json[U"Points"].arrayView();
+	//Size size = json[U"Size"].get<Size>();
+	//auto points = json[U"Points"].arrayView();
 
 	// 入力されるタイルポイントの数
-	Size data_size = Size((size.x + 1) / 2, (size.y + 1) / 2);
+	_Size data_size = _Size((size.x + 1) / 2, (size.y + 1) / 2);
 
-	_cells = Grid<Cell>(size);
+	_cells = _Grid<Cell>(size);
 
 	// タイルポイントをグリッド状に成型して入力
 	int idx = 0;
@@ -189,7 +194,7 @@ Field::Field(FilePath file)
 	{
 		for (int k : step(data_size.x))
 		{
-			_cells[i][k] = points[idx].get<int>();
+			_cells[i][k] = points[idx].GetInt();
 			// データをコピー
 			_cells[size.y - 1 - i][size.x - 1 - k] = _cells[i][k];
 			_cells[size.y - 1 - i][k] = _cells[i][k];
@@ -198,20 +203,21 @@ Field::Field(FilePath file)
 			idx++;
 		}
 	}
+	if (!document.HasMember("Tiles"))return;
 
-	if (json[U"Tiles"].isEmpty())
-	{
-		return;
-	}
+	//if (json[U"Tiles"].isEmpty())
+	//{
+	//	return;
+	//}
 
 	// テスト用にタイル情報がある場合読み込んで入力する
-	auto tiles = json[U"Tiles"].arrayView();
-
+	//auto tiles = json[U"Tiles"].arrayView();
+	auto tiles = document["Tiles"].GetArray();
 	for (int i : step(size.y))
 	{
 		for (int k : step(size.x))
 		{
-			switch (tiles[i].getString()[k])
+			switch (tiles[i].GetString()[k])
 			{
 			case 'a':
 				_cells[i][k].PaintedBy(TeamType::A);
