@@ -39,12 +39,10 @@ namespace Scenes
 
 	struct Game : MyApp::Scene
 	{
+		bool _is_init = false;
+
 		Game(const InitData& init) : IScene(init)
 		{
-			String json_dat;
-			getData().client.readLine(json_dat);
-			
-			getData().info = { json_dat.narrow() };
 		}
 
 		void update() override
@@ -56,10 +54,27 @@ namespace Scenes
 
 				changeScene(U"Connection");
 			}
+
+			String json_dat;
+			getData().client.readLine(json_dat);
+
+			if (json_dat.isEmpty())
+			{
+				return;
+			}
+			
+			getData().info = { json_dat.narrow() };
+			_is_init = true;
 		}
 
 		void draw() const override
 		{
+			if (!_is_init)
+			{
+				FontAsset(U"Msg")(U"待機中...").drawAt(Window::Center());
+				return;
+			}
+
 			getData().drawer.DrawField(getData().info.GetField());
 			getData().drawer.DrawAgents(getData().info.GetAllAgent());
 		}

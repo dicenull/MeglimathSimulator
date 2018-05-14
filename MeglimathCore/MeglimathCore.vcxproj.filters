@@ -185,9 +185,6 @@
     <ClInclude Include="TeamColor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Team.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="GameLogic\Action.h">
       <Filter>Header Files\GameLogic</Filter>
     </ClInclude>
@@ -254,9 +251,6 @@
       <Filter>Source Files\GameLogic</Filter>
     </ClCompile>
     <ClCompile Include="Drawer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Team.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

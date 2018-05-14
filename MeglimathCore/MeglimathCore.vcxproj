@@ -260,7 +260,6 @@
     <ClInclude Include="GameLogic\Types.h" />
     <ClInclude Include="GameLogic\Util.h" />
     <ClInclude Include="LogicUtil.h" />
-    <ClInclude Include="Team.h" />
     <ClInclude Include="TeamColor.h" />
   </ItemGroup>
   <ItemGroup>
@@ -274,7 +273,6 @@
     <ClCompile Include="GameLogic\GamePoints.cpp" />
     <ClCompile Include="GameLogic\TeamLogic.cpp" />
     <ClCompile Include="GameLogic\Transform.cpp" />
-    <ClCompile Include="Team.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

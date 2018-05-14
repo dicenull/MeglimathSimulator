@@ -208,14 +208,16 @@ namespace asc
 		/// 日本語などの 1 バイトではない文字も扱えます。
 		/// </remarks>
 		bool sendString(const String& data);
+
+		bool sendString(const String& data, const Optional<SessionID>& id);
 	};
 
 	template<>
-	bool TCPString<TCPServer>::sendString(const String& data)
+	bool TCPString<TCPServer>::sendString(const String& data, const Optional<SessionID>& id)
 	{
 		const auto str = data.toUTF8();
 
-		return send(str.data(), str.length(), unspecified);
+		return send(str.data(), str.length(), id);
 	}
 
 	template<>

@@ -3,12 +3,14 @@
 #include <HamFramework.hpp>
 
 #include "../MeglimathCore/Game.h"
+#include "../MeglimathCore/Drawer.h"
 #include "../MeglimathCore/TCPString.hpp"
 
 struct GameData
 {
 	const FilePath field_path = U"../Fields/LargeField.json";
 	Game game = { field_path };
+	Drawer drawer;
 	asc::TCPStringServer server;
 };
 
@@ -20,12 +22,12 @@ namespace Scenes
 	{
 		Connection(const InitData& init) : IScene(init)
 		{
-			getData().server.startAccept(31400);
+			getData().server.startAcceptMulti(31400);
 		}
 
 		void update() override
 		{
-			if (getData().server.hasSession())
+			if (getData().server.num_sessions() == 2)
 			{
 				changeScene(U"Game");
 			}
@@ -33,7 +35,7 @@ namespace Scenes
 
 		void draw() const override
 		{
-			FontAsset(U"Msg")(U"接続中...").drawAt(Window::Center());
+			FontAsset(U"Msg")(U"接続中...\n", getData().server.num_sessions()).drawAt(Window::Center());
 		}
 	};
 
@@ -44,24 +46,37 @@ namespace Scenes
 			auto str = Unicode::Widen(getData().game.GetGameInfo().CreateJson());
 			str.push_back('\n');
 
-			getData().server
-				.sendString(str);
+			for (auto id : getData().server.getSessionIDs())
+			{
+				getData().server.sendString(str, id);
+			}
 		}
 
 		void update() override
 		{
 			auto & data = getData();
-			if (!data.server.hasSession())
+			if (data.server.num_sessions() != 2)
 			{
 				data.server.disconnect();
+				data.server.cancelAccept();
 
 				changeScene(U"Connection");
 			}
+
+			String json_dat;
+			getData().server.readLine(json_dat);
+
+
 		}
 
 		void draw() const override
 		{
+			auto & game = getData().game;
+			auto & drawer = getData().drawer;
 
+			drawer.DrawField(game.GetField());
+			drawer.DrawAgents(game.GetAgentMap());
+			drawer.DrawStatus(game.GetThinks(), game.GetField(), game.GetTurn());
 		}
 	};
 }
