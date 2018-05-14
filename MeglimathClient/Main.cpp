@@ -1,7 +1,7 @@
 ﻿
 # include <Siv3D.hpp> // OpenSiv3D v0.2.5
 #include "../MeglimathCore/TCPString.hpp"
-#include "../MeglimathCore/GameLogic/Field.h"
+#include "../MeglimathCore/GameInfo.h"
 #include "../MeglimathCore/Drawer.h"
 #include <HamFramework.hpp>
 
@@ -9,7 +9,7 @@ struct GameData
 {
 	asc::TCPStringClient client;
 	Drawer drawer;
-	Field field;
+	GameInfo info;
 };
 
 using MyApp = SceneManager<String, GameData>;
@@ -43,8 +43,8 @@ namespace Scenes
 		{
 			String json_dat;
 			getData().client.readLine(json_dat);
-
-			getData().field = { json_dat.narrow() };
+			
+			getData().info = { json_dat.narrow() };
 		}
 
 		void update() override
@@ -60,7 +60,8 @@ namespace Scenes
 
 		void draw() const override
 		{
-			getData().drawer.DrawField(getData().field);
+			getData().drawer.DrawField(getData().info.GetField());
+			getData().drawer.DrawAgents(getData().info.GetAllAgent());
 		}
 	};
 }

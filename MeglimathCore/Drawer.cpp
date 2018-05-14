@@ -43,7 +43,7 @@ void Drawer::DrawAgents(HashTable<TeamType, Array<Agent>> agents) const
 			.drawFrame(2.0, TeamColor::ColorOf(team));
 
 		// 二人目のエージェントを描画
-		Rect(Arg::center = center(LogicUtil::toS3dPoint(agents[team][0].GetPosition())), edge_width).rotated(45_deg)
+		Rect(Arg::center = center(LogicUtil::toS3dPoint(agents[team][1].GetPosition())), edge_width).rotated(45_deg)
 			.drawFrame(2.0, TeamColor::ColorOf(team));
 	}
 }

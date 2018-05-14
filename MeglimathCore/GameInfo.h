@@ -13,10 +13,13 @@ private:
 
 public:
 	Field GetField() const;
+	HashTable<TeamType, Array<Agent>> GetAllAgent() const;
 	Array<Agent> GetAgents(TeamType type) const;
 	int GetTurn() const;
 
 public:
+	GameInfo();
+	GameInfo(std::string json);
 	GameInfo(Field field, int turn, HashTable<TeamType, Array<Agent>> agents);
 	~GameInfo();
 
