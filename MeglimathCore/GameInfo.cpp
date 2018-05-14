@@ -42,7 +42,7 @@ std::string GameInfo::CreateJson()
 	Point s(cells.size().x,cells.size().y);
 	writer.String(Format(s).narrow().data());
 
-	writer.Key("Cells");
+	writer.Key("Points");
 	writer.StartArray();
 	for (int y : step(size.y))
 	{
