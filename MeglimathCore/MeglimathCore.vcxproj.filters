@@ -221,6 +221,9 @@
     <ClInclude Include="GameLogic\Util.h">
       <Filter>Header Files\GameLogic</Filter>
     </ClInclude>
+    <ClInclude Include="GameLogic\Format.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -252,6 +255,9 @@
     </ClCompile>
     <ClCompile Include="Drawer.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameLogic\Think.cpp">
+      <Filter>Source Files\GameLogic</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

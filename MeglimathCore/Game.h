@@ -30,8 +30,6 @@ public:
 	/// <returns>フィールドとエージェントの情報</returns>
 	GameInfo GetGameInfo() const;
 
-	bool IsReady();
-
 	/// <summary>
 	/// ターン数を取得する
 	/// </summary>

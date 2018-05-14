@@ -252,6 +252,7 @@
     <ClInclude Include="GameLogic\Agent.h" />
     <ClInclude Include="GameLogic\Cell.h" />
     <ClInclude Include="GameLogic\Field.h" />
+    <ClInclude Include="GameLogic\Format.h" />
     <ClInclude Include="GameLogic\GameLogic.h" />
     <ClInclude Include="GameLogic\GamePoints.h" />
     <ClInclude Include="GameLogic\TeamLogic.h" />
@@ -272,6 +273,7 @@
     <ClCompile Include="GameLogic\GameLogic.cpp" />
     <ClCompile Include="GameLogic\GamePoints.cpp" />
     <ClCompile Include="GameLogic\TeamLogic.cpp" />
+    <ClCompile Include="GameLogic\Think.cpp" />
     <ClCompile Include="GameLogic\Transform.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
