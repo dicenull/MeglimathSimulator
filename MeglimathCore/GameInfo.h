@@ -1,8 +1,8 @@
 #pragma once
 #include "GameLogic/Field.h"
 #include<Siv3D.hpp>
-#include "rapidjson\rapidjson.h"
-#include "rapidjson\writer.h"
+#include <rapidjson\rapidjson.h>
+#include <rapidjson\writer.h>
 
 class GameInfo
 {

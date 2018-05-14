@@ -2,6 +2,7 @@
 #include "Cell.h"
 #include "Transform.h"
 #include "GamePoints.h"
+#include <rapidjson\document.h>
 
 class Field
 {

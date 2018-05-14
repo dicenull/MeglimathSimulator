@@ -1,5 +1,4 @@
 #include "Field.h"
-#include<../include/rapidjson/document.h>
 #include"util.h"
 int Field::aggregateAreaPoint(TileType tile)
 {

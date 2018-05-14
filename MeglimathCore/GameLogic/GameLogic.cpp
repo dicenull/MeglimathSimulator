@@ -1,6 +1,6 @@
 #include "GameLogic.h"
 #include<random>
-#include <../include/rapidjson/document.h>
+
 std::unordered_map<TeamType, std::vector<Agent>> GameLogic::GetAgentMap() const
 {
 	std::unordered_map<TeamType, std::vector<Agent>> agents;
