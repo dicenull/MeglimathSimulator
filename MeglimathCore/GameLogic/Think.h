@@ -12,6 +12,8 @@ public:
 	Step steps[2];
 
 	Think(std::string json);
+	Think(Step steps[2]);
+	Think(Step step1, Step step2);
 	Think();
 	~Think();
 };

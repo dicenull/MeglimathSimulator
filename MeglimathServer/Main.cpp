@@ -81,12 +81,12 @@ namespace Scenes
 			Think think = { json_dat.narrow() };
 			auto team_type = doc["TeamType"].GetString();
 
-			if (team_type == "A")
+			if (team_type[0] == 'A')
 			{
 				thinks[0] = think;
 			}
 
-			if (team_type == "B")
+			if (team_type[0] == 'B')
 			{
 				thinks[1] = think;
 			}

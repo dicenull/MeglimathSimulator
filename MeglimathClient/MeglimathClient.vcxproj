@@ -210,6 +210,7 @@
     <ClCompile Include="..\MeglimathCore\GameLogic\GameLogic.cpp" />
     <ClCompile Include="..\MeglimathCore\GameLogic\GamePoints.cpp" />
     <ClCompile Include="..\MeglimathCore\GameLogic\TeamLogic.cpp" />
+    <ClCompile Include="..\MeglimathCore\GameLogic\Think.cpp" />
     <ClCompile Include="..\MeglimathCore\GameLogic\Transform.cpp" />
     <ClCompile Include="..\MeglimathCore\Team.cpp" />
     <ClCompile Include="Main.cpp" />

@@ -1,4 +1,6 @@
 #include "Think.h"
+#include "Think.h"
+#include "Think.h"
 #include "Action.h"
 #include "Format.h"
 
@@ -15,6 +17,17 @@ Think::Think(std::string json)
 		steps[i] =
 		{ Format::ToAction(actions[i].GetString()), Format::ToDirection(actions[i].GetString()) };
 	}
+}
+
+Think::Think(Step steps[2])
+	:Think(steps[0], steps[1])
+{
+}
+
+Think::Think(Step step1, Step step2)
+{
+	steps[0] = step1;
+	steps[1] = step2;
 }
 
 Think::Think()

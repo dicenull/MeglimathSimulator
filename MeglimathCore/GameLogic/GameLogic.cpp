@@ -12,7 +12,9 @@ std::unordered_map<TeamType, std::vector<Agent>> GameLogic::GetAgentMap() const
 std::vector<Agent> GameLogic::GetAgents() const
 {	
 	std::vector<Agent> ret{ _teamlogics[0].GetAgents() };
-	ret.assign(_teamlogics[1].GetAgents().cbegin(), _teamlogics[1].GetAgents().cend());
+	auto & other = _teamlogics[1].GetAgents();
+	ret.push_back(other[0]);
+	ret.push_back(other[1]);
 	return ret;
 }
 std::vector<TeamLogic>& GameLogic::getTeamLogics()

@@ -96,6 +96,9 @@
     <ClCompile Include="..\MeglimathCore\GameLogic\Transform.cpp">
       <Filter>Core\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\MeglimathCore\GameLogic\Think.cpp">
+      <Filter>Core\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\icon.ico">
@@ -256,9 +259,6 @@
     <ClInclude Include="..\MeglimathCore\GameLogic\TeamLogic.h">
       <Filter>Core\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\MeglimathCore\GameLogic\Think.h">
-      <Filter>Core\Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\MeglimathCore\GameLogic\Transform.h">
       <Filter>Core\Header Files</Filter>
     </ClInclude>
@@ -266,6 +266,9 @@
       <Filter>Core\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\MeglimathCore\GameLogic\Util.h">
+      <Filter>Core\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\MeglimathCore\GameLogic\Think.h">
       <Filter>Core\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
