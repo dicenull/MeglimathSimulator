@@ -14,8 +14,8 @@ Think::Think(std::string json)
 	
 	for (int i = 0; i < 2; i++)
 	{
-		steps[i] =
-		{ Format::ToAction(actions[i].GetString()), Format::ToDirection(actions[i].GetString()) };
+		steps[i].action = Format::ToAction(actions[i].GetString());
+		steps[i].direction = Format::ToDirection(directions[i].GetString());
 	}
 }
 

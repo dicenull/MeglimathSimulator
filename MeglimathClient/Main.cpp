@@ -70,12 +70,12 @@ namespace Scenes
 			writer.Key("Action");
 			writer.StartArray();
 			writer.String(String(Transform::ToString(test_thinks.steps[0].action)).toUTF8().data());
-			writer.String(String(Transform::ToString(test_thinks.steps[0].direction)).toUTF8().data());
+			writer.String(String(Transform::ToString(test_thinks.steps[1].action)).toUTF8().data());
 			writer.EndArray();
 
 			writer.Key("Direction");
 			writer.StartArray();
-			writer.String(String(Transform::ToString(test_thinks.steps[1].action)).toUTF8().data());
+			writer.String(String(Transform::ToString(test_thinks.steps[0].direction)).toUTF8().data());
 			writer.String(String(Transform::ToString(test_thinks.steps[1].direction)).toUTF8().data());
 			writer.EndArray();
 			writer.EndObject();

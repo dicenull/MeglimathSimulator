@@ -38,7 +38,8 @@ namespace Scenes
 
 		void draw() const override
 		{
-			FontAsset(U"Msg")(U"接続中...\n", getData().server.num_sessions()).drawAt(Window::Center());
+			getData().drawer.DrawField(getData().game.GetField());
+			FontAsset(U"Msg")(U"待機中... 接続数 : ", getData().server.num_sessions()).draw(Point(0, 0));
 		}
 	};
 
@@ -94,6 +95,8 @@ namespace Scenes
 			if (thinks[0].has_value() && thinks[1].has_value())
 			{
 				getData().game.NextTurn(thinks[0].value(), thinks[1].value());
+				thinks[0] = none;
+				thinks[1] = none;
 			}
 		}
 
@@ -117,6 +120,7 @@ void Main()
 		.add<Scenes::Game>(U"Game");
 
 	FontAsset::Register(U"Msg", 32);
+	FontAsset::Register(U"Cell", 16, Typeface::Black);
 
 	Window::SetTitle(U"TCP Server");
 

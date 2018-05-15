@@ -207,6 +207,7 @@
     <ClCompile Include="..\MeglimathCore\GameLogic\Agent.cpp" />
     <ClCompile Include="..\MeglimathCore\GameLogic\Cell.cpp" />
     <ClCompile Include="..\MeglimathCore\GameLogic\Field.cpp" />
+    <ClCompile Include="..\MeglimathCore\GameLogic\Format.cpp" />
     <ClCompile Include="..\MeglimathCore\GameLogic\GameLogic.cpp" />
     <ClCompile Include="..\MeglimathCore\GameLogic\GamePoints.cpp" />
     <ClCompile Include="..\MeglimathCore\GameLogic\TeamLogic.cpp" />
@@ -267,6 +268,7 @@
     <ClInclude Include="..\MeglimathCore\GameLogic\Agent.h" />
     <ClInclude Include="..\MeglimathCore\GameLogic\Cell.h" />
     <ClInclude Include="..\MeglimathCore\GameLogic\Field.h" />
+    <ClInclude Include="..\MeglimathCore\GameLogic\Format.h" />
     <ClInclude Include="..\MeglimathCore\GameLogic\GameLogic.h" />
     <ClInclude Include="..\MeglimathCore\GameLogic\GamePoints.h" />
     <ClInclude Include="..\MeglimathCore\GameLogic\TeamLogic.h" />
