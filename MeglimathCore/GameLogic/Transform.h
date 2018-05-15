@@ -16,31 +16,31 @@ namespace Transform
 		switch (dir)
 		{
 		case Direction::Right:
-			return _Point(1, 0);
+			return _Point<int>(1, 0);
 			
 		case Direction::RightUp:
-			return _Point(1, -1);
+			return _Point<int>(1, -1);
 			
 		case Direction::Up:
-			return _Point(0, -1);
+			return _Point<int>(0, -1);
 			
 		case Direction::LeftUp:
-			return _Point(-1, -1);
+			return _Point<int>(-1, -1);
 			
 		case Direction::Left:
-			return _Point(-1, 0);
+			return _Point<int>(-1, 0);
 
 		case Direction::LeftDown:
-			return _Point(-1, 1);
+			return _Point<int>(-1, 1);
 			
 		case Direction::Down:
-			return _Point(0, 1);
+			return _Point<int>(0, 1);
 			
 		case Direction::RightDown:
-			return _Point(1, 1);
+			return _Point<int>(1, 1);
 			
 		}
-		return _Point(0, 0);
+		return _Point<int>(0, 0);
 	}
 
 	const std::u32string ToString(Action action);

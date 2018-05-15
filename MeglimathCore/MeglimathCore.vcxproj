@@ -118,6 +118,7 @@
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <MinimalRebuild>false</MinimalRebuild>
+      <AdditionalIncludeDirectories>$(RAPIDJSON);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -139,8 +140,7 @@
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <MinimalRebuild>false</MinimalRebuild>
-      <AdditionalIncludeDirectories>
-      </AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(RAPIDJSON);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -163,6 +163,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
+      <AdditionalIncludeDirectories>$(RAPIDJSON);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -187,6 +188,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
+      <AdditionalIncludeDirectories>$(RAPIDJSON);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -250,6 +252,7 @@
     <ClInclude Include="GameLogic\Agent.h" />
     <ClInclude Include="GameLogic\Cell.h" />
     <ClInclude Include="GameLogic\Field.h" />
+    <ClInclude Include="GameLogic\Format.h" />
     <ClInclude Include="GameLogic\GameLogic.h" />
     <ClInclude Include="GameLogic\GamePoints.h" />
     <ClInclude Include="GameLogic\TeamLogic.h" />
@@ -258,7 +261,6 @@
     <ClInclude Include="GameLogic\Types.h" />
     <ClInclude Include="GameLogic\Util.h" />
     <ClInclude Include="LogicUtil.h" />
-    <ClInclude Include="Team.h" />
     <ClInclude Include="TeamColor.h" />
   </ItemGroup>
   <ItemGroup>
@@ -271,8 +273,8 @@
     <ClCompile Include="GameLogic\GameLogic.cpp" />
     <ClCompile Include="GameLogic\GamePoints.cpp" />
     <ClCompile Include="GameLogic\TeamLogic.cpp" />
+    <ClCompile Include="GameLogic\Think.cpp" />
     <ClCompile Include="GameLogic\Transform.cpp" />
-    <ClCompile Include="Team.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

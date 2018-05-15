@@ -2,6 +2,10 @@
 #include"GameLogic/GameLogic.h"
 #include<Siv3D.hpp>
 namespace LogicUtil {
+	static _Point<> toLogicPoint(const Point &_p)
+	{
+		return _Point<>(_p.x, _p.y);
+	}
 	static Point toS3dPoint(const _Point<> &_p) {
 		return Point{ _p.x,_p.y };
 	}

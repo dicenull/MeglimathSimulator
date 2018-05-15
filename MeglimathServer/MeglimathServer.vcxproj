@@ -140,7 +140,7 @@
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <MinimalRebuild>false</MinimalRebuild>
-      <AdditionalIncludeDirectories>$(RAPIDJSON)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(RAPIDJSON);C:\Users\dicen\Documents\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

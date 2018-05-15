@@ -1,23 +1,14 @@
 #pragma once
 #include<Siv3D.hpp>
 #include "Drawer.h"
-#include "Team.h"
+#include "GameInfo.h"
 #include "DrawingInfo.h"
 #include"GameLogic/GameLogic.h"
 class Game
 {
 private:
 	GameLogic _gamelogic;
-
-	/// <summary>
-	/// 2チームの情報
-	/// </summary>
-	Array<std::shared_ptr<Team>> _teams;
-
-	/// <summary>
-	/// チームごとのすべてのエージェントの行動リスト
-	/// </summary>
-	HashTable<TeamType, Think> _thinks;
+	HashTable<TeamType, Think> _think_table;
 
 private:
 	/// <summary>
@@ -32,15 +23,12 @@ private:
 	void initAgentsPos(Point init_pos);
 
 public:
-	void setTeam(std::shared_ptr<Team> team_a, std::shared_ptr<Team> team_b);
 	Array<TeamLogic>& getTeamLogics();
 	/// <summary>
 	/// ゲーム情報を取得する
 	/// </summary>
 	/// <returns>フィールドとエージェントの情報</returns>
 	GameInfo GetGameInfo() const;
-
-	bool IsReady();
 
 	/// <summary>
 	/// ターン数を取得する
@@ -55,7 +43,7 @@ public:
 	/// <summary>
 	/// ゲームを次のターンに進める
 	/// </summary>
-	void NextTurn();
+	void NextTurn(Think team_a, Think team_b);
 
 	/// <summary>
 	/// ゲームの状態を更新する
@@ -69,11 +57,6 @@ public:
 	/// </summary>
 	/// <returns>チームごとのエージェント情報</returns>
 	HashTable<TeamType, Array<Agent>> GetAgentMap() const;
-
-	/// <summary>
-	/// ゲームを更新する
-	/// </summary>
-	void Update();
 
 public:
 	/// <summary>

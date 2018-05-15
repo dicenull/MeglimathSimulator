@@ -1,11 +1,10 @@
 #include "Field.h"
-#include<rapidjson/document.h>
 #include"util.h"
 int Field::aggregateAreaPoint(TileType tile)
 {
-	_status = _Grid<bool>(_cells.size() + _Point(2, 2));
+	_status = _Grid<bool>(_cells.size() + _Point<int>(2, 2));
 
-	dfsAreaPoint(_Point(0, 0), tile);
+	dfsAreaPoint(_Point<int>(0, 0), tile);
 
 	int area_point = 0;
 	for (size_t i : step(_status.width()))
@@ -50,7 +49,7 @@ void Field::dfsAreaPoint(_Point<> pos, TileType tile)
 		return;
 	}
 
-	_Point<> delta[] = { _Point(0, 1), _Point(1, 0), _Point(0, -1), _Point(-1, 0) };
+	_Point<> delta[] = { _Point<int>(0, 1), _Point<int>(1, 0), _Point<int>(0, -1), _Point<int>(-1, 0) };
 
 	// 四方へ探索する
 	for (int i : step(4))
@@ -135,7 +134,7 @@ Step Field::DecideStepByDirection(_Point<> pos, Direction dir) const
 	}
 
 	// 座標から指定の方向に進んだ後の座標
-	_Point next_pos = pos+Transform::DirToDelta(dir);
+	_Point<int> next_pos = pos+Transform::DirToDelta(dir);
 
 	if (!IsInField(next_pos))
 	{

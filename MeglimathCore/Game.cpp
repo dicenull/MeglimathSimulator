@@ -27,27 +27,17 @@ void Game::initAgentsPos(Point init_pos)
 	_gamelogic.initAgentsPos({ init_pos.x,init_pos.y });
 }
 
-void Game::setTeam(std::shared_ptr<Team> team_a, std::shared_ptr<Team> team_b)
-{
-	_teams.append({ team_a, team_b });
-}
-
 Game::Game(const String path)
 {
 	TextReader reader{ path };
 	_gamelogic.InitalizeFromJson(reader.readAll().narrow());
 }
 
-bool Game::IsReady()
-{
-	return _teams[0]->IsReady() && _teams[1]->IsReady();
-}
-
 int Game::GetTurn() const
 {
 	return _gamelogic.GetTurn();
 }
-void Game::NextTurn()
+void Game::NextTurn(Think team_a, Think team_b)
 {
 	if (_gamelogic.GetTurn() <= 0)
 	{
@@ -57,16 +47,11 @@ void Game::NextTurn()
 	GameInfo info = GetGameInfo();
 	auto agents_map = GetAgentMap();
 	auto agents = GetAgents();
+	
+	_think_table[TeamType::A] = team_a;
+	_think_table[TeamType::B] = team_b;
 
-	_thinks[TeamType::A] = Think(_teams[0]->NextThink(info));
-	_thinks[TeamType::B] = Think(_teams[1]->NextThink(info));
-
-	_gamelogic.NextTurn(LogicUtil::fromS3dHashTable(_thinks));
-
-}
-
-void Game::Update()
-{
+	_gamelogic.NextTurn(LogicUtil::fromS3dHashTable(_think_table));
 
 }
 
@@ -77,7 +62,7 @@ Field Game::GetField() const
 
 HashTable<TeamType, Think> Game::GetThinks() const
 {
-	return _thinks;
+	return _think_table;
 }
 
 Game::Game()
