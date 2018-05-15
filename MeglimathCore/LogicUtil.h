@@ -14,8 +14,9 @@ namespace LogicUtil {
 		for (auto k : _map)ret[k.first] = k.second;
 		return ret;
 	}
-	static Array<Agent> toS3dArray(const std::vector<Agent> &_vec) {
-		Array<Agent> ret;
+	template<class C>
+	static Array<C> toS3dArray(const std::vector<C> &_vec) {
+		Array<C> ret;
 		for (auto a : _vec)ret.push_back(a);
 		return ret;
 	}

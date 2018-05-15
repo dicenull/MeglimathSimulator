@@ -10,7 +10,7 @@ std::unordered_map<TeamType, std::vector<Agent>> GameLogic::GetAgentMap() const
 	return agents;
 }
 std::vector<Agent> GameLogic::GetAgents() const
-{	
+{
 	std::vector<Agent> ret{ _teamlogics[0].GetAgents() };
 	auto & other = _teamlogics[1].GetAgents();
 	ret.push_back(other[0]);
@@ -25,7 +25,7 @@ void GameLogic::initAgentsPos()
 {
 	_Size size = _field.GetCells().size();
 
-	initAgentsPos(_Point<int>(std::rand()/(double)INT_MAX*(size.x - 2) / 2, std::rand() / (double)INT_MAX*(size.x - 2) / 2));
+	initAgentsPos(_Point<int>(std::rand() / (double)INT_MAX*(size.x - 2) / 2, std::rand() / (double)INT_MAX*(size.x - 2) / 2));
 }
 
 void GameLogic::initAgentsPos(_Point<> init_pos)
@@ -161,6 +161,25 @@ void GameLogic::NextTurn(std::unordered_map<TeamType, Think> &_thinks)
 	_field.UpdatePoint();
 }
 
+bool GameLogic::GetGameEnd()
+{
+	return GetTurn() == 0;
+}
+
+int GameLogic::GetWinner()
+{
+	if (GetTurn() != 0)return -1;
+	if (_teamlogics[0].GetTotalPoint() > _teamlogics[1].GetTotalPoint()) {
+		return (int)TeamType::A;
+	}
+	else if (_teamlogics[0].GetTotalPoint() < _teamlogics[1].GetTotalPoint()) {
+		return (int)TeamType::B;
+	}
+	else {
+		return -1;
+	}
+}
+
 Field GameLogic::GetField() const
 {
 	return _field;
@@ -169,6 +188,10 @@ Field GameLogic::GetField() const
 GameLogic::GameLogic() :_teamlogics({ TeamLogic(),TeamLogic() })
 {
 
+}
+
+GameLogic::GameLogic(int turn) : _turn(turn), _teamlogics({ TeamLogic(),TeamLogic() })
+{
 }
 
 GameLogic::~GameLogic()

@@ -1,5 +1,6 @@
 #pragma once
 #include "Action.h"
+#include<array>
 #include <rapidjson\document.h>
 #include <string>
 

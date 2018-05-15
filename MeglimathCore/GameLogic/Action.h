@@ -26,6 +26,8 @@ enum class Direction
 
 struct Step
 {
+	Step() :Step(Action::Stop, Direction::Right){}
+	Step(Action a,Direction d):action(a),direction(d){}
 	Action action;
 	Direction direction;
 };
