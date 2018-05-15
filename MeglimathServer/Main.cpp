@@ -45,7 +45,8 @@ namespace Scenes
 
 	struct Game : MyApp::Scene
 	{
-		Game(const InitData& init) : IScene(init)
+	private:
+		void sendGameInfo()
 		{
 			auto str = Unicode::Widen(getData().game.GetGameInfo().CreateJson());
 			str.push_back('\n');
@@ -54,6 +55,12 @@ namespace Scenes
 			{
 				getData().server.sendString(str, id);
 			}
+		}
+
+	public:
+		Game(const InitData& init) : IScene(init)
+		{
+			sendGameInfo();
 		}
 
 		void update() override
@@ -97,6 +104,8 @@ namespace Scenes
 				getData().game.NextTurn(thinks[0].value(), thinks[1].value());
 				thinks[0] = none;
 				thinks[1] = none;
+
+				sendGameInfo();
 			}
 		}
 
@@ -121,6 +130,7 @@ void Main()
 
 	FontAsset::Register(U"Msg", 32);
 	FontAsset::Register(U"Cell", 16, Typeface::Black);
+	FontAsset::Register(U"Stat", 16, Typeface::Default);
 
 	Window::SetTitle(U"TCP Server");
 
