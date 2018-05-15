@@ -10,9 +10,10 @@ std::unordered_map<TeamType, std::vector<Agent>> GameLogic::GetAgentMap() const
 	return agents;
 }
 std::vector<Agent> GameLogic::GetAgents() const
-{	
+{
 	std::vector<Agent> ret{ _teamlogics[0].GetAgents() };
-	ret.assign(_teamlogics[1].GetAgents().cbegin(), _teamlogics[1].GetAgents().cend());
+	std::vector<Agent> con{ _teamlogics[1].GetAgents() };
+	ret.insert(ret.end(),con.begin(),con.end());
 	return ret;
 }
 std::vector<TeamLogic>& GameLogic::getTeamLogics()
@@ -23,7 +24,7 @@ void GameLogic::initAgentsPos()
 {
 	_Size size = _field.GetCells().size();
 
-	initAgentsPos(_Point<int>(std::rand()/(double)INT_MAX*(size.x - 2) / 2, std::rand() / (double)INT_MAX*(size.x - 2) / 2));
+	initAgentsPos(_Point<int>(std::rand() / (double)INT_MAX*(size.x - 2) / 2, std::rand() / (double)INT_MAX*(size.x - 2) / 2));
 }
 
 void GameLogic::initAgentsPos(_Point<> init_pos)
@@ -101,7 +102,7 @@ void GameLogic::NextTurn(std::unordered_map<TeamType, Think> &_thinks)
 		{
 			Direction dir = _thinks[team].steps[i].direction;
 			// エージェントを動かしたい方向に動かした場合の座標
-			_Point pos = agents_map[team][i].GetPosition()+Transform::DirToDelta(dir);
+			_Point pos = agents_map[team][i].GetPosition() + Transform::DirToDelta(dir);
 
 			// エージェントが動作する座標を追加
 			switch (_thinks[team].steps[i].action)
@@ -123,11 +124,11 @@ void GameLogic::NextTurn(std::unordered_map<TeamType, Think> &_thinks)
 
 		// その座標に行くエージェントが一人、フィールド内
 		// タイルが置かれていない、どのエージェントもいない
-		
+
 		if (std::count_if(move_point_arr.cbegin(), move_point_arr.cend(), [pos](std::pair<_Point<>, std::pair<Direction, TeamType>> itr) {return itr.first == pos; }) == 1
 			&& _field.IsInField(pos)
 			&& _field.GetCells()[pos.y][pos.x].GetTile() == TileType::None
-			&& std::count_if(agents.cbegin(), agents.cend(),[pos](Agent agent) { return agent.GetPosition() == pos; }) == 0)
+			&& std::count_if(agents.cbegin(), agents.cend(), [pos](Agent agent) { return agent.GetPosition() == pos; }) == 0)
 		{
 			auto dir = pos_map.second.first;
 			auto team = pos_map.second.second;
@@ -159,6 +160,25 @@ void GameLogic::NextTurn(std::unordered_map<TeamType, Think> &_thinks)
 	_field.UpdatePoint();
 }
 
+bool GameLogic::GetGameEnd()
+{
+	return GetTurn() == 0;
+}
+
+int GameLogic::GetWinner()
+{
+	if (GetTurn() != 0)return -1;
+	if (_teamlogics[0].GetTotalPoint() > _teamlogics[1].GetTotalPoint()) {
+		return (int)TeamType::A;
+	}
+	else if (_teamlogics[0].GetTotalPoint() < _teamlogics[1].GetTotalPoint()) {
+		return (int)TeamType::B;
+	}
+	else {
+		return -1;
+	}
+}
+
 Field GameLogic::GetField() const
 {
 	return _field;
@@ -167,6 +187,10 @@ Field GameLogic::GetField() const
 GameLogic::GameLogic() :_teamlogics({ TeamLogic(),TeamLogic() })
 {
 
+}
+
+GameLogic::GameLogic(int turn) : _turn(turn), _teamlogics({ TeamLogic(),TeamLogic() })
+{
 }
 
 GameLogic::~GameLogic()

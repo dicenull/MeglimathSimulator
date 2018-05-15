@@ -54,14 +54,15 @@ public:
 	/// </summary>
 	void NextTurn(std::unordered_map<TeamType, Think> &_thinks);
 
+	bool GetGameEnd();
+	int GetWinner();
 
 public:
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	/// <param name="team_a">チームAの情報</param>
-	/// <param name="team_b">チームBの情報</param>
 	GameLogic();
+	GameLogic(int turn);
 
 	virtual ~GameLogic();
 };

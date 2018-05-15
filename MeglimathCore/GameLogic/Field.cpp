@@ -87,7 +87,7 @@ void Field::UpdatePoint()
 {
 	for (int i : step(2))
 	{
-		_points[i] = 
+		_points[i] =
 		{ aggregateAreaPoint((TileType)i), aggregateTilePoint((TileType)i) };
 	}
 }
@@ -135,11 +135,11 @@ Step Field::DecideStepByDirection(_Point<> pos, Direction dir) const
 	}
 
 	// 座標から指定の方向に進んだ後の座標
-	_Point next_pos = pos+Transform::DirToDelta(dir);
+	_Point next_pos = pos + Transform::DirToDelta(dir);
 
 	if (!IsInField(next_pos))
 	{
-		return Step{ Action::Stop };
+		return Step{ Action::Stop, Direction::Stop };
 	}
 
 	// 進んだ先のタイルの有無でアクションを決める
@@ -153,7 +153,7 @@ Step Field::DecideStepByDirection(_Point<> pos, Direction dir) const
 	}
 }
 
-Field::Field()
+Field::Field():Field(_Point<size_t>{6,6})
 {
 }
 
@@ -164,10 +164,22 @@ void Field::operator=(const Field & other)
 
 
 Field::Field(_Size size)
-	:Field(_Grid<Cell>(size))
-{}
+{
+	// 入力されるタイルポイントの数
+	_Size data_size = _Size((size.x + 1) / 2, (size.y + 1) / 2);
+	_cells = _Grid<Cell>(size);
+	for (int i = 0; i < _cells.width(); i++) {
+		for (int j = 0; j < _cells.height(); j++) {
+			_cells[i][j] = (rand() >> 7) % 33 - 16;
+			_cells[size.y - 1 - i][size.x - 1 - j] = _cells[i][j];
+			_cells[size.y - 1 - i][j] = _cells[i][j];
+			_cells[i][size.x - 1 - j] = _cells[i][j];
+		}
+	}
 
-Field::Field(_Grid<Cell> cells):_cells(cells)
+}
+
+Field::Field(_Grid<Cell> cells) :_cells(cells)
 {
 	//_cells = cells;
 }
