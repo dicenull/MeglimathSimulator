@@ -7,6 +7,7 @@
 #include "../MeglimathCore/Game.h"
 #include "../MeglimathCore/Drawer.h"
 #include "../MeglimathCore/TCPString.hpp"
+#include "../MeglimathCore/CreateJson.h"
 
 struct GameData
 {
@@ -48,7 +49,7 @@ namespace Scenes
 	private:
 		void sendGameInfo()
 		{
-			auto str = Unicode::Widen(getData().game.GetGameInfo().CreateJson());
+			auto str = Unicode::Widen(Transform::CreateJson(getData().game.GetGameInfo()));
 			str.push_back('\n');
 
 			for (auto id : getData().server.getSessionIDs())

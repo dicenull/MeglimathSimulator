@@ -3,11 +3,12 @@
 #include "../MeglimathCore/TCPString.hpp"
 #include "../MeglimathCore/GameInfo.h"
 #include "../MeglimathCore/Drawer.h"
+#include "../MeglimathCore/CreateJson.h"
 #include <HamFramework.hpp>
 
 struct GameData
 {
-	asc::TCPStringClient client;
+	asc::TCPStringClient tcp_client;
 	Drawer drawer;
 	GameInfo info;
 };
@@ -20,12 +21,12 @@ namespace Scenes
 	{
 		Connection(const InitData& init) : IScene(init)
 		{
-			getData().client.connect(IPv4::localhost(), 31400);
+			getData().tcp_client.connect(IPv4::localhost(), 31400);
 		}
 
 		void update() override
 		{
-			if (getData().client.isConnected())
+			if (getData().tcp_client.isConnected())
 			{
 				changeScene(U"Game");
 			}
@@ -48,9 +49,9 @@ namespace Scenes
 		void update() override
 		{
 			auto & data = getData();
-			if (data.client.hasError())
+			if (data.tcp_client.hasError())
 			{
-				data.client.disconnect();
+				data.tcp_client.disconnect();
 
 				changeScene(U"Connection");
 			}
@@ -61,33 +62,15 @@ namespace Scenes
 				Step{ Action(Random(0,1)),Direction(Random(0,7)) },
 				Step{ Action(Random(0,1)),Direction(Random(0,7)) }
 			};
-			rapidjson::StringBuffer buf;
-			rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
-
-			writer.StartObject();
-			writer.Key("TeamType");
-			writer.String(RandomBool() ? "A" : "B");
-			writer.Key("Action");
-			writer.StartArray();
-			writer.String(String(Transform::ToString(test_thinks.steps[0].action)).toUTF8().data());
-			writer.String(String(Transform::ToString(test_thinks.steps[1].action)).toUTF8().data());
-			writer.EndArray();
-
-			writer.Key("Direction");
-			writer.StartArray();
-			writer.String(String(Transform::ToString(test_thinks.steps[0].direction)).toUTF8().data());
-			writer.String(String(Transform::ToString(test_thinks.steps[1].direction)).toUTF8().data());
-			writer.EndArray();
-			writer.EndObject();
-
-			auto str = Unicode::Widen(buf.GetString());
+			
+			auto str = Unicode::Widen(Transform::CreateJson(test_thinks));
 			str.push_back('\n');
 
-			getData().client.sendString(str);
+			getData().tcp_client.sendString(str);
 			// ---
 
 			String json_dat;
-			getData().client.readLine(json_dat);
+			getData().tcp_client.readLine(json_dat);
 
 			if (json_dat.isEmpty())
 			{

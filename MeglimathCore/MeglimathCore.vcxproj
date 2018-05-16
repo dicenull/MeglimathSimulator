@@ -244,6 +244,7 @@
     <Text Include="App\engine\font\noto\LICENSE_OFL.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CreateJson.h" />
     <ClInclude Include="Drawer.h" />
     <ClInclude Include="DrawingInfo.h" />
     <ClInclude Include="Game.h" />
@@ -264,6 +265,7 @@
     <ClInclude Include="TeamColor.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CreateJson.cpp" />
     <ClCompile Include="Drawer.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameInfo.cpp" />
