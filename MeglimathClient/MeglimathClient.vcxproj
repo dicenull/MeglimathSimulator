@@ -201,6 +201,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\MeglimathCore\CreateJson.cpp" />
     <ClCompile Include="..\MeglimathCore\Drawer.cpp" />
     <ClCompile Include="..\MeglimathCore\Game.cpp" />
     <ClCompile Include="..\MeglimathCore\GameInfo.cpp" />
@@ -214,7 +215,10 @@
     <ClCompile Include="..\MeglimathCore\GameLogic\Think.cpp" />
     <ClCompile Include="..\MeglimathCore\GameLogic\Transform.cpp" />
     <ClCompile Include="..\MeglimathCore\Team.cpp" />
+    <ClCompile Include="Client.cpp" />
+    <ClCompile Include="KeyboardClient.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="ManualClient.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\engine\texture\box-shadow\128.png" />
@@ -260,6 +264,7 @@
     <Text Include="App\engine\font\noto\LICENSE_OFL.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\MeglimathCore\CreateJson.h" />
     <ClInclude Include="..\MeglimathCore\Drawer.h" />
     <ClInclude Include="..\MeglimathCore\DrawingInfo.h" />
     <ClInclude Include="..\MeglimathCore\Game.h" />
@@ -280,6 +285,9 @@
     <ClInclude Include="..\MeglimathCore\TCPString.hpp" />
     <ClInclude Include="..\MeglimathCore\Team.h" />
     <ClInclude Include="..\MeglimathCore\TeamColor.h" />
+    <ClInclude Include="Client.h" />
+    <ClInclude Include="KeyboardClient.h" />
+    <ClInclude Include="ManualClient.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

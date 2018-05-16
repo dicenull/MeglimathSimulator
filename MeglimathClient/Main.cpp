@@ -1,16 +1,21 @@
 ﻿
 # include <Siv3D.hpp> // OpenSiv3D v0.2.5
+#include <HamFramework.hpp>
+
 #include "../MeglimathCore/TCPString.hpp"
 #include "../MeglimathCore/GameInfo.h"
 #include "../MeglimathCore/Drawer.h"
 #include "../MeglimathCore/CreateJson.h"
-#include <HamFramework.hpp>
+
+#include "KeyboardClient.h"
 
 struct GameData
 {
 	asc::TCPStringClient tcp_client;
 	Drawer drawer;
 	GameInfo info;
+
+	KeyboardClient user_client = KeyboardClient({ KeyD, KeyE, KeyW, KeyQ, KeyA, KeyZ, KeyX, KeyC, KeyS });
 };
 
 using MyApp = SceneManager<String, GameData>;
@@ -44,6 +49,7 @@ namespace Scenes
 
 		Game(const InitData& init) : IScene(init)
 		{
+
 		}
 
 		void update() override
@@ -56,29 +62,38 @@ namespace Scenes
 				changeScene(U"Connection");
 			}
 
-			// ランダムな行動を動作確認として送る
-			Think test_thinks =
-			{
-				Step{ Action(Random(0,1)),Direction(Random(0,7)) },
-				Step{ Action(Random(0,1)),Direction(Random(0,7)) }
-			};
-			
-			auto str = Unicode::Widen(Transform::CreateJson(test_thinks));
-			str.push_back('\n');
-
-			getData().tcp_client.sendString(str);
-			// ---
-
+			// ゲームの更新
 			String json_dat;
 			getData().tcp_client.readLine(json_dat);
 
-			if (json_dat.isEmpty())
+			if (json_dat == U"A")
 			{
-				return;
+				getData().user_client.SetTeamType(TeamType::A);
 			}
-			
-			getData().info = { json_dat.narrow() };
-			_is_init = true;
+
+			if (json_dat == U"B")
+			{
+				getData().user_client.SetTeamType(TeamType::B);
+			}
+
+			if (!json_dat.isEmpty())
+			{
+				getData().info = { json_dat.narrow() };
+				_is_init = true;
+			}
+
+			// Clientを更新
+			data.user_client.Update();
+
+			// ServerにThinkを送信
+			if (data.user_client.IsReady())
+			{
+				auto think = data.user_client.NextThink(data.info);
+				auto str = Unicode::Widen(Transform::CreateJson(think));
+				str.push_back('\n');
+
+				getData().tcp_client.sendString(str);
+			}
 		}
 
 		void draw() const override

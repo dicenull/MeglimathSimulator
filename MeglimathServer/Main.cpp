@@ -61,6 +61,10 @@ namespace Scenes
 	public:
 		Game(const InitData& init) : IScene(init)
 		{
+			auto ids = getData().server.getSessionIDs();
+			getData().server.sendString(String(U"A\n"), ids[0]);
+			getData().server.sendString(String(U"B\n"), ids[1]);
+
 			sendGameInfo();
 
 			// ClientのThinkをidで管理
