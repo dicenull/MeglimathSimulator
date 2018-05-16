@@ -81,8 +81,6 @@ const std::string Transform::CreateJson(const Think& think)
 	rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
 
 	writer.StartObject();
-	writer.Key("TeamType");
-	writer.String(RandomBool() ? "A" : "B");
 	writer.Key("Action");
 	writer.StartArray();
 	writer.String(String(Transform::ToString(think.steps[0].action)).toUTF8().data());

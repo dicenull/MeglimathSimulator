@@ -14,7 +14,7 @@ struct GameData
 	const FilePath field_path = U"../Fields/LargeField.json";
 	Game game = { field_path };
 	Drawer drawer;
-	Optional<Think> thinks[2] = { none, none };
+	std::map<SessionID, Optional<Think>> thinks;
 	asc::TCPStringServer server;
 };
 
@@ -62,6 +62,12 @@ namespace Scenes
 		Game(const InitData& init) : IScene(init)
 		{
 			sendGameInfo();
+
+			// ClientのThinkをidで管理
+			for (auto id : getData().server.getSessionIDs())
+			{
+				getData().thinks[id] = none;
+			}
 		}
 
 		void update() override
@@ -75,36 +81,34 @@ namespace Scenes
 				changeScene(U"Connection");
 			}
 
-			String json_dat;
-			getData().server.readLine(json_dat);
-
-			if (json_dat.isEmpty())
+			// Clientから次ターンの行動を受け取る
+			for (auto id : data.server.getSessionIDs())
 			{
-				return;
+				String json_dat;
+				getData().server.readUntil('\n', json_dat, Optional<SessionID>(id));
+
+				if (json_dat.isEmpty())
+				{
+					continue;
+				}
+
+				auto & thinks = getData().thinks;
+
+				// jsonからThink情報を取得
+				rapidjson::Document doc;
+				doc.Parse(json_dat.narrow().data());
+
+				data.thinks[id] = { json_dat.narrow() };
 			}
-
-			auto & thinks = getData().thinks;
-
-			rapidjson::Document doc;
-			doc.Parse(json_dat.narrow().data());
-			Think think = { json_dat.narrow() };
-			auto team_type = doc["TeamType"].GetString();
-
-			if (team_type[0] == 'A')
+			
+			// Client二つ分のThinkが更新されたら次のターンへ
+			auto ids = data.server.getSessionIDs();
+			auto &thinks = data.thinks;
+			if (thinks[ids[0]].has_value() && thinks[ids[1]].has_value())
 			{
-				thinks[0] = think;
-			}
-
-			if (team_type[0] == 'B')
-			{
-				thinks[1] = think;
-			}
-
-			if (thinks[0].has_value() && thinks[1].has_value())
-			{
-				getData().game.NextTurn(thinks[0].value(), thinks[1].value());
-				thinks[0] = none;
-				thinks[1] = none;
+				getData().game.NextTurn(thinks[ids[0]].value(), thinks[ids[1]].value());
+				thinks[ids[0]] = none;
+				thinks[ids[1]] = none;
 
 				sendGameInfo();
 			}
