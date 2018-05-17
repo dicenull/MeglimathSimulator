@@ -2,11 +2,6 @@
 
 
 
-bool ManualClient::IsReady()
-{
-	return _is_ready;
-}
-
 void ManualClient::SetTeamType(TeamType type)
 {
 	_type = type;

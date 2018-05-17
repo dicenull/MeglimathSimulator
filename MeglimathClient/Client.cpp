@@ -1,6 +1,11 @@
 #include "Client.h"
 
 
+bool Client::IsReady()
+{
+	return _is_ready;
+}
+
 Client::Client()
 {
 }

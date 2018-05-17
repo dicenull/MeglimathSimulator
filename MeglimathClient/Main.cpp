@@ -9,6 +9,7 @@
 #include "../MeglimathCore/CreateJson.h"
 
 #include "KeyboardClient.h"
+#include "RandomClient.h"
 
 struct GameData
 {
@@ -45,7 +46,7 @@ namespace Scenes
 	struct Game : MyApp::Scene
 	{
 		bool _is_init = false;
-		std::unique_ptr<ManualClient> user_client;
+		std::unique_ptr<Client> user_client;
 
 		Game(const InitData& init) : IScene(init)
 		{
@@ -88,7 +89,8 @@ namespace Scenes
 					if (type.has_value())
 					{
 						// Clientを初期化
-						user_client.reset(new KeyboardClient(type.value(), { KeyD, KeyE, KeyW, KeyQ, KeyA, KeyZ, KeyX, KeyC, KeyS }));
+						// user_client.reset(new KeyboardClient(type.value(), { KeyD, KeyE, KeyW, KeyQ, KeyA, KeyZ, KeyX, KeyC, KeyS }));
+						user_client.reset(new RandomClient(type.value()));
 					}
 				}
 				else if (user_client)

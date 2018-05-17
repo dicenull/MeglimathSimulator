@@ -60,12 +60,7 @@ public:
 	}
 
 public:
-	bool IsReady();
-
 	void SetTeamType(TeamType type);
-
-protected:
-	bool _is_ready = false;
 
 private:
 	Optional<Direction> _directions[2];

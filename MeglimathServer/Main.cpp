@@ -135,10 +135,11 @@ namespace Scenes
 		{
 			auto & game = getData().game;
 			auto & drawer = getData().drawer;
+			auto field = game.GetField();
 
-			drawer.DrawField(game.GetField());
+			drawer.DrawField(field);
 			drawer.DrawAgents(game.GetAgentMap());
-			drawer.DrawStatus(game.GetThinks(), game.GetField(), game.GetTurn());
+			drawer.DrawStatus(game.GetThinks(), field, game.GetTurn());
 		}
 	};
 }

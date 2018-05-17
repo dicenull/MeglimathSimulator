@@ -219,6 +219,7 @@
     <ClCompile Include="KeyboardClient.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="ManualClient.cpp" />
+    <ClCompile Include="RandomClient.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\engine\texture\box-shadow\128.png" />
@@ -288,6 +289,7 @@
     <ClInclude Include="Client.h" />
     <ClInclude Include="KeyboardClient.h" />
     <ClInclude Include="ManualClient.h" />
+    <ClInclude Include="RandomClient.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
