@@ -24,7 +24,7 @@ protected:
 	}
 
 public:
-	KeyboardClient(Array<Key> operation_keys);
+	KeyboardClient(TeamType type, Array<Key> operation_keys);
 	~KeyboardClient();
 };
 

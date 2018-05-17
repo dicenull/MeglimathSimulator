@@ -1,6 +1,7 @@
 ﻿
 # include <Siv3D.hpp> // OpenSiv3D v0.2.5
 #include <HamFramework.hpp>
+#include <rapidjson\document.h>
 
 #include "../MeglimathCore/TCPString.hpp"
 #include "../MeglimathCore/GameInfo.h"
@@ -14,8 +15,6 @@ struct GameData
 	asc::TCPStringClient tcp_client;
 	Drawer drawer;
 	GameInfo info;
-
-	KeyboardClient user_client = KeyboardClient({ KeyD, KeyE, KeyW, KeyQ, KeyA, KeyZ, KeyX, KeyC, KeyS });
 };
 
 using MyApp = SceneManager<String, GameData>;
@@ -46,6 +45,7 @@ namespace Scenes
 	struct Game : MyApp::Scene
 	{
 		bool _is_init = false;
+		std::unique_ptr<ManualClient> user_client;
 
 		Game(const InitData& init) : IScene(init)
 		{
@@ -66,34 +66,60 @@ namespace Scenes
 			String json_dat;
 			getData().tcp_client.readLine(json_dat);
 
-			if (json_dat == U"A")
-			{
-				getData().user_client.SetTeamType(TeamType::A);
-			}
-
-			if (json_dat == U"B")
-			{
-				getData().user_client.SetTeamType(TeamType::B);
-			}
-
 			if (!json_dat.isEmpty())
 			{
-				getData().info = { json_dat.narrow() };
-				_is_init = true;
+				rapidjson::Document document;
+				document.Parse(json_dat.narrow().data());
+
+				if (document.HasMember("TeamType"))
+				{
+					auto team_type_ch = document["TeamType"].GetString()[0];
+					Optional<TeamType> type;
+
+					if (team_type_ch == 'A')
+					{
+						type = TeamType::A;
+					}
+					else if (team_type_ch == 'B')
+					{
+						type = TeamType::B;
+					}
+					
+					if (type.has_value())
+					{
+						// Clientを初期化
+						user_client.reset(new KeyboardClient(type.value(), { KeyD, KeyE, KeyW, KeyQ, KeyA, KeyZ, KeyX, KeyC, KeyS }));
+					}
+				}
+				else if (user_client)
+				{
+					getData().info = { json_dat.narrow() };
+					_is_init = true;
+				}
+				else
+				{
+					getData().tcp_client.sendString(U"0\n");
+				}
 			}
 
-			// Clientを更新
-			data.user_client.Update();
-
-			// ServerにThinkを送信
-			if (data.user_client.IsReady())
+			if (_is_init)
 			{
-				auto think = data.user_client.NextThink(data.info);
-				auto str = Unicode::Widen(Transform::CreateJson(think));
-				str.push_back('\n');
+				auto & client = user_client;
+				
+				// Clientを更新
+				client->Update();
 
-				getData().tcp_client.sendString(str);
+				// ServerにThinkを送信
+				if (client->IsReady())
+				{
+					auto think = client->NextThink(data.info);
+					auto str = Unicode::Widen(Transform::CreateJson(think));
+					str.push_back('\n');
+
+					getData().tcp_client.sendString(str);
+				}
 			}
+
 		}
 
 		void draw() const override

@@ -96,3 +96,26 @@ const std::string Transform::CreateJson(const Think& think)
 
 	return buffer.GetString();
 }
+
+const std::string Transform::CreateJson(const TeamType & type)
+{
+	rapidjson::StringBuffer buffer;
+	rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
+	writer.StartObject();
+	writer.Key("TeamType");
+
+	std::string type_obj;
+	switch (type)
+	{
+	case TeamType::A:
+		type_obj = "A";
+		break;
+	case TeamType::B:
+		type_obj = "B";
+		break;
+	}
+	writer.String(type_obj.data());
+	writer.EndObject();
+
+	return buffer.GetString();
+}

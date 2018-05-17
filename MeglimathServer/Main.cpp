@@ -3,6 +3,7 @@
 #include <HamFramework.hpp>
 
 #include <rapidjson\document.h>
+#include <rapidjson\writer.h>
 
 #include "../MeglimathCore/Game.h"
 #include "../MeglimathCore/Drawer.h"
@@ -58,13 +59,19 @@ namespace Scenes
 			}
 		}
 
+		void sendTeamTypes()
+		{
+			auto ids = getData().server.getSessionIDs();
+			auto to_wide_json = [](TeamType type) {return Unicode::Widen(Transform::CreateJson(type)) + U"\n"; };
+
+			getData().server.sendString(to_wide_json(TeamType::A), ids[0]);
+			getData().server.sendString(to_wide_json(TeamType::B), ids[1]);
+		}
+
 	public:
 		Game(const InitData& init) : IScene(init)
 		{
-			auto ids = getData().server.getSessionIDs();
-			getData().server.sendString(String(U"A\n"), ids[0]);
-			getData().server.sendString(String(U"B\n"), ids[1]);
-
+			sendTeamTypes();
 			sendGameInfo();
 
 			// ClientのThinkをidで管理
@@ -93,6 +100,12 @@ namespace Scenes
 
 				if (json_dat.isEmpty())
 				{
+					continue;
+				}
+
+				if (json_dat == U"0")
+				{
+					sendTeamTypes();
 					continue;
 				}
 
