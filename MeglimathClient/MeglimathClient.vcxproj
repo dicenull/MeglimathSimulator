@@ -214,6 +214,7 @@
     <ClCompile Include="..\MeglimathCore\GameLogic\TeamLogic.cpp" />
     <ClCompile Include="..\MeglimathCore\GameLogic\Think.cpp" />
     <ClCompile Include="..\MeglimathCore\GameLogic\Transform.cpp" />
+    <ClCompile Include="..\MeglimathCore\StatusDrawer.cpp" />
     <ClCompile Include="..\MeglimathCore\Team.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="KeyboardClient.cpp" />

@@ -30,5 +30,8 @@ public:
 public:
 	Drawer();
 	~Drawer();
+
+private:
+	void drawStatus(DrawableText text, Color color);
 };
 
