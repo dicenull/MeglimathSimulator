@@ -1,13 +1,19 @@
 ﻿
 # include <Siv3D.hpp> // OpenSiv3D v0.2.5
+#include <HamFramework.hpp>
+#include <rapidjson\document.h>
+
 #include "../MeglimathCore/TCPString.hpp"
 #include "../MeglimathCore/GameInfo.h"
 #include "../MeglimathCore/Drawer.h"
-#include <HamFramework.hpp>
+#include "../MeglimathCore/CreateJson.h"
+
+#include "KeyboardClient.h"
+#include "RandomClient.h"
 
 struct GameData
 {
-	asc::TCPStringClient client;
+	asc::TCPStringClient tcp_client;
 	Drawer drawer;
 	GameInfo info;
 };
@@ -20,12 +26,12 @@ namespace Scenes
 	{
 		Connection(const InitData& init) : IScene(init)
 		{
-			getData().client.connect(IPv4::localhost(), 31400);
+			getData().tcp_client.connect(IPv4::localhost(), 31400);
 		}
 
 		void update() override
 		{
-			if (getData().client.isConnected())
+			if (getData().tcp_client.isConnected())
 			{
 				changeScene(U"Game");
 			}
@@ -40,62 +46,82 @@ namespace Scenes
 	struct Game : MyApp::Scene
 	{
 		bool _is_init = false;
+		std::unique_ptr<Client> user_client;
 
 		Game(const InitData& init) : IScene(init)
 		{
+
 		}
 
 		void update() override
 		{
 			auto & data = getData();
-			if (data.client.hasError())
+			if (data.tcp_client.hasError())
 			{
-				data.client.disconnect();
+				data.tcp_client.disconnect();
 
 				changeScene(U"Connection");
 			}
 
-			// ランダムな行動を動作確認として送る
-			Think test_thinks =
-			{
-				Step{ Action(Random(0,1)),Direction(Random(0,7)) },
-				Step{ Action(Random(0,1)),Direction(Random(0,7)) }
-			};
-			rapidjson::StringBuffer buf;
-			rapidjson::Writer<rapidjson::StringBuffer> writer(buf);
-
-			writer.StartObject();
-			writer.Key("TeamType");
-			writer.String(RandomBool() ? "A" : "B");
-			writer.Key("Action");
-			writer.StartArray();
-			writer.String(String(Transform::ToString(test_thinks.steps[0].action)).toUTF8().data());
-			writer.String(String(Transform::ToString(test_thinks.steps[0].direction)).toUTF8().data());
-			writer.EndArray();
-
-			writer.Key("Direction");
-			writer.StartArray();
-			writer.String(String(Transform::ToString(test_thinks.steps[1].action)).toUTF8().data());
-			writer.String(String(Transform::ToString(test_thinks.steps[1].direction)).toUTF8().data());
-			writer.EndArray();
-			writer.EndObject();
-
-			auto str = Unicode::Widen(buf.GetString());
-			str.push_back('\n');
-
-			getData().client.sendString(str);
-			// ---
-
+			// ゲームの更新
 			String json_dat;
-			getData().client.readLine(json_dat);
+			getData().tcp_client.readLine(json_dat);
 
-			if (json_dat.isEmpty())
+			if (!json_dat.isEmpty())
 			{
-				return;
+				rapidjson::Document document;
+				document.Parse(json_dat.narrow().data());
+
+				if (document.HasMember("TeamType"))
+				{
+					auto team_type_ch = document["TeamType"].GetString()[0];
+					Optional<TeamType> type;
+
+					if (team_type_ch == 'A')
+					{
+						type = TeamType::A;
+					}
+					else if (team_type_ch == 'B')
+					{
+						type = TeamType::B;
+					}
+					
+					if (type.has_value())
+					{
+						// Clientを初期化
+						// user_client.reset(new KeyboardClient(type.value(), { KeyD, KeyE, KeyW, KeyQ, KeyA, KeyZ, KeyX, KeyC, KeyS }));
+						user_client.reset(new RandomClient(type.value()));
+					}
+				}
+				else if (user_client)
+				{
+					getData().info = { json_dat.narrow() };
+					_is_init = true;
+				}
+				else
+				{
+					getData().tcp_client.sendString(U"0\n");
+				}
 			}
-			
-			getData().info = { json_dat.narrow() };
-			_is_init = true;
+
+			if (_is_init)
+			{
+				auto & client = user_client;
+				
+				// Clientを更新
+				client->Update();
+
+				// ServerにThinkを送信
+				if (client->IsReady())
+				{
+					auto think = client->NextThink(data.info);
+					auto str = Unicode::Widen(Transform::CreateJson(think));
+					str.push_back('\n');
+
+					getData().tcp_client.sendString(str);
+				}
+			}
+
 		}
 
 		void draw() const override

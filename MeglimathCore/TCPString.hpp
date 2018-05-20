@@ -210,6 +210,8 @@ namespace asc
 		bool sendString(const String& data);
 
 		bool sendString(const String& data, const Optional<SessionID>& id);
+
+		bool readUntil(char end, String& to, Optional<SessionID>& id);
 	};
 
 	template<>
@@ -226,6 +228,29 @@ namespace asc
 		const auto str = data.toUTF8();
 
 		return send(str.data(), str.length());
+	}
+
+	template<>
+	bool TCPString<TCPServer>::readUntil(char end, String& to, Optional<SessionID>& id)
+	{
+		std::string buffer;
+
+		buffer.resize(available(id));
+
+		if (!lookahead(&buffer[0], buffer.size(), id))
+			return false;
+
+		const auto pos = buffer.find(end);
+
+		if (pos == buffer.npos)
+			return false;
+
+		buffer.resize(pos + 1);
+
+		skip(sizeof(std::string::value_type) * buffer.size(), id);
+		to = Unicode::FromUTF8(std::move(buffer));
+
+		return true;
 	}
 
 	using TCPStringClient = TCPString<TCPClient>;

@@ -1,5 +1,6 @@
 #include "Drawer.h"
 #include "LogicUtil.h"
+#include "StatusDrawer.h"
 void Drawer::DrawField(const Field & field) const
 {
 	// セルとタイルポイントの描画
@@ -74,32 +75,27 @@ void Drawer::DrawStatus(const HashTable<TeamType, Think> & thinks, const Field &
 	messages[2].push_back(String(U"Turn : ") + ToString(turn));
 
 	// ステータスを描画
-	int index = 0;
-	Color team_colors[] = { TeamColor::ColorOf(TeamType::A), TeamColor::ColorOf(TeamType::B) };
-
-	auto draw_pos = [&](Point origin) {return origin + Point(0, index * 24); };
+	StatusDrawer status_drawer{ statOrigin };
+	// 各チームの情報を描画
 	for (int i : step(2))
 	{
+		auto team_color = TeamColor::ColorOf((TeamType)i);
+		// チーム名を描画
 		auto text = FontAsset(U"Stat")(Transform::ToString((TeamType)i));
-		text.region(draw_pos(statOrigin)).draw(Palette::Gray);
-		text.draw(draw_pos(statOrigin), team_colors[i]);
-
-		index++;
-
+		status_drawer.DrawStatus(text, team_color);
+		
+		// 描画位置を改行
+		
 		for (size_t k : step(messages[i].count()))
 		{
 			text = FontAsset(U"Stat")(messages[i][k]);
-			text.region(draw_pos(statOrigin)).draw(Palette::Gray);
-			text.draw(draw_pos(statOrigin), TeamColor::ColorOf((TeamType)i));
-			index++;
+			status_drawer.DrawStatus(text, team_color);
 		}
 	}
 
 	for (size_t i : step(messages[2].count()))
 	{
-		FontAsset(U"Stat")(messages[2][i])
-			.draw(draw_pos(statOrigin));
-		index++;
+		status_drawer.DrawStatus(FontAsset(U"Stat")(messages[2][i]));
 	}
 }
 

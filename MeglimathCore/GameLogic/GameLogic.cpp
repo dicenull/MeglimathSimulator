@@ -60,7 +60,7 @@ void GameLogic::InitalizeFromJson(const std::string json)
 
 	//JSONReader json(path);
 
-	_field = Field(json);
+	_field = { json };
 	if (document.HasMember("InitPos")) {
 		initAgentsPos(_Point<int>{ document["InitPos"].GetString() });
 	}

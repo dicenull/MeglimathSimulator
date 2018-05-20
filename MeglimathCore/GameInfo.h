@@ -1,8 +1,6 @@
 #pragma once
 #include "GameLogic/Field.h"
 #include<Siv3D.hpp>
-#include <rapidjson\rapidjson.h>
-#include <rapidjson\writer.h>
 
 class GameInfo
 {
@@ -22,8 +20,5 @@ public:
 	GameInfo(std::string json);
 	GameInfo(Field field, int turn, HashTable<TeamType, Array<Agent>> agents);
 	~GameInfo();
-
-public:
-	std::string CreateJson();
 };
 

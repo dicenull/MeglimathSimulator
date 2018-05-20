@@ -3,17 +3,19 @@
 #include <HamFramework.hpp>
 
 #include <rapidjson\document.h>
+#include <rapidjson\writer.h>
 
 #include "../MeglimathCore/Game.h"
 #include "../MeglimathCore/Drawer.h"
 #include "../MeglimathCore/TCPString.hpp"
+#include "../MeglimathCore/CreateJson.h"
 
 struct GameData
 {
 	const FilePath field_path = U"../Fields/LargeField.json";
 	Game game = { field_path };
 	Drawer drawer;
-	Optional<Think> thinks[2] = { none, none };
+	std::map<SessionID, Optional<Think>> thinks;
 	asc::TCPStringServer server;
 };
 
@@ -38,20 +40,44 @@ namespace Scenes
 
 		void draw() const override
 		{
-			FontAsset(U"Msg")(U"接続中...\n", getData().server.num_sessions()).drawAt(Window::Center());
+			getData().drawer.DrawField(getData().game.GetField());
+			FontAsset(U"Msg")(U"待機中... 接続数 : ", getData().server.num_sessions()).draw(Point(0, 0));
 		}
 	};
 
 	struct Game : MyApp::Scene
 	{
-		Game(const InitData& init) : IScene(init)
+	private:
+		void sendGameInfo()
 		{
-			auto str = Unicode::Widen(getData().game.GetGameInfo().CreateJson());
+			auto str = Unicode::Widen(Transform::CreateJson(getData().game.GetGameInfo()));
 			str.push_back('\n');
 
 			for (auto id : getData().server.getSessionIDs())
 			{
 				getData().server.sendString(str, id);
+			}
+		}
+
+		void sendTeamTypes()
+		{
+			auto ids = getData().server.getSessionIDs();
+			auto to_wide_json = [](TeamType type) {return Unicode::Widen(Transform::CreateJson(type)) + U"\n"; };
+
+			getData().server.sendString(to_wide_json(TeamType::A), ids[0]);
+			getData().server.sendString(to_wide_json(TeamType::B), ids[1]);
+		}
+
+	public:
+		Game(const InitData& init) : IScene(init)
+		{
+			sendTeamTypes();
+			sendGameInfo();
+
+			// ClientのThinkをidで管理
+			for (auto id : getData().server.getSessionIDs())
+			{
+				getData().thinks[id] = none;
 			}
 		}
 
@@ -66,34 +92,42 @@ namespace Scenes
 				changeScene(U"Connection");
 			}
 
-			String json_dat;
-			getData().server.readLine(json_dat);
-
-			if (json_dat.isEmpty())
+			// Clientから次ターンの行動を受け取る
+			for (auto id : data.server.getSessionIDs())
 			{
-				return;
+				String json_dat;
+				getData().server.readUntil('\n', json_dat, Optional<SessionID>(id));
+
+				if (json_dat.isEmpty())
+				{
+					continue;
+				}
+
+				if (json_dat == U"0")
+				{
+					sendTeamTypes();
+					continue;
+				}
+
+				auto & thinks = getData().thinks;
+
+				// jsonからThink情報を取得
+				rapidjson::Document doc;
+				doc.Parse(json_dat.narrow().data());
+
+				data.thinks[id] = { json_dat.narrow() };
 			}
-
-			auto & thinks = getData().thinks;
-
-			rapidjson::Document doc;
-			doc.Parse(json_dat.narrow().data());
-			Think think = { json_dat.narrow() };
-			auto team_type = doc["TeamType"].GetString();
-
-			if (team_type[0] == 'A')
+			
+			// Client二つ分のThinkが更新されたら次のターンへ
+			auto ids = data.server.getSessionIDs();
+			auto &thinks = data.thinks;
+			if (thinks[ids[0]].has_value() && thinks[ids[1]].has_value())
 			{
-				thinks[0] = think;
-			}
+				getData().game.NextTurn(thinks[ids[0]].value(), thinks[ids[1]].value());
+				thinks[ids[0]] = none;
+				thinks[ids[1]] = none;
 
-			if (team_type[0] == 'B')
-			{
-				thinks[1] = think;
-			}
-
-			if (thinks[0].has_value() && thinks[1].has_value())
-			{
-				getData().game.NextTurn(thinks[0].value(), thinks[1].value());
+				sendGameInfo();
 			}
 		}
 
@@ -101,10 +135,11 @@ namespace Scenes
 		{
 			auto & game = getData().game;
 			auto & drawer = getData().drawer;
+			auto field = game.GetField();
 
-			drawer.DrawField(game.GetField());
+			drawer.DrawField(field);
 			drawer.DrawAgents(game.GetAgentMap());
-			drawer.DrawStatus(game.GetThinks(), game.GetField(), game.GetTurn());
+			drawer.DrawStatus(game.GetThinks(), field, game.GetTurn());
 		}
 	};
 }
@@ -117,6 +152,8 @@ void Main()
 		.add<Scenes::Game>(U"Game");
 
 	FontAsset::Register(U"Msg", 32);
+	FontAsset::Register(U"Cell", 16, Typeface::Black);
+	FontAsset::Register(U"Stat", 16, Typeface::Default);
 
 	Window::SetTitle(U"TCP Server");
 
