@@ -55,6 +55,11 @@ public:
 	/// </summary>
 	void NextTurn(std::unordered_map<TeamType, Think> &_thinks);
 
+	///<summary>
+	///‰Â”\‚Ès“®‚©
+	///</summary>
+	bool IsThinkAble(TeamType team, Think think)const;
+
 	bool GetGameEnd();
 	int GetWinner();
 

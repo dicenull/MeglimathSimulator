@@ -161,6 +161,26 @@ void GameLogic::NextTurn(std::unordered_map<TeamType, Think> &_thinks)
 	_field.UpdatePoint();
 }
 
+bool GameLogic::IsThinkAble(TeamType team, Think think)const
+{
+	auto agents_map = GetAgentMap();
+	auto agents = GetAgents();
+	int i = 0;
+	for (auto step : think.steps) {
+		Direction dir = step.direction;
+		// エージェントを動かしたい方向に動かした場合の座標
+		_Point pos = agents_map[team][i].GetPosition() + Transform::DirToDelta(dir);
+		if (_field.IsInField(pos)
+			&& _field.GetCells()[pos.y][pos.x].GetTile() == TileType::None) {
+		}
+		else {
+			return false;
+		}
+		i++;
+	}
+	return true;
+}
+
 bool GameLogic::GetGameEnd()
 {
 	return GetTurn() == 0;
