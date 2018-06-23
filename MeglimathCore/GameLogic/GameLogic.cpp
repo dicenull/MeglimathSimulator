@@ -12,7 +12,7 @@ std::unordered_map<TeamType, std::vector<Agent>> GameLogic::GetAgentMap() const
 std::vector<Agent> GameLogic::GetAgents() const
 {
 	std::vector<Agent> ret{ _teamlogics[0].GetAgents() };
-	auto & other = _teamlogics[1].GetAgents();
+	auto && other = _teamlogics[1].GetAgents();
 	ret.push_back(other[0]);
 	ret.push_back(other[1]);
 	return ret;
@@ -85,7 +85,7 @@ int GameLogic::GetTurn() const
 	return _turn;
 }
 
-void GameLogic::NextTurn(std::unordered_map<TeamType, Think> &_thinks)
+void GameLogic::NextTurn(const std::unordered_map<TeamType, Think> &_thinks)
 {
 	if (_turn <= 0)
 	{
@@ -101,12 +101,12 @@ void GameLogic::NextTurn(std::unordered_map<TeamType, Think> &_thinks)
 	{
 		for (int i = 0; i < 2; i++)
 		{
-			Direction dir = _thinks[team].steps[i].direction;
+			Direction dir = _thinks.at(team).steps[i].direction;
 			// エージェントを動かしたい方向に動かした場合の座標
 			_Point<int> pos = agents_map[team][i].GetPosition()+Transform::DirToDelta(dir);
 
 			// エージェントが動作する座標を追加
-			switch (_thinks[team].steps[i].action)
+			switch (_thinks.at(team).steps[i].action)
 			{
 			case Action::Move:
 				move_point_arr.push_back(std::make_pair(pos, std::make_pair(dir, team)));

@@ -2,7 +2,7 @@
 
 const std::string Transform::CreateJson(const GameInfo& info)
 {
-	Field & field = info.GetField();
+	const Field & field = info.GetField();
 	auto agents = info.GetAllAgent();
 	int turn = info.GetTurn();
 

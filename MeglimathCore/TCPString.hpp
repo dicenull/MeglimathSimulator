@@ -211,7 +211,7 @@ namespace asc
 
 		bool sendString(const String& data, const Optional<SessionID>& id);
 
-		bool readUntil(char end, String& to, Optional<SessionID>& id);
+		bool readUntil(char end, String& to,const Optional<SessionID>& id);
 	};
 
 	template<>
@@ -231,7 +231,7 @@ namespace asc
 	}
 
 	template<>
-	bool TCPString<TCPServer>::readUntil(char end, String& to, Optional<SessionID>& id)
+	bool TCPString<TCPServer>::readUntil(char end, String& to,const Optional<SessionID>& id)
 	{
 		std::string buffer;
 

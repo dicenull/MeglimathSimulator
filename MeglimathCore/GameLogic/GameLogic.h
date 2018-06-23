@@ -53,7 +53,7 @@ public:
 	/// <summary>
 	/// ゲームを次のターンに進める
 	/// </summary>
-	void NextTurn(std::unordered_map<TeamType, Think> &_thinks);
+	void NextTurn(const std::unordered_map<TeamType, Think> &_thinks);
 
 	///<summary>
 	///可能な行動か
