@@ -26,7 +26,8 @@ void Main()
 	{
 		if (index < paths.size() && MouseL.down())
 		{
-			field = Field{ paths[index] };
+			TextReader reader(paths[index]);
+			field = Field{ reader.readAll().narrow() };
 			json = JSONReader(paths[index]);
 
 			index++;

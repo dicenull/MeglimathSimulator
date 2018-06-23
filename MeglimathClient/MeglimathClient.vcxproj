@@ -140,11 +140,13 @@
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <MinimalRebuild>false</MinimalRebuild>
-      <AdditionalIncludeDirectories>$(RAPIDJSON)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)MeglimathCore\GameLogic;$(RAPIDJSON)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)Intermediate\MeglimathCore\Debug-x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>MeglimathCore(debug_64-bit).lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /I /D /Y "$(OutDir)$(TargetFileName)" "$(ProjectDir)App"</Command>
@@ -201,21 +203,6 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\MeglimathCore\CreateJson.cpp" />
-    <ClCompile Include="..\MeglimathCore\Drawer.cpp" />
-    <ClCompile Include="..\MeglimathCore\Game.cpp" />
-    <ClCompile Include="..\MeglimathCore\GameInfo.cpp" />
-    <ClCompile Include="..\MeglimathCore\GameLogic\Agent.cpp" />
-    <ClCompile Include="..\MeglimathCore\GameLogic\Cell.cpp" />
-    <ClCompile Include="..\MeglimathCore\GameLogic\Field.cpp" />
-    <ClCompile Include="..\MeglimathCore\GameLogic\Format.cpp" />
-    <ClCompile Include="..\MeglimathCore\GameLogic\GameLogic.cpp" />
-    <ClCompile Include="..\MeglimathCore\GameLogic\GamePoints.cpp" />
-    <ClCompile Include="..\MeglimathCore\GameLogic\TeamLogic.cpp" />
-    <ClCompile Include="..\MeglimathCore\GameLogic\Think.cpp" />
-    <ClCompile Include="..\MeglimathCore\GameLogic\Transform.cpp" />
-    <ClCompile Include="..\MeglimathCore\StatusDrawer.cpp" />
-    <ClCompile Include="..\MeglimathCore\Team.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="KeyboardClient.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -266,31 +253,15 @@
     <Text Include="App\engine\font\noto\LICENSE_OFL.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\MeglimathCore\CreateJson.h" />
-    <ClInclude Include="..\MeglimathCore\Drawer.h" />
-    <ClInclude Include="..\MeglimathCore\DrawingInfo.h" />
-    <ClInclude Include="..\MeglimathCore\Game.h" />
-    <ClInclude Include="..\MeglimathCore\GameInfo.h" />
-    <ClInclude Include="..\MeglimathCore\GameLogic\Action.h" />
-    <ClInclude Include="..\MeglimathCore\GameLogic\Agent.h" />
-    <ClInclude Include="..\MeglimathCore\GameLogic\Cell.h" />
-    <ClInclude Include="..\MeglimathCore\GameLogic\Field.h" />
-    <ClInclude Include="..\MeglimathCore\GameLogic\Format.h" />
-    <ClInclude Include="..\MeglimathCore\GameLogic\GameLogic.h" />
-    <ClInclude Include="..\MeglimathCore\GameLogic\GamePoints.h" />
-    <ClInclude Include="..\MeglimathCore\GameLogic\TeamLogic.h" />
-    <ClInclude Include="..\MeglimathCore\GameLogic\Think.h" />
-    <ClInclude Include="..\MeglimathCore\GameLogic\Transform.h" />
-    <ClInclude Include="..\MeglimathCore\GameLogic\Types.h" />
-    <ClInclude Include="..\MeglimathCore\GameLogic\Util.h" />
-    <ClInclude Include="..\MeglimathCore\LogicUtil.h" />
-    <ClInclude Include="..\MeglimathCore\TCPString.hpp" />
-    <ClInclude Include="..\MeglimathCore\Team.h" />
-    <ClInclude Include="..\MeglimathCore\TeamColor.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="KeyboardClient.h" />
     <ClInclude Include="ManualClient.h" />
     <ClInclude Include="RandomClient.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MeglimathCore\MeglimathCore.vcxproj">
+      <Project>{d7f2c72d-cdc8-43af-bdc8-2b12a04c9c3e}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

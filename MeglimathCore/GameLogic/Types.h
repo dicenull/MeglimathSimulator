@@ -88,9 +88,9 @@ public:
 
 	_Grid() :_Grid(_Size(0, 0)) {}
 	_Grid(_Size size) :_size(size) { 
-		for (int i=0; i < size.x; i++) {
+		for (int i=0; i < size.y; i++) {
 			std::vector<Component> v;
-			for (int j=0; j < size.y; j++) {
+			for (int j=0; j < size.x; j++) {
 				v.emplace_back();
 			}
 			component.emplace_back(v);
