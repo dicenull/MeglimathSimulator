@@ -66,7 +66,8 @@ template <class Component>
 class _Grid {
 public:
 	_Size _size;
-	std::unique_ptr<boost::multi_array<Component, 2>> component;
+	using Comp = boost::multi_array<Component, 2>;
+	std::unique_ptr<Comp> component;
 	auto operator[](size_t index) {
 		return ( *component )[index];
 	}
@@ -79,12 +80,12 @@ public:
 	const _Size size()const { return _size; }
 
 	_Grid() :_Grid(_Size(0, 0)) {}
-	_Grid(_Size size) :_size(size), component(new boost::multi_array<Component, 2>{ boost::extents[_size.y][_size.x] }) {}
+	_Grid(_Size size) :_size(size), component(std::make_unique<Comp>(boost::extents[_size.y][_size.x])) {}
 
-	_Grid(const _Grid& g) : _size(g.size()), component(new  boost::multi_array<Component, 2>{ *( g.component ) }) {}
+	_Grid(const _Grid& g) : _size(g.size()), component(std::make_unique<Comp>(*( g.component ))) {}
 	_Grid& operator=(const _Grid<Component>& g) {
 		_size = g.size();
-		component.reset(new boost::multi_array<Component, 2>{ *( g.component ) });
+		component = std::make_unique<Comp>(*( g.component ));
 		return *this;
 	}
 };

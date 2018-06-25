@@ -189,10 +189,6 @@ Field::Field(std::string json)
 	document.Parse(json.data());
 	_Size size = _Size{ document["Size"].GetString() };
 	auto points = document["Points"].GetArray();
-	//JSONReader json(file);
-
-	//Size size = json[U"Size"].get<Size>();
-	//auto points = json[U"Points"].arrayView();
 
 	// 入力されるタイルポイントの数
 	_Size data_size = _Size((size.x + 1) / 2, (size.y + 1) / 2);
@@ -216,13 +212,7 @@ Field::Field(std::string json)
 	}
 	if (!document.HasMember("Tiles"))return;
 
-	//if (json[U"Tiles"].isEmpty())
-	//{
-	//	return;
-	//}
-
 	// テスト用にタイル情報がある場合読み込んで入力する
-	//auto tiles = json[U"Tiles"].arrayView();
 	auto tiles = document["Tiles"].GetArray();
 	for (int i : step(size.y))
 	{

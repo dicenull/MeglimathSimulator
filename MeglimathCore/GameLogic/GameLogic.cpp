@@ -58,8 +58,6 @@ void GameLogic::InitalizeFromJson(const std::string json)
 	rapidjson::Document document;
 	document.Parse(json.data());
 
-	//JSONReader json(path);
-
 	_field = { json };
 	if (document.HasMember("InitPos")) {
 		initAgentsPos(_Point<int>{ document["InitPos"].GetString() });
@@ -67,16 +65,7 @@ void GameLogic::InitalizeFromJson(const std::string json)
 	else {
 		initAgentsPos();
 	}
-	//if (json[U"InitPos"].isNull())
-	//{
-	//	initAgentsPos();
-	//}
-	//else
-	//{
-	//	initAgentsPos(json[U"InitPos"].get<Point>());
-	//}
 	_turn = document["Turn"].GetInt();
-	//_turn = json[U"Turn"].get<int>();
 }
 
 
