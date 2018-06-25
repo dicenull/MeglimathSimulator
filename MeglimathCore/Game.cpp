@@ -27,7 +27,7 @@ void Game::initAgentsPos(Point init_pos)
 	_gamelogic.initAgentsPos({ init_pos.x,init_pos.y });
 }
 
-Array<TeamLogic>& Game::getTeamLogics()
+Array<TeamLogic> Game::getTeamLogics()
 {
 	return LogicUtil::toS3dArray(_gamelogic.getTeamLogics());
 }

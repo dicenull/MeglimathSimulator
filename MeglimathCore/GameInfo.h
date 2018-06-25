@@ -10,7 +10,7 @@ private:
 	int _turn;
 
 public:
-	Field GetField() const;
+	const Field& GetField() const;
 	HashTable<TeamType, Array<Agent>> GetAllAgent() const;
 	Array<Agent> GetAgents(TeamType type) const;
 	int GetTurn() const;

@@ -1,7 +1,7 @@
 #include "GameInfo.h"
 #include "LogicUtil.h"
 
-Field GameInfo::GetField() const
+const Field& GameInfo::GetField() const
 {
 	return _field;
 }
