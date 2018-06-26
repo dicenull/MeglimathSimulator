@@ -1,7 +1,7 @@
 ﻿
 # include <Siv3D.hpp> // OpenSiv3D v0.2.5
-#include "../MegurimasuSimulator/Field.h"
-#include "../MegurimasuSimulator/Drawer.h"
+#include "../MeglimathCore/GameLogic/Field.h"
+#include "../MeglimathCore/Drawer.h"
 
 void Main()
 {
@@ -26,7 +26,8 @@ void Main()
 	{
 		if (index < paths.size() && MouseL.down())
 		{
-			field = Field{ paths[index] };
+			TextReader reader(paths[index]);
+			field = Field{ reader.readAll().narrow() };
 			json = JSONReader(paths[index]);
 
 			index++;
