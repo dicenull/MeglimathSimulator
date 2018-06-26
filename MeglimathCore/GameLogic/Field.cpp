@@ -13,8 +13,16 @@ int Field::aggregateAreaPoint(TileType tile)
 		{
 			if (_status[k][i])
 			{
-				area_point += std::abs(_cells[k - 1][i - 1].GetPoint());
+				continue;
 			}
+
+			auto cell = _cells[k - 1][i - 1];
+			if (cell.GetTile() == tile)
+			{
+				continue;
+			}
+			
+			area_point += std::abs(cell.GetPoint());
 		}
 	}
 
@@ -32,12 +40,12 @@ void Field::dfsAreaPoint(_Point<> pos, TileType tile)
 	}
 
 	// íTçıçœÇ›Ç»ÇÁèIóπ
-	if (_status[pos.y][pos.x] == false)
+	if (_status[pos.y][pos.x] == true)
 	{
 		return;
 	}
 
-	_status[pos.y][pos.x] = false;
+	_status[pos.y][pos.x] = true;
 	if (pos.x == 0 || pos.x == _cells.width() + 1 ||
 		pos.y == 0 || pos.y == _cells.height() + 1)
 	{
