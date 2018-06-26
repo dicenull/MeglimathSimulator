@@ -1,14 +1,14 @@
 #pragma once
 #include<assert.h>
 #include<vector>
-#include<string.h>
-enum class TileType
-{
+#include<string>
+#include<memory>
+#include<boost/multi_array.hpp>
+enum class TileType {
 	A, B, None
 };
 
-enum class TeamType
-{
+enum class TeamType {
 	A, B
 };
 
@@ -21,7 +21,7 @@ public:
 
 	_Point(const char * str) {
 		assert(str[0] == '(');
-		assert(str[std::strlen(str)-1] == ')');
+		assert(str[std::strlen(str) - 1] == ')');
 		auto comma = std::strchr(str, ',');
 		int _x, _y;
 		sscanf_s(str + 1, "%d", &_x);
@@ -52,11 +52,11 @@ public:
 	}
 	template <class Comp = int>
 	operator _Point<Comp>() {
-		return _Point<Comp>{(Comp)this->x, (Comp)this->y};
+		return _Point<Comp>{( Comp )this->x, ( Comp )this->y};
 	}
 	template <class Comp = int>
 	operator const _Point<Comp>()const {
-		return _Point<Comp>{(Comp)this->x, (Comp)this->y};
+		return _Point<Comp>{( Comp )this->x, ( Comp )this->y};
 	}
 };
 
@@ -64,38 +64,29 @@ typedef _Point<size_t> _Size;
 
 template <class Component>
 class _Grid {
-	std::vector<std::vector<Component>> component;
-	_Size _size;
 public:
-	std::vector<Component>& operator[](size_t index) {
-		return component[index];
+	_Size _size;
+	using Comp = boost::multi_array<Component, 2>;
+	std::unique_ptr<Comp> component;
+	auto operator[](size_t index) {
+		return ( *component )[index];
 	}
-	const std::vector<Component>& operator[](size_t index)const {
-		return component[index];
-	}
-
-	const size_t width()const {
-		return _size.x;
-	}
-
-	const size_t height() const {
-		return _size.y;
+	const auto operator[](size_t index)const {
+		return ( *component )[index];
 	}
 
-	const _Size size()const {
-		return _size;
-	}
+	const size_t width()const { return _size.x; }
+	const size_t height() const { return _size.y; }
+	const _Size size()const { return _size; }
 
 	_Grid() :_Grid(_Size(0, 0)) {}
-	_Grid(_Size size) :_size(size) { 
-		for (int i=0; i < size.y; i++) {
-			std::vector<Component> v;
-			for (int j=0; j < size.x; j++) {
-				v.emplace_back();
-			}
-			component.emplace_back(v);
-		}
+	_Grid(_Size size) :_size(size), component(std::make_unique<Comp>(boost::extents[_size.y][_size.x])) {}
+
+	_Grid(const _Grid& g) : _size(g.size()), component(std::make_unique<Comp>(*( g.component ))) {}
+	_Grid& operator=(const _Grid<Component>& g) {
+		_size = g.size();
+		component = std::make_unique<Comp>(*( g.component ));
+		return *this;
 	}
-	_Grid(const _Grid& g) :component(g.component), _size(g._size) {};
 };
 
