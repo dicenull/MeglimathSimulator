@@ -89,8 +89,8 @@ namespace Scenes
 					if (type.has_value())
 					{
 						// Clientを初期化
-						// user_client.reset(new KeyboardClient(type.value(), { KeyD, KeyE, KeyW, KeyQ, KeyA, KeyZ, KeyX, KeyC, KeyS }));
-						user_client.reset(new RandomClient(type.value()));
+						user_client.reset(new KeyboardClient(type.value(), { KeyD, KeyE, KeyW, KeyQ, KeyA, KeyZ, KeyX, KeyC, KeyS }));
+						// user_client.reset(new RandomClient(type.value()));
 					}
 				}
 				else if (user_client)

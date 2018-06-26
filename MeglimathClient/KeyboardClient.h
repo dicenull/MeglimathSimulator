@@ -16,6 +16,8 @@ protected:
 		{
 			if (_operation_keys[i].down())
 			{
+				_is_pressed_shift = KeyLShift.pressed();
+
 				return Optional<Direction>(static_cast<Direction>(i));
 			}
 		}

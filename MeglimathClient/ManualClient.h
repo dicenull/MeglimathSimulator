@@ -8,6 +8,7 @@ class ManualClient :
 {
 protected:
 	virtual Optional<Direction> decideDirection() = 0;
+	bool _is_pressed_shift;
 
 public:
 	Think NextThink(GameInfo info) override
@@ -25,9 +26,16 @@ public:
 		Step steps[2];
 		for (auto i : step(2))
 		{
-			steps[i] =
-				info.GetField().DecideStepByDirection
-				(info.GetAgents(_type)[i].GetPosition(), _directions[i].value());
+			if (_is_pressed_shift)
+			{
+				steps[i].action = Action::RemoveTile;
+			}
+			else
+			{
+				steps[i].action = Action::Move;
+			}
+
+			steps[i].direction = _directions[i].value();
 		}
 		Think next_think = { steps[0], steps[1] };
 

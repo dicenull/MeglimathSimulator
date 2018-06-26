@@ -43,6 +43,33 @@ namespace Transform
 		return _Point<int>(0, 0);
 	}
 
+	constexpr TileType ToTile(TeamType team)
+	{
+		switch (team)
+		{
+		case TeamType::A:
+			return TileType::A;
+
+		case TeamType::B:
+			return TileType::B;
+		}
+
+		return TileType::None;
+	}
+
+	constexpr TileType GetInverseType(TileType tile)
+	{
+		switch (tile)
+		{
+		case TileType::A:
+			return TileType::B;
+		case TileType::B:
+			return TileType::A;
+		}
+
+		return TileType::None;
+	}
+
 	const std::u32string ToString(Action action);
 
 	const std::u32string ToString(Direction dir);

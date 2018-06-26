@@ -120,6 +120,12 @@ namespace Scenes
 			
 			// Client二つ分のThinkが更新されたら次のターンへ
 			auto ids = data.server.getSessionIDs();
+
+			if (ids.count() != 2)
+			{
+				return;
+			}
+
 			auto &thinks = data.thinks;
 			if (thinks[ids[0]].has_value() && thinks[ids[1]].has_value())
 			{
