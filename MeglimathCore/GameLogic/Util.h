@@ -3,14 +3,14 @@
 #include<array>
 
 template<int n>
-inline const std::array<int, n> &step() {
+inline std::array<int, n> step() {
 	auto a = std::array<int, n>();
-	std::iota(a.begin(), a.end());
+	std::iota(a.begin(), a.end(), 0);
 	return a;
 }
 
-inline const std::vector<int> &step(size_t n) {
+inline std::vector<int> step(size_t n) {
 	auto v = std::vector<int>(n);
-	std::iota(v.begin(), v.end(), n);
+	std::iota(v.begin(), v.end(), 0);
 	return v;
 }
