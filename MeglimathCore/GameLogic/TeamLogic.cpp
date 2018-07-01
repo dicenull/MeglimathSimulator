@@ -1,15 +1,5 @@
 #include "TeamLogic.h"
 
-int TeamLogic::GetTotalPoint() const
-{
-	return _total_point;
-}
-
-void TeamLogic::SetTotalPoint(int total_point)
-{
-	_total_point = total_point;
-}
-
 void TeamLogic::InitAgentsPos(_Point<> pos1, _Point<> pos2)
 {
 	_agents[0] = Agent(pos1);
@@ -48,5 +38,4 @@ TeamLogic::TeamLogic(TeamType type, Agent agent1, Agent agent2)
 	_agents[1] = agent2;
 
 	_type = type;
-	_total_point = 0;
 }

@@ -109,8 +109,6 @@ namespace Scenes
 					continue;
 				}
 
-				auto & thinks = getData().thinks;
-
 				// jsonからThink情報を取得
 				rapidjson::Document doc;
 				doc.Parse(json_dat.narrow().data());

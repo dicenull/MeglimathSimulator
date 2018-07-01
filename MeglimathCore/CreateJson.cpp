@@ -31,10 +31,10 @@ const std::string Transform::CreateJson(const GameInfo& info)
 
 	writer.Key("Tiles");
 	writer.StartArray();
-	for (int y : step(cells.size().y))
+	for (auto y : step(cells.size().y))
 	{
 		std::string str;
-		for (int x : step(cells.size().x))
+		for (auto x : step(cells.size().x))
 		{
 			str.push_back(Transform::ToChar(cells[y][x].GetTile()));
 		}

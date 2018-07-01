@@ -6,11 +6,6 @@ class Agent
 {
 private:
 	/// <summary>
-	/// 取得したタイルポイント
-	/// </summary>
-	int _tile_point;
-
-	/// <summary>
 	/// 座標
 	/// </summary>
 	_Point<> _position;

@@ -195,10 +195,11 @@ bool GameLogic::GetGameEnd()
 int GameLogic::GetWinner()
 {
 	if (GetTurn() != 0)return -1;
-	if (_teamlogics[0].GetTotalPoint() > _teamlogics[1].GetTotalPoint()) {
+	auto total_points = _field.GetTotalPoints();
+	if (total_points[0] > total_points[1]) {
 		return (int)TeamType::A;
 	}
-	else if (_teamlogics[0].GetTotalPoint() < _teamlogics[1].GetTotalPoint()) {
+	else if (total_points[0] < total_points[1]) {
 		return (int)TeamType::B;
 	}
 	else {

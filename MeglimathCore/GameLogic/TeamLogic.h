@@ -6,11 +6,6 @@ class TeamLogic
 {
 private:
 	/// <summary>
-	/// チームの合計ポイント
-	/// </summary>
-	int _total_point;
-
-	/// <summary>
 	/// チームに所属するエージェント
 	/// </summary>
 	Agent _agents[2];
@@ -21,10 +16,6 @@ private:
 	TeamType _type;
 
 public:
-
-	int GetTotalPoint() const;
-	void SetTotalPoint(int total_point);
-
 	/// <summary>
 	/// エージェントの初期位置を初期化する
 	/// </summary>
