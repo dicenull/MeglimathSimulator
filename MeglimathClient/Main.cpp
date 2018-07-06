@@ -5,16 +5,16 @@
 
 #include "../MeglimathCore/TCPString.hpp"
 #include "../MeglimathCore/GameInfo.h"
-#include "../MeglimathCore/Drawer.h"
 #include "../MeglimathCore/CreateJson.h"
 
+#include "ClientDrawer.h"
 #include "KeyboardClient.h"
 #include "RandomClient.h"
 
 struct GameData
 {
 	asc::TCPStringClient tcp_client;
-	Drawer drawer;
+	ClientDrawer drawer;
 	GameInfo info;
 };
 

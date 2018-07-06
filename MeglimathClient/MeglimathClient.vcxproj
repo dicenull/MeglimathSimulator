@@ -204,6 +204,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp" />
+    <ClCompile Include="ClientDrawer.cpp" />
     <ClCompile Include="KeyboardClient.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="ManualClient.cpp" />
@@ -254,6 +255,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h" />
+    <ClInclude Include="ClientDrawer.h" />
     <ClInclude Include="KeyboardClient.h" />
     <ClInclude Include="ManualClient.h" />
     <ClInclude Include="RandomClient.h" />
