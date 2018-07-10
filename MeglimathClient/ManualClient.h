@@ -7,8 +7,10 @@ class ManualClient :
 	public Client
 {
 protected:
-	virtual Optional<Direction> decideDirection() = 0;
-	bool _is_pressed_shift;
+	virtual Optional<Step> decideStep() = 0;
+
+private:
+	Optional<Step> _steps[2];
 
 public:
 	Think NextThink(GameInfo info) override
@@ -16,33 +18,18 @@ public:
 		// s“®Œˆ’è‚µ‚Ä‚¢‚È‚¢ê‡‚Ìˆ—
 		for (auto i : step(2))
 		{
-			if (!_directions[i].has_value())
+			if (!_steps[i].has_value())
 			{
-				_directions[i] = Direction(Random(0, 7));
+				_steps[i] = Step((Action)Random(0, 1), (Direction)Random(0, 7));
 			}
 		}
 
-		// •ûŒü‚©‚çStep‚É•ÏŠ·
-		Step steps[2];
-		for (auto i : step(2))
-		{
-			if (_is_pressed_shift)
-			{
-				steps[i].action = Action::RemoveTile;
-			}
-			else
-			{
-				steps[i].action = Action::Move;
-			}
-
-			steps[i].direction = _directions[i].value();
-		}
-		Think next_think = { steps[0], steps[1] };
+		Think next_think = { _steps[0].value(), _steps[1].value() };
 
 		// ‰Šú‰»ˆ—
-		for (auto & direction : _directions)
+		for (auto & _step : _steps)
 		{
-			direction.reset();
+			_step.reset();
 		}
 		_is_ready = false;
 
@@ -56,12 +43,12 @@ public:
 			return;
 		}
 
-		auto & decide_dir
-			= (_directions[0].has_value() ? _directions[1] : _directions[0]);
+		auto & decide_step
+			= (_steps[0].has_value() ? _steps[1] : _steps[0]);
 
-		decide_dir = decideDirection();
+		decide_step = decideStep();
 
-		if (_directions[0].has_value() && _directions[1].has_value())
+		if (_steps[0].has_value() && _steps[1].has_value())
 		{
 			_is_ready = true;
 		}
@@ -69,9 +56,6 @@ public:
 
 public:
 	void SetTeamType(TeamType type);
-
-private:
-	Optional<Direction> _directions[2];
 
 public:
 	ManualClient();
