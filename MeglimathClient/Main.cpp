@@ -134,6 +134,17 @@ namespace Scenes
 
 			getData().drawer.DrawField(getData().info.GetField());
 			getData().drawer.DrawAgents(getData().info.GetAllAgent());
+
+			try
+			{
+				// 手動クライアントの場合のみ入力状態を描画
+				auto& client = dynamic_cast<ManualClient&>(*user_client);
+				getData().drawer.DrawInputState(client);
+			}
+			catch (const std::bad_cast&)
+			{
+				return;
+			}
 		}
 	};
 }

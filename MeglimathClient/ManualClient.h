@@ -57,6 +57,8 @@ public:
 public:
 	void SetTeamType(TeamType type);
 
+	Array<Optional<Step>> GetSteps();
+
 public:
 	ManualClient();
 	ManualClient(TeamType type);
