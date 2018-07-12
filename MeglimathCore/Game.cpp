@@ -32,10 +32,9 @@ Array<TeamLogic> Game::getTeamLogics()
 	return LogicUtil::toS3dArray(_gamelogic.getTeamLogics());
 }
 
-Game::Game(const String path)
+Game::Game(const String field_json)
 {
-	TextReader reader{ path };
-	_gamelogic.InitalizeFromJson(reader.readAll().narrow());
+	_gamelogic.InitalizeFromJson(field_json.narrow());
 }
 
 int Game::GetTurn() const

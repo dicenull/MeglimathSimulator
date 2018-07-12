@@ -12,8 +12,7 @@
 
 struct GameData
 {
-	const FilePath field_path = U"../Fields/LargeField.json";
-	Game game = { field_path };
+	Game game;
 	Drawer drawer;
 	std::map<SessionID, Optional<Think>> thinks;
 	asc::TCPStringServer server;
@@ -23,6 +22,45 @@ using MyApp = SceneManager<String, GameData>;
 
 namespace Scenes
 {
+	struct ReadFieldJson : MyApp::Scene
+	{
+		ReadFieldJson(const InitData& init) : IScene(init)
+		{
+			getData().server.startAccept(31400);
+		}
+
+		void update() override
+		{
+			auto & server = getData().server;
+
+			if (server.hasSession())
+			{
+				String field_json;
+				server.readLine(field_json);
+
+				if (field_json != U"")
+				{
+					// ゲームの初期化
+					getData().game = { field_json };
+					server.disconnect();
+					changeScene(U"Connection");
+					return;
+				}
+			}
+			else
+			{
+				server.disconnect();
+				changeScene(U"ReadFieldJson");
+			}
+		}
+
+		void draw() const override
+		{
+			FontAsset(U"Msg")(U"フィールド情報受信中...").draw(Point::Zero());
+		}
+	};
+
+
 	struct Connection : MyApp::Scene
 	{
 		Connection(const InitData& init) : IScene(init)
@@ -152,6 +190,7 @@ void Main()
 {
 	MyApp manager;
 	manager
+		.add<Scenes::ReadFieldJson>(U"ReadFieldJson")
 		.add<Scenes::Connection>(U"Connection")
 		.add<Scenes::Game>(U"Game");
 
