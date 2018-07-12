@@ -1,5 +1,5 @@
 ﻿
-# include <Siv3D.hpp> // OpenSiv3D v0.2.5
+# include <Siv3D.hpp> // OpenSiv3D v0.2.4
 #include "../MegurimasuSimulator/Field.h"
 #include "../MegurimasuSimulator/Drawer.h"
 

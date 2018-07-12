@@ -7,9 +7,9 @@ int Field::aggregateAreaPoint(TileType tile)
 	dfsAreaPoint(Point(0, 0), tile);
 
 	int area_point = 0;
-	for (size_t i : step(_status.width()))
+	for (int i : step(_status.width()))
 	{
-		for (size_t k : step(_status.height()))
+		for (int k : step(_status.height()))
 		{
 			if (_status[k][i])
 			{
@@ -63,9 +63,9 @@ int Field::aggregateTilePoint(TileType tile)
 	int sum_tile_point = 0;
 
 	//	タイルの種類が一致するセルの得点の合計を計算する
-	for (size_t i : step(_cells.width()))
+	for (int i : step(_cells.width()))
 	{
-		for (size_t k : step(_cells.height()))
+		for (int k : step(_cells.height()))
 		{
 			if (_cells[k][i].GetTile() == tile)
 			{
@@ -121,7 +121,7 @@ void Field::RemoveTile(Point pos)
 	_cells[pos.y][pos.x].RemoveTile();
 }
 
-bool Field::IsInField(Point pos) const
+bool Field::IsInField(Point pos)
 {
 	return (0 <= pos.x && pos.x < _cells.width()) && (0 <= pos.y && pos.y < _cells.height());
 }
@@ -136,13 +136,8 @@ Step Field::DecideStepByDirection(Point pos, Direction dir) const
 	// 座標から指定の方向に進んだ後の座標
 	Point next_pos = pos.moveBy(Transform::DirToDelta(dir));
 
-	if (!IsInField(next_pos))
-	{
-		return Step{ Action::Stop };
-	}
-
 	// 進んだ先のタイルの有無でアクションを決める
-	if (_cells[next_pos.y][next_pos.x].GetTile() == TileType::None)
+	if (GetCells()[next_pos.y][next_pos.x].GetTile() == TileType::None)
 	{
 		return Step{ Action::Move, dir };
 	}

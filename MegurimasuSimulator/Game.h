@@ -4,8 +4,10 @@
 #include "Team.h"
 #include "DrawingInfo.h"
 
+
 class Game
 {
+
 private:
 	Field _field;
 	int _turn;
@@ -18,7 +20,7 @@ private:
 	/// <summary>
 	/// チームごとのすべてのエージェントの行動リスト
 	/// </summary>
-	HashTable<TeamType, Think> _thinks;
+	std::map<TeamType, Think> _thinks;
 
 private:
 	/// <summary>
@@ -55,7 +57,7 @@ public:
 
 	Field GetField() const;
 
-	HashTable<TeamType, Think> GetThinks() const;
+	std::map<TeamType, Think> GetThinks() const;
 
 	/// <summary>
 	/// ゲームを次のターンに進める
@@ -73,7 +75,7 @@ public:
 	/// チームごとのエージェントの情報を取得する
 	/// </summary>
 	/// <returns>チームごとのエージェント情報</returns>
-	HashTable<TeamType, Array<Agent>> GetAgentMap() const;
+	std::map<TeamType, Array<Agent>> GetAgentMap() const;
 
 	/// <summary>
 	/// ゲームを更新する

@@ -31,7 +31,7 @@ Optional<Direction> GamePadTeam::decideDirectionByGamePad()
 
 	double threshold = 0.1;
 
-	for (size_t i : step(dir_delta.count()))
+	for (int i : step(dir_delta.count()))
 	{
 		Point delta = dir_delta[i];
 		if (delta.x - threshold < d_pad.x && d_pad.x <= delta.x

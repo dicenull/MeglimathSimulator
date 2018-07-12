@@ -10,9 +10,9 @@ const String Transform::ToString(Action action)
 		return U"Remove";
 	case Action::Stop:
 		return U"Stop";
+	default:
+		U"";
 	}
-
-	return U"";
 }
 
 const String Transform::ToString(Direction dir)
@@ -50,17 +50,4 @@ const String Transform::ToString(Direction dir)
 const String Transform::ToString(Step step)
 {
 	return ToString(step.action) + U" " + ToString(step.direction);
-}
-
-const String Transform::ToString(TeamType team)
-{
-	switch (team)
-	{
-	case TeamType::A:
-		return U"Team A";
-	case TeamType::B:
-		return U"Team B";
-	}
-
-	return U"";
 }

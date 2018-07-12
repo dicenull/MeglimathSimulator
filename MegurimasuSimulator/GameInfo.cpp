@@ -10,7 +10,7 @@ Array<Agent> GameInfo::GetAgents(TeamType type) const
 	return _agents.find(type)->second;
 }
 
-GameInfo::GameInfo(Field field, HashTable<TeamType, Array<Agent>> agents)
+GameInfo::GameInfo(Field field, std::map<TeamType, Array<Agent>> agents)
 {
 	_field = field;
 	_agents = agents;

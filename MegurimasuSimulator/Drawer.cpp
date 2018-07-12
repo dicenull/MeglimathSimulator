@@ -31,7 +31,7 @@ void Drawer::DrawField(const Field & field) const
 	}
 }
 
-void Drawer::DrawAgents(HashTable<TeamType, Array<Agent>> agents) const
+void Drawer::DrawAgents(std::map<TeamType, Array<Agent>> agents) const
 {
 	int32 edge_width = Sqrt(2) * cellSize.x / 2.0;
 
@@ -48,58 +48,35 @@ void Drawer::DrawAgents(HashTable<TeamType, Array<Agent>> agents) const
 	}
 }
 
-void Drawer::DrawStatus(const HashTable<TeamType, Think> & thinks, const Field & field, int turn) const
+void Drawer::DrawStatus(const std::map<TeamType, Think> & thinks, const Field & field, int turn) const
 {
 	if (thinks.size() == 0)
 	{
 		return;
 	}
-
-	Array<Array<String>> messages{ 3 };
-
-	// 2チームの情報
-	for (int i : step(2))
+	
+	Array<String> messages =
 	{
-		messages[i].append
-		({
-			String(U"Agent 1 : ") + Transform::ToString(thinks.at((TeamType)i).steps[0]),
-			String(U"Agent 2 : ") + Transform::ToString(thinks.at((TeamType)i).steps[1]),
-			String(U"Area Point : ") + ToString(field.GetAreaPoints()[i]),
-			String(U"Tile Point : ") + ToString(field.GetTilePoints()[i]),
-			String(U"Total Point : ") + ToString(field.GetTotalPoints()[i])
-		});
-	}
+		U"Team A : ",
+		String(U"Agent 1 : ") + Transform::ToString(thinks.at(TeamType::A).steps[0]),
+		String(U"Agent 2 : ") + Transform::ToString(thinks.at(TeamType::A).steps[1]),
+		String(U"Area Point : ") + ToString(field.GetAreaPoints()[0]),
+		String(U"Tile Point : ") + ToString(field.GetTilePoints()[0]),
+		String(U"Total Point : ") + ToString(field.GetTotalPoints()[0]),
+		String(U"\n"),
+		U"Team B : ",
+		String(U"Agent 1 : ") + Transform::ToString(thinks.at(TeamType::B).steps[0]),
+		String(U"Agent 2 : ") + Transform::ToString(thinks.at(TeamType::B).steps[1]),
+		String(U"Area Point : ") + ToString(field.GetAreaPoints()[1]),
+		String(U"Tile Point : ") + ToString(field.GetTilePoints()[1]),
+		String(U"Total Point : ") + ToString(field.GetTotalPoints()[1]),
+		String(U"\n"),
+		String(U"Turn : ") + ToString(turn)
+	};
 
-	// その他のゲーム情報
-	messages[2].push_back(String(U"Turn : ") + ToString(turn));
-
-	// ステータスを描画
-	int index = 0;
-	Color team_colors[] = { Transform::ColorOf(TeamType::A), Transform::ColorOf(TeamType::B) };
-
-	auto draw_pos = [&](Point origin) {return origin + Point(0, index * 24); };
-	for (int i : step(2))
+	for (int i : step(messages.size()))
 	{
-		auto text = FontAsset(U"Stat")(Transform::ToString((TeamType)i));
-		text.region(draw_pos(statOrigin)).draw(Palette::Gray);
-		text.draw(draw_pos(statOrigin), team_colors[i]);
-
-		index++;
-
-		for (size_t k : step(messages[i].count()))
-		{
-			text = FontAsset(U"Stat")(messages[i][k]);
-			text.region(draw_pos(statOrigin)).draw(Palette::Gray);
-			text.draw(draw_pos(statOrigin), Transform::ColorOf((TeamType)i));
-			index++;
-		}
-	}
-
-	for (size_t i : step(messages[2].count()))
-	{
-		FontAsset(U"Stat")(messages[2][i])
-			.draw(draw_pos(statOrigin));
-		index++;
+		FontAsset(U"Stat")(messages[i]).draw(statOrigin + Point(0, i * 16));
 	}
 }
 

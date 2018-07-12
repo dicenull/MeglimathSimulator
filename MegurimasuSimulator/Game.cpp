@@ -5,9 +5,9 @@ GameInfo Game::getGameInfo() const
 	return GameInfo(_field, GetAgentMap());
 }
 
-HashTable<TeamType, Array<Agent>> Game::GetAgentMap() const
+std::map<TeamType, Array<Agent>> Game::GetAgentMap() const
 {
-	HashTable<TeamType, Array<Agent>> agents;
+	std::map<TeamType, Array<Agent>> agents;
 	agents[TeamType::A] = _teams[0]->GetAgents();
 	agents[TeamType::B] = _teams[1]->GetAgents();
 
@@ -169,7 +169,7 @@ Field Game::GetField() const
 	return _field;
 }
 
-HashTable<TeamType, Think> Game::GetThinks() const
+std::map<TeamType, Think> Game::GetThinks() const
 {
 	return _thinks;
 }

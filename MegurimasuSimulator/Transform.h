@@ -80,6 +80,4 @@ namespace Transform
 	const String ToString(Direction dir);
 
 	const String ToString(Step step);
-
-	const String ToString(TeamType team);
 }
