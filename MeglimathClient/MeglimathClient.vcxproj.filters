@@ -67,6 +67,8 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ClientDrawer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="T_Monte_Carlo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -198,6 +200,8 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ClientDrawer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="T_Monte_Carlo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
