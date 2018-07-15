@@ -66,6 +66,9 @@
     <ClCompile Include="RandomClient.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="T_Monte_Carlo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\icon.ico">
@@ -191,6 +194,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RandomClient.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="T_Monte_Carlo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
