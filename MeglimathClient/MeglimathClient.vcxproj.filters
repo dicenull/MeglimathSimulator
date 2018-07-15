@@ -67,6 +67,7 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ClientDrawer.cpp">
+    <ClCompile Include="T_Monte_Carlo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -197,6 +198,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ClientDrawer.h">
+    <ClInclude Include="T_Monte_Carlo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
