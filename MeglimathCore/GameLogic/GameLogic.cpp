@@ -87,22 +87,28 @@ void GameLogic::NextTurn(const std::unordered_map<TeamType, Think> &_thinks)
 	// シミュレーション
 	std::vector<std::pair<_Point<>, std::pair<Direction, TeamType>>> move_point_arr;
 	std::vector<_Point<>> remove_points;
+	std::vector<_Point<>> stop_points;
 	for (TeamType team : {TeamType::A, TeamType::B})
 	{
 		for (int i = 0; i < 2; i++)
 		{
 			Direction dir = _thinks.at(team).steps[i].direction;
 			// エージェントを動かしたい方向に動かした場合の座標
-			_Point<int> pos = agents_map[team][i].GetPosition()+Transform::DirToDelta(dir);
+			_Point<int> pos = agents_map[team][i].GetPosition();
+			_Point<int> after_pos = pos+Transform::DirToDelta(dir);
 
 			// エージェントが動作する座標を追加
 			switch (_thinks.at(team).steps[i].action)
 			{
 			case Action::Move:
-				move_point_arr.push_back(std::make_pair(pos, std::make_pair(dir, team)));
+				move_point_arr.push_back(std::make_pair(after_pos, std::make_pair(dir, team)));
 				break;
 			case Action::RemoveTile:
-				remove_points.push_back(pos);
+				stop_points.push_back(pos);
+				remove_points.push_back(after_pos);
+				break;
+			case Action::Stop:
+				stop_points.push_back(pos);
 				break;
 			}
 		}
@@ -113,34 +119,25 @@ void GameLogic::NextTurn(const std::unordered_map<TeamType, Think> &_thinks)
 	{
 		auto pos = pos_map.first;
 		auto team = pos_map.second.second;
+		auto dir = pos_map.second.first;
 		TileType our_tile = Transform::ToTile(team);
 		TileType their_tile = Transform::GetInverseType(our_tile);
 
-		// その座標に進むエージェントが一人であるか
-		if (std::count_if(move_point_arr.cbegin(), move_point_arr.cend(), [pos](std::pair<_Point<>, std::pair<Direction, TeamType>> itr) {return itr.first == pos; }) != 1)
+		// その座標に進むエージェントが一人であること
+		// その座標のタイルを除去するエージェントがいないこと
+		// その座標にとどまるエージェントがいないこと
+		// その座標がフィールド内であること
+		// その座標に相手のタイルがないこと
+		if (   std::count_if(move_point_arr.cbegin(), move_point_arr.cend(), [pos](std::pair<_Point<>, std::pair<Direction, TeamType>> itr) {return itr.first == pos; }) != 1
+			|| std::count_if(remove_points.cbegin(), remove_points.cend(), [pos](auto p) {return p == pos; }) > 0
+			|| std::count_if(stop_points.cbegin(), stop_points.cend(), [pos](auto p) {return p == pos; }) > 0
+			|| _field.IsInField(pos) == false
+			|| _field.GetCells()[pos.y][pos.x].GetTile() == their_tile)
 		{
+			// 停留に変更する
+			stop_points.push_back(pos - Transform::DirToDelta(dir));
 			continue;
 		}
-
-		// その座標にエージェントがすでにいるか
-		if (std::count_if(agents.cbegin(), agents.cend(), [pos](Agent agent) { return agent.GetPosition() == pos; }) != 0)
-		{
-			continue;
-		}
-
-		// その座標がフィールド内か
-		if (_field.IsInField(pos) == false)
-		{
-			continue;
-		}
-
-		// その座標が相手のタイルか
-		if (_field.GetCells()[pos.y][pos.x].GetTile() == their_tile)
-		{
-			continue;
-		}
-
-		auto dir = pos_map.second.first;
 
 		// 進んだセルを塗る
 		_field.PaintCell(pos, team);
@@ -155,10 +152,19 @@ void GameLogic::NextTurn(const std::unordered_map<TeamType, Think> &_thinks)
 	// タイルを取る行動を実行
 	for (auto & remove_point : remove_points)
 	{
-		if (std::count_if(remove_points.cbegin(), remove_points.cend(), [remove_point](auto p) {return p == remove_point; }) == 1 && _field.IsInField(remove_point))
+		// そのタイルを除去するエージェントが一人であること
+		// その座標に移動するエージェントがいないこと
+		// 除去するタイルがフィールド内にあること
+		// 除去するマスにとどまるエージェントがいないこと
+		if (std::count_if(remove_points.cbegin(), remove_points.cend(), [remove_point](auto p) {return p == remove_point; }) != 1
+			|| std::count_if(move_point_arr.cbegin(), move_point_arr.cend(), [remove_point](std::pair<_Point<>, std::pair<Direction, TeamType>> itr) {return itr.first == remove_point; }) > 0
+			|| !_field.IsInField(remove_point)
+			|| std::count_if(stop_points.cbegin(), stop_points.cend(), [remove_point](auto p) {return p == remove_point; }) > 0)
 		{
-			_field.RemoveTile(remove_point);
+			continue;
 		}
+
+		_field.RemoveTile(remove_point);
 	}
 
 	// ターンを進める

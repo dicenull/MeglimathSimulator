@@ -47,11 +47,6 @@ namespace Scenes
 					return;
 				}
 			}
-			else
-			{
-				server.disconnect();
-				changeScene(U"ReadFieldJson");
-			}
 		}
 
 		void draw() const override
