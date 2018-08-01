@@ -115,8 +115,9 @@ void GameLogic::NextTurn(const std::unordered_map<TeamType, Think> &_thinks)
 	}
 
 	// 衝突していないエージェントの行動のみ実行する
-	for (auto & pos_map : move_point_arr)
+	for (auto i = 0;i < move_point_arr.size();i++)
 	{
+		auto & pos_map = move_point_arr[i];
 		auto pos = pos_map.first;
 		auto team = pos_map.second.second;
 		auto dir = pos_map.second.first;
@@ -124,20 +125,51 @@ void GameLogic::NextTurn(const std::unordered_map<TeamType, Think> &_thinks)
 		TileType their_tile = Transform::GetInverseType(our_tile);
 
 		// その座標に進むエージェントが一人であること
+		if (std::count_if(move_point_arr.cbegin(), move_point_arr.cend(), [pos](std::pair<_Point<>, std::pair<Direction, TeamType>> itr) {return itr.first == pos; }) != 1)
+		{
+			stop_points.push_back(pos - Transform::DirToDelta(dir));
+			move_point_arr.erase(move_point_arr.begin() + i);
+
+			for (int k = 0; k < move_point_arr.size(); k++)
+			{
+				auto other_pos = move_point_arr[k].first;
+				auto other_dir = move_point_arr[k].second.first;
+
+				if (pos == other_pos)
+				{
+					stop_points.push_back(other_pos - Transform::DirToDelta(other_dir));
+					move_point_arr.erase(move_point_arr.begin() + k);
+				}
+			}
+
+			i = -1;
+			continue;
+		}
+
 		// その座標のタイルを除去するエージェントがいないこと
 		// その座標にとどまるエージェントがいないこと
 		// その座標がフィールド内であること
 		// その座標に相手のタイルがないこと
-		if (   std::count_if(move_point_arr.cbegin(), move_point_arr.cend(), [pos](std::pair<_Point<>, std::pair<Direction, TeamType>> itr) {return itr.first == pos; }) != 1
-			|| std::count_if(remove_points.cbegin(), remove_points.cend(), [pos](auto p) {return p == pos; }) > 0
+		if (   std::count_if(remove_points.cbegin(), remove_points.cend(), [pos](auto p) {return p == pos; }) > 0
 			|| std::count_if(stop_points.cbegin(), stop_points.cend(), [pos](auto p) {return p == pos; }) > 0
 			|| _field.IsInField(pos) == false
 			|| _field.GetCells()[pos.y][pos.x].GetTile() == their_tile)
 		{
 			// 停留に変更する
 			stop_points.push_back(pos - Transform::DirToDelta(dir));
+			move_point_arr.erase(move_point_arr.begin() + i);
+
+			// 初めからシミュレーションを再開
+			i = -1;
 			continue;
 		}
+	}
+
+	for (auto pos_map : move_point_arr)
+	{
+		auto pos = pos_map.first;
+		auto team = pos_map.second.second;
+		auto dir = pos_map.second.first;
 
 		// 進んだセルを塗る
 		_field.PaintCell(pos, team);
