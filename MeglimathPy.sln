@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2000
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MeglimathPy", "MeglimathPy.vcxproj", "{C78C42FC-87C1-4DF4-81A2-6605C047EADF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		EXEDEBUG|x64 = EXEDEBUG|x64
+		EXEDEBUG|x86 = EXEDEBUG|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C78C42FC-87C1-4DF4-81A2-6605C047EADF}.Debug|x64.ActiveCfg = Debug|x64
+		{C78C42FC-87C1-4DF4-81A2-6605C047EADF}.Debug|x64.Build.0 = Debug|x64
+		{C78C42FC-87C1-4DF4-81A2-6605C047EADF}.Debug|x86.ActiveCfg = Debug|Win32
+		{C78C42FC-87C1-4DF4-81A2-6605C047EADF}.Debug|x86.Build.0 = Debug|Win32
+		{C78C42FC-87C1-4DF4-81A2-6605C047EADF}.EXEDEBUG|x64.ActiveCfg = EXEDEBUG|x64
+		{C78C42FC-87C1-4DF4-81A2-6605C047EADF}.EXEDEBUG|x64.Build.0 = EXEDEBUG|x64
+		{C78C42FC-87C1-4DF4-81A2-6605C047EADF}.EXEDEBUG|x86.ActiveCfg = EXEDEBUG|Win32
+		{C78C42FC-87C1-4DF4-81A2-6605C047EADF}.EXEDEBUG|x86.Build.0 = EXEDEBUG|Win32
+		{C78C42FC-87C1-4DF4-81A2-6605C047EADF}.Release|x64.ActiveCfg = Release|x64
+		{C78C42FC-87C1-4DF4-81A2-6605C047EADF}.Release|x64.Build.0 = Release|x64
+		{C78C42FC-87C1-4DF4-81A2-6605C047EADF}.Release|x86.ActiveCfg = Release|Win32
+		{C78C42FC-87C1-4DF4-81A2-6605C047EADF}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6749C684-2655-4A85-B0FC-A8F7C44E6AFD}
+	EndGlobalSection
+EndGlobal
