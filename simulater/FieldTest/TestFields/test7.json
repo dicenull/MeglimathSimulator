@@ -1,0 +1,22 @@
+{
+    "Size" : "(6, 6)",
+    "Points" : 
+    [
+        -1, -1, -1,
+        -1, -2, -1,
+        -1, -1, -2
+    ],
+
+    "Tiles" :
+    [
+        "b-aaa-",
+        "babbba",
+        "ba-aba",
+        "bbabba",
+        "abbba-",
+        "-aaa--"
+    ],
+
+    "TeamA" : 0,
+    "TeamB" : 0
+}
