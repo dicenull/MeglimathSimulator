@@ -5,28 +5,37 @@ class KeyboardClient :
 {
 private:
 	Array<Key> _operation_keys;
+	Key _toggle_key;
 
 protected:
-	Optional<Direction> decideDirection() override
+	Optional<Step> decideStep() override
 	{
-		Optional<Direction> dir = none;
-
 		// Rightから反時計回りに方向キーを指定
 		for (int i : step(9))
 		{
 			if (_operation_keys[i].down())
 			{
-				_is_pressed_shift = KeyLShift.pressed();
+				Direction dir = static_cast<Direction>(i);
 
-				return Optional<Direction>(static_cast<Direction>(i));
+				Action action;
+				if (_toggle_key.pressed())
+				{
+					action = Action::RemoveTile;
+				}
+				else
+				{
+					action = Action::Move;
+				}
+
+				return Optional<Step>({ action, dir });
 			}
 		}
 
-		return dir;
+		return none;
 	}
 
 public:
-	KeyboardClient(TeamType type, Array<Key> operation_keys);
+	KeyboardClient(TeamType type, Array<Key> operation_keys, Key toggle_key);
 	~KeyboardClient();
 };
 

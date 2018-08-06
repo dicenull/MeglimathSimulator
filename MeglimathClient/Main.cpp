@@ -5,16 +5,17 @@
 
 #include "../MeglimathCore/TCPString.hpp"
 #include "../MeglimathCore/GameInfo.h"
-#include "../MeglimathCore/Drawer.h"
 #include "../MeglimathCore/CreateJson.h"
 
+#include "ClientDrawer.h"
 #include "KeyboardClient.h"
 #include "RandomClient.h"
+#include "T_Monte_Carlo.h"
 
 struct GameData
 {
 	asc::TCPStringClient tcp_client;
-	Drawer drawer;
+	ClientDrawer drawer;
 	GameInfo info;
 };
 
@@ -89,7 +90,8 @@ namespace Scenes
 					if (type.has_value())
 					{
 						// Clientを初期化
-						user_client.reset(new KeyboardClient(type.value(), { KeyD, KeyE, KeyW, KeyQ, KeyA, KeyZ, KeyX, KeyC, KeyS }));
+						//user_client.reset(new T_Monte_Carlo(type.value()));
+						user_client.reset(new KeyboardClient(type.value(), { KeyD, KeyE, KeyW, KeyQ, KeyA, KeyZ, KeyX, KeyC, KeyS }, KeyShift));
 						// user_client.reset(new RandomClient(type.value()));
 					}
 				}
@@ -134,6 +136,17 @@ namespace Scenes
 
 			getData().drawer.DrawField(getData().info.GetField());
 			getData().drawer.DrawAgents(getData().info.GetAllAgent());
+
+			try
+			{
+				// 手動クライアントの場合のみ入力状態を描画
+				auto& client = dynamic_cast<ManualClient&>(*user_client);
+				getData().drawer.DrawInputState(client);
+			}
+			catch (const std::bad_cast&)
+			{
+				return;
+			}
 		}
 	};
 }
