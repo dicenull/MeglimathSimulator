@@ -28,6 +28,11 @@ void TeamLogic::MoveAgent(_Point<> pos, Direction dir)
 	}
 }
 
+TeamType TeamLogic::getTeamType()
+{
+	return _type;
+}
+
 TeamLogic::TeamLogic()
 	:TeamLogic(TeamType::A, Agent(), Agent())
 {}
@@ -38,4 +43,8 @@ TeamLogic::TeamLogic(TeamType type, Agent agent1, Agent agent2)
 	_agents[1] = agent2;
 
 	_type = type;
+}
+
+TeamLogic::TeamLogic(const TeamLogic &tl):_agents(tl.GetAgents().data()),_type(tl.getTeamType())
+{
 }

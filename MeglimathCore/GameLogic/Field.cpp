@@ -244,6 +244,9 @@ Field::Field(std::string json)
 
 }
 
+Field::Field(const Field & field):_cells(field.GetCells())
+{
+}
 
 Field::~Field()
 {
