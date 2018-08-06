@@ -25,6 +25,10 @@ public:
 	/// <param name="init_pos">エージェントの初期座標のもとになる左上の座標</param>
 	void initAgentsPos(_Point<> init_pos);
 
+	void initAgentsPos(_Point<> init_pos1, _Point<> init_pos2);
+
+	void initAgentPos(std::vector<_Point<>> init_pos);
+
 public:
 	std::vector<TeamLogic>& getTeamLogics();
 	/// <summary>

@@ -7,7 +7,7 @@ const std::string Transform::CreateJson(const GameInfo& info)
 	int turn = info.GetTurn();
 
 	auto cells = field.GetCells();
-	Size size = { (cells.size().y + 1) / 2, (cells.size().x + 1) / 2 };
+	Size size = { (cells.size().x + 1) / 2, (cells.size().y + 1) / 2 };
 
 	rapidjson::StringBuffer buffer;
 	rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
@@ -31,10 +31,10 @@ const std::string Transform::CreateJson(const GameInfo& info)
 
 	writer.Key("Tiles");
 	writer.StartArray();
-	for (int y : step(cells.size().y))
+	for (auto y : step(cells.size().y))
 	{
 		std::string str;
-		for (int x : step(cells.size().x))
+		for (auto x : step(cells.size().x))
 		{
 			str.push_back(Transform::ToChar(cells[y][x].GetTile()));
 		}

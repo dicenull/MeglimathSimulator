@@ -7,6 +7,13 @@ void ManualClient::SetTeamType(TeamType type)
 	_type = type;
 }
 
+Array<Optional<Step>> ManualClient::GetSteps()
+{
+	Array<Optional<Step>> steps;
+	steps.append({ _steps[0], _steps[1] });
+	return steps;
+}
+
 ManualClient::ManualClient()
 {
 }

@@ -42,14 +42,69 @@ void GameLogic::initAgentsPos(_Point<> init_pos)
 	};
 
 	// エージェントの初期位置のタイルを塗る
-	_field.PaintCell(agent_pos[0], TeamType::A);
-	_field.PaintCell(agent_pos[1], TeamType::A);
+	initAgentPos({ agent_pos[0], agent_pos[1], agent_pos[2], agent_pos[3] });
+}
 
-	_field.PaintCell(agent_pos[2], TeamType::B);
-	_field.PaintCell(agent_pos[3], TeamType::B);
+void GameLogic::initAgentsPos(_Point<> init_pos1, _Point<> init_pos2)
+{
+	_Size size = _field.GetCells().size();
+	_Point<> top_left;
+	if (init_pos1.x > size.x / 2)
+	{
+		top_left.x = init_pos1.x / 2;
+	}
+	else
+	{
+		top_left.x = init_pos1.x;
+	}
 
-	_teamlogics[0].InitAgentsPos(agent_pos[0], agent_pos[1]);
-	_teamlogics[1].InitAgentsPos(agent_pos[2], agent_pos[3]);
+	if (init_pos1.y > size.y / 2)
+	{
+		top_left.y = init_pos1.y / 2;
+	}
+	else
+	{
+		top_left.y = init_pos1.y;
+	}
+
+	bool init_map[][2] = { {false, false}, {false, false} };
+	init_map[init_pos1.x / (size.x / 2)][init_pos1.y / (size.y / 2)] = true;
+	init_map[init_pos2.x / (size.x / 2)][init_pos2.y / (size.y / 2)] = true;
+
+	std::vector<_Point<>> other_init_pos;
+	for (int i = 0; i < 2; i++)
+	{
+		for (int k = 0; k < 2; k++)
+		{
+			if (init_map[i][k] == false)
+			{
+				_Point<> pos;
+				pos.x = i 
+					? (int)(size.x - 1) - top_left.x
+					: top_left.x;
+
+				pos.y = k
+					? (int)(size.y - 1) - top_left.y
+					: top_left.y;
+
+				other_init_pos.push_back(pos);
+			}
+		}
+	}
+
+	initAgentPos({ init_pos1, init_pos2, other_init_pos[0], other_init_pos[1] });
+}
+
+void GameLogic::initAgentPos(std::vector<_Point<>> init_pos)
+{
+	_field.PaintCell(init_pos[0], TeamType::A);
+	_field.PaintCell(init_pos[1], TeamType::A);
+
+	_field.PaintCell(init_pos[2], TeamType::B);
+	_field.PaintCell(init_pos[3], TeamType::B);
+
+	_teamlogics[0].InitAgentsPos(init_pos[0], init_pos[1]);
+	_teamlogics[1].InitAgentsPos(init_pos[2], init_pos[3]);
 }
 
 
@@ -59,8 +114,10 @@ void GameLogic::InitalizeFromJson(const std::string json)
 	document.Parse(json.data());
 
 	_field = { json };
+	// TODO: 必要であれば二人分の初期位置を取得
 	if (document.HasMember("InitPos")) {
-		initAgentsPos(_Point<int>{ document["InitPos"].GetString() });
+		auto init_pos = document["InitPos"].GetArray();
+		initAgentsPos(_Point<int>{ init_pos[0].GetString()}, _Point<int>{init_pos[1].GetString()});
 	}
 	else {
 		initAgentsPos();
@@ -86,59 +143,88 @@ void GameLogic::NextTurn(const std::unordered_map<TeamType, Think> &_thinks)
 	// シミュレーション
 	std::vector<std::pair<_Point<>, std::pair<Direction, TeamType>>> move_point_arr;
 	std::vector<_Point<>> remove_points;
+	std::vector<_Point<>> stop_points;
 	for (TeamType team : {TeamType::A, TeamType::B})
 	{
 		for (int i = 0; i < 2; i++)
 		{
 			Direction dir = _thinks.at(team).steps[i].direction;
 			// エージェントを動かしたい方向に動かした場合の座標
-			_Point<int> pos = agents_map[team][i].GetPosition()+Transform::DirToDelta(dir);
+			_Point<int> pos = agents_map[team][i].GetPosition();
+			_Point<int> after_pos = pos+Transform::DirToDelta(dir);
 
 			// エージェントが動作する座標を追加
 			switch (_thinks.at(team).steps[i].action)
 			{
 			case Action::Move:
-				move_point_arr.push_back(std::make_pair(pos, std::make_pair(dir, team)));
+				move_point_arr.push_back(std::make_pair(after_pos, std::make_pair(dir, team)));
 				break;
 			case Action::RemoveTile:
-				remove_points.push_back(pos);
+				stop_points.push_back(pos);
+				remove_points.push_back(after_pos);
+				break;
+			case Action::Stop:
+				stop_points.push_back(pos);
 				break;
 			}
 		}
 	}
 
 	// 衝突していないエージェントの行動のみ実行する
-	for (auto & pos_map : move_point_arr)
+	for (auto i = 0;i < move_point_arr.size();i++)
 	{
+		auto & pos_map = move_point_arr[i];
 		auto pos = pos_map.first;
 		auto team = pos_map.second.second;
+		auto dir = pos_map.second.first;
 		TileType our_tile = Transform::ToTile(team);
 		TileType their_tile = Transform::GetInverseType(our_tile);
 
-		// その座標に進むエージェントが一人であるか
+		// その座標に進むエージェントが一人であること
 		if (std::count_if(move_point_arr.cbegin(), move_point_arr.cend(), [pos](std::pair<_Point<>, std::pair<Direction, TeamType>> itr) {return itr.first == pos; }) != 1)
 		{
+			stop_points.push_back(pos - Transform::DirToDelta(dir));
+			move_point_arr.erase(move_point_arr.begin() + i);
+
+			for (int k = 0; k < move_point_arr.size(); k++)
+			{
+				auto other_pos = move_point_arr[k].first;
+				auto other_dir = move_point_arr[k].second.first;
+
+				if (pos == other_pos)
+				{
+					stop_points.push_back(other_pos - Transform::DirToDelta(other_dir));
+					move_point_arr.erase(move_point_arr.begin() + k);
+				}
+			}
+
+			i = -1;
 			continue;
 		}
 
-		// その座標にエージェントがすでにいるか
-		if (std::count_if(agents.cbegin(), agents.cend(), [pos](Agent agent) { return agent.GetPosition() == pos; }) != 0)
+		// その座標のタイルを除去するエージェントがいないこと
+		// その座標にとどまるエージェントがいないこと
+		// その座標がフィールド内であること
+		// その座標に相手のタイルがないこと
+		if (   std::count_if(remove_points.cbegin(), remove_points.cend(), [pos](auto p) {return p == pos; }) > 0
+			|| std::count_if(stop_points.cbegin(), stop_points.cend(), [pos](auto p) {return p == pos; }) > 0
+			|| _field.IsInField(pos) == false
+			|| _field.GetCells()[pos.y][pos.x].GetTile() == their_tile)
 		{
+			// 停留に変更する
+			stop_points.push_back(pos - Transform::DirToDelta(dir));
+			move_point_arr.erase(move_point_arr.begin() + i);
+
+			// 初めからシミュレーションを再開
+			i = -1;
 			continue;
 		}
+	}
 
-		// その座標がフィールド内か
-		if (_field.IsInField(pos) == false)
-		{
-			continue;
-		}
-
-		// その座標が相手のタイルか
-		if (_field.GetCells()[pos.y][pos.x].GetTile() == their_tile)
-		{
-			continue;
-		}
-
+	for (auto pos_map : move_point_arr)
+	{
+		auto pos = pos_map.first;
+		auto team = pos_map.second.second;
 		auto dir = pos_map.second.first;
 
 		// 進んだセルを塗る
@@ -154,10 +240,19 @@ void GameLogic::NextTurn(const std::unordered_map<TeamType, Think> &_thinks)
 	// タイルを取る行動を実行
 	for (auto & remove_point : remove_points)
 	{
-		if (std::count_if(remove_points.cbegin(), remove_points.cend(), [remove_point](auto p) {return p == remove_point; }) == 1 && _field.IsInField(remove_point))
+		// そのタイルを除去するエージェントが一人であること
+		// その座標に移動するエージェントがいないこと
+		// 除去するタイルがフィールド内にあること
+		// 除去するマスにとどまるエージェントがいないこと
+		if (std::count_if(remove_points.cbegin(), remove_points.cend(), [remove_point](auto p) {return p == remove_point; }) != 1
+			|| std::count_if(move_point_arr.cbegin(), move_point_arr.cend(), [remove_point](std::pair<_Point<>, std::pair<Direction, TeamType>> itr) {return itr.first == remove_point; }) > 0
+			|| !_field.IsInField(remove_point)
+			|| std::count_if(stop_points.cbegin(), stop_points.cend(), [remove_point](auto p) {return p == remove_point; }) > 0)
 		{
-			_field.RemoveTile(remove_point);
+			continue;
 		}
+
+		_field.RemoveTile(remove_point);
 	}
 
 	// ターンを進める
@@ -195,10 +290,11 @@ bool GameLogic::GetGameEnd()
 int GameLogic::GetWinner()
 {
 	if (GetTurn() != 0)return -1;
-	if (_teamlogics[0].GetTotalPoint() > _teamlogics[1].GetTotalPoint()) {
+	auto total_points = _field.GetTotalPoints();
+	if (total_points[0] > total_points[1]) {
 		return (int)TeamType::A;
 	}
-	else if (_teamlogics[0].GetTotalPoint() < _teamlogics[1].GetTotalPoint()) {
+	else if (total_points[0] < total_points[1]) {
 		return (int)TeamType::B;
 	}
 	else {

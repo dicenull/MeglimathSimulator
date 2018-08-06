@@ -70,8 +70,8 @@ public:
 	/// <summary>
 	/// jsonからゲームを初期化する
 	/// </summary>
-	/// <param name="path">jsonファイルへのパス</param>
-	Game(const String path);
+	/// <param name="path">jsonデータ</param>
+	Game(const String field_json);
 
 	virtual ~Game();
 };
