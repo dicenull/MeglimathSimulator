@@ -30,7 +30,7 @@ public:
 	void initAgentPos(std::vector<_Point<>> init_pos);
 
 public:
-	std::vector<TeamLogic>& getTeamLogics();
+	const std::vector<TeamLogic>& getTeamLogics()const;
 	/// <summary>
 	/// json‚©‚çƒQ[ƒ€‚ğ‰Šú‰»‚·‚é
 	/// </summary>
@@ -74,6 +74,6 @@ public:
 	GameLogic();
 	GameLogic(int turn);
 	GameLogic(int turn, _Size size);
-
+	GameLogic(const GameLogic& gamelogic);
 	virtual ~GameLogic();
 };

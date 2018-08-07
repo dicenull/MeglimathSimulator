@@ -17,7 +17,7 @@ std::vector<Agent> GameLogic::GetAgents() const
 	ret.push_back(other[1]);
 	return ret;
 }
-std::vector<TeamLogic>& GameLogic::getTeamLogics()
+const std::vector<TeamLogic>& GameLogic::getTeamLogics()const
 {
 	return _teamlogics;
 }
@@ -328,6 +328,10 @@ GameLogic::GameLogic(int turn) : _turn(turn), _teamlogics({ TeamLogic(),TeamLogi
 }
 
 GameLogic::GameLogic(int turn, _Size size) : _turn(turn), _teamlogics({ TeamLogic(),TeamLogic() }),_field(size){}
+
+GameLogic::GameLogic(const GameLogic & gamelogic):_turn(gamelogic.GetTurn()),_field(gamelogic.GetField()),_teamlogics(gamelogic.getTeamLogics())
+{
+}
 
 GameLogic::~GameLogic()
 {
