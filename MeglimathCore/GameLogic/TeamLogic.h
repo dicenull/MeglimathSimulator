@@ -38,7 +38,7 @@ public:
 	/// <param name="pos">エージェントのいる座標</param>
 	/// <param name="dir">動かす方向</param>
 	void MoveAgent(_Point<> pos, Direction dir);
-	TeamType getTeamType();
+	TeamType getTeamType() const;
 public:
 	TeamLogic();
 
