@@ -1,5 +1,6 @@
 #include "Field.h"
 #include"util.h"
+#include <time.h>
 int Field::aggregateAreaPoint(TileType tile)
 {
 	_status = _Grid<bool>(_cells.size() + _Point<int>(2, 2));
@@ -175,15 +176,16 @@ Field::Field(_Size size)
 	// 入力されるタイルポイントの数
 	_Size data_size = _Size((size.x + 1) / 2, (size.y + 1) / 2);
 	_cells = _Grid<Cell>(size);
-	for (int i = 0; i < _cells.width(); i++) {
-		for (int j = 0; j < _cells.height(); j++) {
-			_cells[i][j] = (rand() >> 7) % 33 - 16;
-			_cells[size.y - 1 - i][size.x - 1 - j] = _cells[i][j];
-			_cells[size.y - 1 - i][j] = _cells[i][j];
-			_cells[i][size.x - 1 - j] = _cells[i][j];
+	srand(time(nullptr));
+	for ( int i : step(data_size.y) ) {
+		for ( int k : step(data_size.x) ) {
+			_cells[i][k] = ( rand() >> 7 ) % 33 - 16;
+			// データをコピー
+			_cells[size.y - 1 - i][size.x - 1 - k] = _cells[i][k];
+			_cells[size.y - 1 - i][k] = _cells[i][k];
+			_cells[i][size.x - 1 - k] = _cells[i][k];
 		}
 	}
-
 }
 
 Field::Field(_Grid<Cell> cells) :_cells(cells)
@@ -242,6 +244,9 @@ Field::Field(std::string json)
 
 }
 
+Field::Field(const Field & field):_cells(field.GetCells())
+{
+}
 
 Field::~Field()
 {

@@ -17,7 +17,7 @@ std::vector<Agent> GameLogic::GetAgents() const
 	ret.push_back(other[1]);
 	return ret;
 }
-std::vector<TeamLogic>& GameLogic::getTeamLogics()
+const std::vector<TeamLogic>& GameLogic::getTeamLogics()const
 {
 	return _teamlogics;
 }
@@ -266,16 +266,27 @@ bool GameLogic::IsThinkAble(TeamType team, Think think)const
 {
 	auto agents_map = GetAgentMap();
 	auto agents = GetAgents();
+	TileType our_tile = Transform::ToTile(team);
+	TileType their_tile = Transform::GetInverseType(our_tile);
 	int i = 0;
 	for (auto step : think.steps) {
 		Direction dir = step.direction;
-		// エージェントを動かしたい方向に動かした場合の座標
-		_Point pos = agents_map[team][i].GetPosition() + Transform::DirToDelta(dir);
-		if (_field.IsInField(pos)
-			&& _field.GetCells()[pos.y][pos.x].GetTile() == TileType::None) {
-		}
-		else {
-			return false;
+		if ( step.action == Action::Move ) {
+			// エージェントを動かしたい方向に動かした場合の座標
+			_Point pos = agents_map[team][i].GetPosition() + Transform::DirToDelta(dir);
+			if ( _field.IsInField(pos)
+				&& _field.GetCells()[pos.y][pos.x].GetTile() != their_tile ) {
+			} else {
+				return false;
+			}
+		} else if ( step.action == Action::RemoveTile ) {
+			// エージェントを動かしたい方向に動かした場合の座標
+			_Point pos = agents_map[team][i].GetPosition() + Transform::DirToDelta(dir);
+			if ( _field.IsInField(pos)
+				&& _field.GetCells()[pos.y][pos.x].GetTile() != TileType::None ) {
+			} else {
+				return false;
+			}
 		}
 		i++;
 	}
@@ -313,6 +324,12 @@ GameLogic::GameLogic() :_teamlogics({ TeamLogic(),TeamLogic() })
 }
 
 GameLogic::GameLogic(int turn) : _turn(turn), _teamlogics({ TeamLogic(),TeamLogic() })
+{
+}
+
+GameLogic::GameLogic(int turn, _Size size) : _turn(turn), _teamlogics({ TeamLogic(),TeamLogic() }),_field(size){}
+
+GameLogic::GameLogic(const GameLogic & gamelogic):_turn(gamelogic.GetTurn()),_field(gamelogic.GetField()),_teamlogics(gamelogic.getTeamLogics())
 {
 }
 

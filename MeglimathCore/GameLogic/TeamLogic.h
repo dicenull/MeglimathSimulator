@@ -38,7 +38,7 @@ public:
 	/// <param name="pos">エージェントのいる座標</param>
 	/// <param name="dir">動かす方向</param>
 	void MoveAgent(_Point<> pos, Direction dir);
-
+	TeamType getTeamType() const;
 public:
 	TeamLogic();
 
@@ -49,5 +49,8 @@ public:
 	/// <param name="agent1">一人目のエージェント</param>
 	/// <param name="agent2">二人目のエージェント</param>
 	TeamLogic(TeamType type, Agent agent1, Agent agent2);
+
+	//コピーコンストラクタ
+	TeamLogic(const TeamLogic &tl);
 };
 

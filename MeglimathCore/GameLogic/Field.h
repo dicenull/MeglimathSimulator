@@ -111,5 +111,7 @@ public:
 	/// <param name="file">フィールド情報のあるjsonファイル</param>
 	Field(std::string json);
 
+	//コピーコンストラクタ
+	Field(const Field &field);
 	virtual ~Field();
 };
