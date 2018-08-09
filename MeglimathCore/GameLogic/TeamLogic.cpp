@@ -45,9 +45,5 @@ TeamLogic::TeamLogic(TeamType type, Agent agent1, Agent agent2)
 	_type = type;
 }
 
-TeamLogic::TeamLogic(const TeamLogic &tl):_type(tl.getTeamType())
-{
-	auto a = GetAgents();
-	_agents[0] = a[0];
-	_agents[1] = a[1];
-}
+TeamLogic::TeamLogic(const TeamLogic &tl) :_type(tl.getTeamType()), _agents{ {tl._agents[0].GetPosition()},{tl._agents[1].GetPosition() } }
+{}
