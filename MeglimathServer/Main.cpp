@@ -26,6 +26,7 @@ namespace Scenes
 	{
 		ReadFieldJson(const InitData& init) : IScene(init)
 		{
+			// フィールド情報を受け取るための通信
 			getData().server.startAccept(31400);
 		}
 
@@ -35,6 +36,7 @@ namespace Scenes
 
 			if (server.hasSession())
 			{
+				// フィールド情報を受信
 				String field_json;
 				server.readLine(field_json);
 
@@ -42,6 +44,8 @@ namespace Scenes
 				{
 					// ゲームの初期化
 					getData().game = { field_json };
+
+					// クライアントとの接続へ移行
 					server.disconnect();
 					changeScene(U"Connection");
 					return;
@@ -60,6 +64,7 @@ namespace Scenes
 	{
 		Connection(const InitData& init) : IScene(init)
 		{
+			// 二つのクライアントと接続する
 			getData().server.startAcceptMulti(31400);
 		}
 
@@ -67,7 +72,7 @@ namespace Scenes
 		{
 			if (getData().server.num_sessions() == 2)
 			{
-				changeScene(U"Game");
+				changeScene(U"HandShake");
 			}
 		}
 
@@ -75,6 +80,94 @@ namespace Scenes
 		{
 			getData().drawer.DrawField(getData().game.GetField());
 			FontAsset(U"Msg")(U"待機中... 接続数 : ", getData().server.num_sessions()).draw(Point(0, 0));
+		}
+	};
+
+	struct HandShake : MyApp::Scene
+	{
+	private:
+		bool _has_connection[2] = { false, false };
+
+	private:
+		void sendTeamTypes()
+		{
+			auto ids = getData().server.getSessionIDs();
+			
+			sendTeamType(ids[0], TeamType::A);
+			sendTeamType(ids[1], TeamType::B);
+		}
+
+		void sendTeamType(size_t id, TeamType type)
+		{
+			auto to_wide_json = [](TeamType type) {return Unicode::Widen(Transform::CreateJson(type)) + U"\n"; };
+
+			getData().server.sendString(to_wide_json(type), id);
+		}
+
+	public:
+		HandShake(const InitData& init) : IScene(init)
+		{
+			sendTeamTypes();
+		}
+
+		void update() override
+		{
+			auto & server = getData().server;
+
+			if (server.num_sessions() != 2)
+			{
+				server.disconnect();
+				server.cancelAccept();
+
+				changeScene(U"Connection");
+			}
+
+			for (auto i = 0; i < server.num_sessions(); i++)
+			{
+				auto ids = server.getSessionIDs();
+
+				String json_dat;
+				server.readUntil(U'\n', json_dat, ids[i]);
+				json_dat.remove(U'\n');
+
+				if (json_dat.isEmpty())
+				{
+					continue;
+				}
+
+				if (json_dat == U"Type")
+				{
+					// もう片方が設定完了している場合
+					TeamType type;
+					if (_has_connection[1 - i])
+					{
+						type = TeamType::B;
+					}
+					else
+					{
+						type = TeamType::A;
+					}
+
+					sendTeamType(ids[i], type);
+					continue;
+				}
+
+				if (json_dat == U"OK")
+				{
+					_has_connection[i] = true;
+				}
+			}
+
+			if (_has_connection[0] && _has_connection[1])
+			{
+				changeScene(U"Game");
+				return;
+			}
+		}
+
+		void draw() const override
+		{
+			FontAsset(U"Msg")(U"パラメータ設定中...").draw(Point(0,0));
 		}
 	};
 
@@ -92,19 +185,9 @@ namespace Scenes
 			}
 		}
 
-		void sendTeamTypes()
-		{
-			auto ids = getData().server.getSessionIDs();
-			auto to_wide_json = [](TeamType type) {return Unicode::Widen(Transform::CreateJson(type)) + U"\n"; };
-
-			getData().server.sendString(to_wide_json(TeamType::A), ids[0]);
-			getData().server.sendString(to_wide_json(TeamType::B), ids[1]);
-		}
-
 	public:
 		Game(const InitData& init) : IScene(init)
 		{
-			sendTeamTypes();
 			sendGameInfo();
 
 			// ClientのThinkをidで管理
@@ -129,16 +212,10 @@ namespace Scenes
 			for (auto id : data.server.getSessionIDs())
 			{
 				String json_dat;
-				getData().server.readUntil('\n', json_dat, Optional<SessionID>(id));
+				data.server.readUntil('\n', json_dat, Optional<SessionID>(id));
 
 				if (json_dat.isEmpty())
 				{
-					continue;
-				}
-
-				if (json_dat == U"0")
-				{
-					sendTeamTypes();
 					continue;
 				}
 
@@ -151,8 +228,8 @@ namespace Scenes
 			
 			// Client二つ分のThinkが更新されたら次のターンへ
 			auto ids = data.server.getSessionIDs();
-
-			if (ids.count() != 2)
+			
+			if (ids.size() != 2)
 			{
 				return;
 			}
@@ -161,6 +238,8 @@ namespace Scenes
 			if (thinks[ids[0]].has_value() && thinks[ids[1]].has_value())
 			{
 				getData().game.NextTurn(thinks[ids[0]].value(), thinks[ids[1]].value());
+
+				// Think情報を初期化
 				thinks[ids[0]] = none;
 				thinks[ids[1]] = none;
 
@@ -187,7 +266,8 @@ void Main()
 	manager
 		.add<Scenes::ReadFieldJson>(U"ReadFieldJson")
 		.add<Scenes::Connection>(U"Connection")
-		.add<Scenes::Game>(U"Game");
+		.add<Scenes::Game>(U"Game")
+		.add<Scenes::HandShake>(U"HandShake");
 
 	FontAsset::Register(U"Msg", 32);
 	FontAsset::Register(U"Cell", 16, Typeface::Black);

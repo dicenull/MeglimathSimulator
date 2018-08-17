@@ -17,6 +17,7 @@ struct GameData
 	asc::TCPStringClient tcp_client;
 	ClientDrawer drawer;
 	GameInfo info;
+	TeamType teamType;
 };
 
 using MyApp = SceneManager<String, GameData>;
@@ -34,7 +35,7 @@ namespace Scenes
 		{
 			if (getData().tcp_client.isConnected())
 			{
-				changeScene(U"Game");
+				changeScene(U"HandShake");
 			}
 		}
 
@@ -44,14 +45,86 @@ namespace Scenes
 		}
 	};
 
+	struct HandShake : MyApp::Scene
+	{
+		HandShake(const InitData& init) : IScene(init)
+		{
+
+		}
+
+		void update() override
+		{
+			auto & tcp_client = getData().tcp_client;
+
+			if (tcp_client.hasError())
+			{
+				tcp_client.disconnect();
+
+				changeScene(U"Connection");
+				return;
+			}
+
+			String json_dat;
+			tcp_client.readLine(json_dat);
+
+			if (json_dat.isEmpty())
+			{
+				tcp_client.sendString(U"Type\n");
+				return;
+			}
+
+			rapidjson::Document document;
+			document.Parse(json_dat.narrow().data());
+
+			if (!document.HasMember("TeamType"))
+			{
+				return;
+			}
+
+			std::string type = document["TeamType"].GetString();
+			Optional<TeamType> team_type = none;
+
+			if (type == "A")
+			{
+				team_type = TeamType::A;
+			}
+
+			if (type == "B")
+			{
+				team_type = TeamType::B;
+			}
+
+			if (team_type.has_value())
+			{
+				getData().teamType = team_type.value();
+				tcp_client.sendString(U"OK\n");
+				changeScene(U"Game");
+				return;
+			}
+		}
+
+		void draw() const override
+		{
+			FontAsset(U"Msg")(U"パラメータ設定中...").drawAt(Window::Center());
+		}
+	};
+
 	struct Game : MyApp::Scene
 	{
-		bool _is_init = false;
 		std::unique_ptr<Client> user_client;
+		bool _is_init = false;
+		bool _is_update = false;
 
 		Game(const InitData& init) : IScene(init)
 		{
+			auto type = getData().teamType;
 
+			// Clientを初期化
+			//user_client.reset(new T_Monte_Carlo(type));
+			user_client.reset(new KeyboardClient(type, { KeyD, KeyE, KeyW, KeyQ, KeyA, KeyZ, KeyX, KeyC, KeyS }, KeyShift));
+			// user_client.reset(new RandomClient(type));
+
+			Window::SetTitle(U"Client ", Transform::ToString(type));
 		}
 
 		void update() override
@@ -65,72 +138,50 @@ namespace Scenes
 			}
 
 			// ゲームの更新
-			String json_dat;
-			getData().tcp_client.readLine(json_dat);
-
-			if (!json_dat.isEmpty())
+			if (!_is_update)
 			{
+				String json_dat;
+				getData().tcp_client.readLine(json_dat);
+
+				if (json_dat.isEmpty())
+				{
+					return;
+				}
+
 				rapidjson::Document document;
 				document.Parse(json_dat.narrow().data());
 
 				if (document.HasMember("TeamType"))
 				{
-					auto team_type_ch = document["TeamType"].GetString()[0];
-					Optional<TeamType> type;
+					return;
+				}
 
-					if (team_type_ch == 'A')
-					{
-						type = TeamType::A;
-					}
-					else if (team_type_ch == 'B')
-					{
-						type = TeamType::B;
-					}
-					
-					if (type.has_value())
-					{
-						// Clientを初期化
-						//user_client.reset(new T_Monte_Carlo(type.value()));
-						user_client.reset(new KeyboardClient(type.value(), { KeyD, KeyE, KeyW, KeyQ, KeyA, KeyZ, KeyX, KeyC, KeyS }, KeyShift));
-						// user_client.reset(new RandomClient(type.value()));
-					}
-				}
-				else if (user_client)
-				{
-					getData().info = { json_dat.narrow() };
-					_is_init = true;
-				}
-				else
-				{
-					getData().tcp_client.sendString(U"0\n");
-				}
+				// フィールド情報を更新
+				getData().info = { json_dat.narrow() };
+				_is_init = true;
+
+				_is_update = true;
 			}
 
-			if (_is_init)
+			// Clientを更新
+			user_client->Update();
+
+			// ServerにThinkを送信
+			if (user_client->IsReady())
 			{
-				auto & client = user_client;
-				
-				// Clientを更新
-				client->Update();
+				auto think = user_client->NextThink(data.info);
+				auto str = Unicode::Widen(Transform::CreateJson(think));
+				str.push_back('\n');
 
-				// ServerにThinkを送信
-				if (client->IsReady())
-				{
-					auto think = client->NextThink(data.info);
-					auto str = Unicode::Widen(Transform::CreateJson(think));
-					str.push_back('\n');
-
-					getData().tcp_client.sendString(str);
-				}
+				getData().tcp_client.sendString(str);
+				_is_update = false;
 			}
-
 		}
 
 		void draw() const override
 		{
 			if (!_is_init)
 			{
-				FontAsset(U"Msg")(U"待機中...").drawAt(Window::Center());
 				return;
 			}
 
@@ -156,7 +207,8 @@ void Main()
 	MyApp manager;
 	manager
 		.add<Scenes::Connection>(U"Connection")
-		.add<Scenes::Game>(U"Game");
+		.add<Scenes::Game>(U"Game")
+		.add<Scenes::HandShake>(U"HandShake");
 
 	FontAsset::Register(U"Msg", 32);
 	FontAsset::Register(U"Cell", 16, Typeface::Black);
