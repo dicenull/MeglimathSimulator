@@ -8,30 +8,30 @@ class Field
 {
 public:
 	/// <summary>
-	/// ƒtƒB[ƒ‹ƒhî•ñ
+	/// ï¿½tï¿½Bï¿½[ï¿½ï¿½ï¿½hï¿½ï¿½ï¿½
 	/// </summary>
 	_Grid<Cell> cells = { {6,6} };
 
 private:
 	/// <summary>
-	/// ˆÍ‚Ü‚ê‚Ä‚¢‚é—Ìˆæ‚ð’Tõ‚·‚é
+	/// ï¿½Í‚Ü‚ï¿½Ä‚ï¿½ï¿½ï¿½Ìˆï¿½ï¿½Tï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	/// </summary>
-	/// <param name="pos">’Tõ‚ðŠJŽn‚·‚éÀ•W</param>
-	/// <param name="tile">‚Ç‚Ìƒ^ƒCƒ‹‚ÅˆÍ‚Ü‚ê‚Ä‚¢‚é‚©</param>
+	/// <param name="pos">ï¿½Tï¿½ï¿½ï¿½ï¿½Jï¿½nï¿½ï¿½ï¿½ï¿½ï¿½ï¿½W</param>
+	/// <param name="tile">ï¿½Ç‚Ìƒ^ï¿½Cï¿½ï¿½ï¿½ÅˆÍ‚Ü‚ï¿½Ä‚ï¿½ï¿½é‚©</param>
 	void dfsAreaPoint(_Point<> pos, TileType tile, _Grid<bool>& _status)const;
 
 	/// <summary>
-	/// Žw’è‚Ìƒ^ƒCƒ‹‚ÅˆÍ‚Ü‚ê‚½—Ìˆæ‚Ì“¾“_‚ðWŒv‚µ‚Ü‚·
+	/// ï¿½wï¿½ï¿½Ìƒ^ï¿½Cï¿½ï¿½ï¿½ÅˆÍ‚Ü‚ê‚½ï¿½Ìˆï¿½Ì“ï¿½ï¿½_ï¿½ï¿½Wï¿½vï¿½ï¿½ï¿½Ü‚ï¿½
 	/// </summary>
-	/// <param name="tile">‚Ç‚Ìƒ^ƒCƒ‹‚ÅˆÍ‚Ü‚ê‚Ä‚¢‚é‚©</param>
-	/// <returns>—Ìˆæƒ|ƒCƒ“ƒg</returns>
+	/// <param name="tile">ï¿½Ç‚Ìƒ^ï¿½Cï¿½ï¿½ï¿½ÅˆÍ‚Ü‚ï¿½Ä‚ï¿½ï¿½é‚©</param>
+	/// <returns>ï¿½Ìˆï¿½|ï¿½Cï¿½ï¿½ï¿½g</returns>
 	int aggregateAreaPoint(TileType tile)const;
 
 	/// <summary>
-	/// Žw’è‚Ìƒ^ƒCƒ‹‚Ìƒ^ƒCƒ‹ƒ|ƒCƒ“ƒg‚ðWŒv‚µ‚Ü‚·
+	/// ï¿½wï¿½ï¿½Ìƒ^ï¿½Cï¿½ï¿½ï¿½Ìƒ^ï¿½Cï¿½ï¿½ï¿½|ï¿½Cï¿½ï¿½ï¿½gï¿½ï¿½Wï¿½vï¿½ï¿½ï¿½Ü‚ï¿½
 	/// </summary>
-	/// <param name="tile">“¾“_‚ðWŒv‚·‚éƒ^ƒCƒ‹</param>
-	/// <returns>ƒ^ƒCƒ‹ƒ|ƒCƒ“ƒg</returns>
+	/// <param name="tile">ï¿½ï¿½ï¿½_ï¿½ï¿½Wï¿½vï¿½ï¿½ï¿½ï¿½^ï¿½Cï¿½ï¿½</param>
+	/// <returns>ï¿½^ï¿½Cï¿½ï¿½ï¿½|ï¿½Cï¿½ï¿½ï¿½g</returns>
 	int aggregateTilePoint(TileType tile)const;
 	int aggregateTotalPoint(TileType tile)const;
 
@@ -40,33 +40,45 @@ public:
 	std::array<int, 2> GetAreaPoints() const;
 	std::array<int, 2> GetTilePoints() const;
 	std::array<int, 2> GetTotalPoints() const;
+	/// <summary>
+	/// ï¿½^ï¿½Cï¿½ï¿½ï¿½Æ—Ìˆï¿½Ìƒ|ï¿½Cï¿½ï¿½ï¿½gï¿½ï¿½Wï¿½vï¿½ï¿½ï¿½Aï¿½fï¿½[ï¿½^ï¿½ï¿½Xï¿½Vï¿½ï¿½ï¿½ï¿½
+	/// </summary>
+	void UpdatePoint();
 
 	/// <summary>
-	/// ƒZƒ‹‚ð“h‚é
+	/// ï¿½Zï¿½ï¿½ï¿½ï¿½ï¿½ï¿½æ“¾ï¿½ï¿½ï¿½ï¿½
 	/// </summary>
-	/// <param name="pos">“h‚éƒZƒ‹‚ÌÀ•W</param>
-	/// <param name="team">ƒZƒ‹‚ð“h‚éƒ`[ƒ€</param>
+	/// <returns>ï¿½tï¿½Bï¿½[ï¿½ï¿½ï¿½hï¿½ÌƒZï¿½ï¿½ï¿½ï¿½ï¿½</returns>
+	_Grid<Cell> GetCells() const;
+
+	void GetCellsTo(_Grid<Cell>* cells);
+
+	/// <summary>
+	/// ï¿½Zï¿½ï¿½ï¿½ï¿½hï¿½ï¿½
+	/// </summary>
+	/// <param name="pos">ï¿½hï¿½ï¿½Zï¿½ï¿½ï¿½Ìï¿½ï¿½W</param>
+	/// <param name="team">ï¿½Zï¿½ï¿½ï¿½ï¿½hï¿½ï¿½`ï¿½[ï¿½ï¿½</param>
 	void PaintCell(_Point<> pos, TeamType team);
 
 	/// <summary>
-	/// ƒ^ƒCƒ‹‚ðŽæ‚é
+	/// ï¿½^ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	/// </summary>
-	/// <param name="pos">ƒ^ƒCƒ‹‚ÌÀ•W</param>
+	/// <param name="pos">ï¿½^ï¿½Cï¿½ï¿½ï¿½Ìï¿½ï¿½W</param>
 	void RemoveTile(_Point<> pos);
 
 	/// <summary>
-	/// Žw’èÀ•W‚ªƒtƒB[ƒ‹ƒh‚Ì’†‚Å‚ ‚é‚©”»’è‚·‚é
+	/// ï¿½wï¿½ï¿½ï¿½ï¿½Wï¿½ï¿½ï¿½tï¿½Bï¿½[ï¿½ï¿½ï¿½hï¿½Ì’ï¿½ï¿½Å‚ï¿½ï¿½é‚©ï¿½ï¿½ï¿½è‚·ï¿½ï¿½
 	/// </summary>
-	/// <param name="pos">ƒtƒB[ƒ‹ƒh“à‚©”»’è‚·‚éÀ•W</param>
-	/// <returns>À•W‚ªƒtƒB[ƒ‹ƒh“à‚Å‚ ‚é‚©</returns>
+	/// <param name="pos">ï¿½tï¿½Bï¿½[ï¿½ï¿½ï¿½hï¿½ï¿½ï¿½ï¿½ï¿½è‚·ï¿½ï¿½ï¿½ï¿½W</param>
+	/// <returns>ï¿½ï¿½ï¿½Wï¿½ï¿½ï¿½tï¿½Bï¿½[ï¿½ï¿½ï¿½hï¿½ï¿½Å‚ï¿½ï¿½é‚©</returns>
 	bool IsInField(_Point<> pos) const;
 
 	/// <summary>
-	/// À•W‚Æ•ûŒüAƒtƒB[ƒ‹ƒhó‘Ô‚©‚ç•K—v‚Ès“®‚ðŒˆ‚ß‚é
+	/// ï¿½ï¿½ï¿½Wï¿½Æ•ï¿½ï¿½ï¿½ï¿½Aï¿½tï¿½Bï¿½[ï¿½ï¿½ï¿½hï¿½ï¿½Ô‚ï¿½ï¿½ï¿½Kï¿½vï¿½Èsï¿½ï¿½ï¿½ï¿½ß‚ï¿½
 	/// </summary>
-	/// <param name="pos">Žw’è•ûŒü‚É“®‚­‘O‚ÌÀ•W</param>
-	/// <param name="dir">s“®‚·‚é•ûŒü</param>
-	/// <returns>•K—v‚Ès“®</returns>
+	/// <param name="pos">ï¿½wï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É“ï¿½ï¿½ï¿½ï¿½Oï¿½Ìï¿½ï¿½W</param>
+	/// <param name="dir">ï¿½sï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½</param>
+	/// <returns>ï¿½Kï¿½vï¿½Èsï¿½ï¿½</returns>
 	Step DecideStepByDirection(_Point<> pos, Direction dir) const;
 
 public:
