@@ -97,7 +97,18 @@ std::array<int, 2> Field::GetAreaPoints() const
 	return { aggregateAreaPoint(TileType::A),aggregateAreaPoint(TileType::B) };
 }
 
+<<<<<<< HEAD
 std::array<int, 2> Field::GetTilePoints() const
+=======
+void Field::GetCellsTo(_Grid<Cell>* cells)
+{
+	cells = &_cells;
+}
+
+
+
+std::vector<int> Field::GetAreaPoints() const
+>>>>>>> セルの参照を取得できるようにした
 {
 	return { aggregateTilePoint(TileType::A),aggregateTilePoint(TileType::B) };
 }
