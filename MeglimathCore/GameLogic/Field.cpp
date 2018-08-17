@@ -148,7 +148,53 @@ Step Field::DecideStepByDirection(_Point<> pos, Direction dir) const
 	}
 }
 
+<<<<<<< HEAD
 Field Field::makeFieldFromJson(std::string json)
+=======
+Field::Field():Field(_Point<size_t>{6,6})
+{
+}
+
+void Field::operator=(const Field & other)
+{
+	_cells = other._cells;
+}
+
+
+Field::Field(_Size size)
+{
+	// 入力されるタイルポイントの数
+	_Size data_size = _Size((size.x + 1) / 2, (size.y + 1) / 2);
+	_cells = _Grid<Cell>(size);
+	srand(time(nullptr));
+	for ( int i : step(data_size.y) ) {
+		for ( int k : step(data_size.x) ) {
+
+			// 1/10程度の確率で負数を設定
+			if (rand() % 10 == 0)
+			{
+				_cells[i][k] = ( rand() >> 7 ) % 17 - 16;
+			}
+			else
+			{
+				_cells[i][k] = ( rand() >> 7 ) % 16 + 1;
+			}
+
+			// データをコピー
+			_cells[size.y - 1 - i][size.x - 1 - k] = _cells[i][k];
+			_cells[size.y - 1 - i][k] = _cells[i][k];
+			_cells[i][size.x - 1 - k] = _cells[i][k];
+		}
+	}
+}
+
+Field::Field(_Grid<Cell> cells) :_cells(cells)
+{
+	//_cells = cells;
+}
+
+Field::Field(std::string json)
+>>>>>>> 繝輔ぅ繝ｼ繝ｫ繝峨�ｮ繧ｿ繧､繝ｫ繝昴う繝ｳ繝育函謌先婿豕輔ｒ菫ｮ豁｣
 {
 	rapidjson::Document document;
 	document.Parse(json.data());
