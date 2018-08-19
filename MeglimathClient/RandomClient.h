@@ -4,17 +4,25 @@ class RandomClient :
 	public Client
 {
 public:
-	Think NextThink(GameInfo info) override
+	void Update(GameInfo info) override
 	{
-		return Think
-		{ {{
+		if (IsReady())
+		{
+			return;
+		}
+
+		_think =
+		{
 			{Action(Random(0,1)),Direction(Random(0,7))},
 			{Action(Random(0,1)),Direction(Random(0,7))}
-		}} };
+		};
+		_is_ready = true;
 	}
 
-	void Update() override
-	{}
+	void Initialize() override
+	{
+		_is_ready = false;
+	}
 
 public:
 	RandomClient(TeamType type);

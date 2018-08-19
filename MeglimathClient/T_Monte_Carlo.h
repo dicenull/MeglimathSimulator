@@ -7,31 +7,36 @@ class T_Monte_Carlo : public Client {
 private:
 
 	/// <summary>
-	/// “®‚­æ‚ÌŒó•â‚ğ’T‚·ŠÖ”
+	/// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÌŒï¿½ï¿½ï¿½Tï¿½ï¿½ï¿½Öï¿½
 	/// </summary>
-	/// <param name="movelist">‚±‚ê‚Ü‚Å“®‚¢‚½ƒ}ƒX</param>
-	/// <param name="agent">“®ì‚ğŒˆ‚ß‚é‘ÎÛ‚ÌƒG[ƒWƒFƒ“ƒg</param>
-	/// <param name="field">ƒtƒB[ƒ‹ƒhî•ñ</param>
-	/// <returns>“®‚­æ</returns>
+	/// <param name="movelist">ï¿½ï¿½ï¿½ï¿½Ü‚Å“ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½}ï¿½X</param>
+	/// <param name="agent">ï¿½ï¿½ï¿½ï¿½ï¿½ß‚ï¿½ÎÛ‚ÌƒGï¿½[ï¿½Wï¿½Fï¿½ï¿½ï¿½g</param>
+	/// <param name="field">ï¿½tï¿½Bï¿½[ï¿½ï¿½ï¿½hï¿½ï¿½ï¿½</param>
+	/// <returns>ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½</returns>
 	int decideMove(Array<int> *movelist, Agent agent, Field field);
 
 	/// <summary>
-	/// ƒNƒCƒbƒNƒ\[ƒg
+	/// ï¿½Nï¿½Cï¿½bï¿½Nï¿½\ï¿½[ï¿½g
 	/// </summary>
-	/// <param name="target">ƒ\[ƒg‘ÎÛ</param>
-	/// <param name="left">ƒ\[ƒg‘ÎÛ‚Ì”z—ñ‚Ìˆê”Ô¶‚Ì—v‘f</param>
-	/// <param name="right">ƒ\[ƒg‘ÎÛ‚Ìˆê”Ô‰E‚Ì—v‘f</param>
+	/// <param name="target">ï¿½\ï¿½[ï¿½gï¿½Îï¿½</param>
+	/// <param name="left">ï¿½\ï¿½[ï¿½gï¿½ÎÛ‚Ì”zï¿½ï¿½Ìˆï¿½Ôï¿½ï¿½Ì—vï¿½f</param>
+	/// <param name="right">ï¿½\ï¿½[ï¿½gï¿½ÎÛ‚Ìˆï¿½Ô‰Eï¿½Ì—vï¿½f</param>
 	void sort(Array <std::pair<Array<int>, int> > *target, int left, int right);
 
 	/// <summary>
-	/// TeamType‚ğTileType‚É•ÏŠ·‚·‚éŠÖ”
+	/// TeamTypeï¿½ï¿½TileTypeï¿½É•ÏŠï¿½ï¿½ï¿½ï¿½ï¿½Öï¿½
 	/// </summary>
 	TileType TeamtoTile(TeamType t);
 
 public:
-	Think NextThink(GameInfo info) override {
+	void Update(GameInfo info) override {
 
-		//ƒG[ƒWƒFƒ“ƒg1A2‚Ìƒ‹[ƒg‚Æ‚»‚Ìƒ‹[ƒg‚É‚æ‚Á‚Ä“¾‚ç‚ê‚éƒ^ƒCƒ‹ƒ|ƒCƒ“ƒg‚ğƒZƒbƒg‚Å•¡”“ü‚ê‚Ä‚¨‚­•Ï”
+		if (IsReady())
+		{
+			return;
+		}
+
+		//ï¿½Gï¿½[ï¿½Wï¿½Fï¿½ï¿½ï¿½g1ï¿½A2ï¿½Ìƒï¿½ï¿½[ï¿½gï¿½Æ‚ï¿½ï¿½Ìƒï¿½ï¿½[ï¿½gï¿½É‚ï¿½ï¿½ï¿½Ä“ï¿½ï¿½ï¿½ï¿½ï¿½^ï¿½Cï¿½ï¿½ï¿½|ï¿½Cï¿½ï¿½ï¿½gï¿½ï¿½Zï¿½bï¿½gï¿½Å•ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ï¿½Ïï¿½
 		Array< std::pair<Array<int>, int> > agent1;
 		Array< std::pair<Array<int>, int> > agent2;
 
@@ -46,7 +51,7 @@ public:
 		Point preP;
 
 		while (1) {
-			//ƒG[ƒWƒFƒ“ƒg‚ÌˆÚ“®æ‚ğƒ‰ƒ“ƒ_ƒ€‚É20èŒvZAŒ‹‰Ê‚ğ”z—ñ‚Épush
+			//ï¿½Gï¿½[ï¿½Wï¿½Fï¿½ï¿½ï¿½gï¿½ÌˆÚ“ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½ï¿½20ï¿½ï¿½vï¿½Zï¿½Aï¿½ï¿½ï¿½Ê‚ï¿½zï¿½ï¿½ï¿½push
 			for (int i = 0; i < 20; i++) {
 				temppoint = decideMove(&(agenttemp1.first), agents[0], tem);
 				agenttemp1.second += temppoint;
@@ -56,10 +61,10 @@ public:
 			agenttemp1.second = 0;
 
 
-			//ŒvZŒ‹‰Ê‚ª2’Ê‚èˆÈã‚É‚È‚Á‚½‚çƒ^ƒCƒ‹ƒ|ƒCƒ“ƒg‡‚Åƒ\[ƒgŠJn
+			//ï¿½vï¿½Zï¿½ï¿½ï¿½Ê‚ï¿½2ï¿½Ê‚ï¿½Èï¿½É‚È‚ï¿½ï¿½ï¿½ï¿½ï¿½^ï¿½Cï¿½ï¿½ï¿½|ï¿½Cï¿½ï¿½ï¿½gï¿½ï¿½ï¿½Åƒ\ï¿½[ï¿½gï¿½Jï¿½n
 			if (agent1.size() > 2) {
 				sort(&agent1, 0, agent1.size() - 1);
-				//ƒ^ƒCƒ‹ƒ|ƒCƒ“ƒg‚ªˆê”Ô‚‚¢ƒ‹[ƒg‚ÆA2”Ô–Ú‚É‚‚¢ƒ‹[ƒg‚Ìˆê”ÔÅ‰‚ÌˆÚ“®æ‚ª“¯‚¶‚©1ƒ}ƒX‚¾‚¯ƒYƒŒ‚Ä‚¢‚½‚çAˆê”Ôƒ^ƒCƒ‹ƒ|ƒCƒ“ƒg‚ª‚‚¢ƒ‹[ƒg‚ÌÅ‰‚ÌˆÚ“®æ‚ğÅI“I‚ÈˆÚ“®æ‚Æ‚·‚é
+				//ï¿½^ï¿½Cï¿½ï¿½ï¿½|ï¿½Cï¿½ï¿½ï¿½gï¿½ï¿½ï¿½ï¿½Ôï¿½ï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½gï¿½ÆA2ï¿½Ô–Ú‚Éï¿½ï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½gï¿½Ìˆï¿½ÔÅï¿½ï¿½ÌˆÚ“ï¿½ï¿½æ‚ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½1ï¿½}ï¿½Xï¿½ï¿½ï¿½ï¿½ï¿½Yï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ï¿½ï¿½Aï¿½ï¿½Ôƒ^ï¿½Cï¿½ï¿½ï¿½|ï¿½Cï¿½ï¿½ï¿½gï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½gï¿½ÌÅï¿½ï¿½ÌˆÚ“ï¿½ï¿½ï¿½ï¿½ÅIï¿½Iï¿½ÈˆÚ“ï¿½ï¿½ï¿½Æ‚ï¿½ï¿½ï¿½
 				if (agent1[agent1.size() - 1].first[0] == agent1[agent1.size() - 2].first[0] || agent1[agent1.size() - 1].first[0] == (agent1[agent1.size() - 2].first[0]) + 1 || agent1[agent1.size() - 1].first[0] ==( agent1[agent1.size() - 2].first[0])- 1
 					|| agent1.size() > 100) {
 					break;
@@ -89,13 +94,13 @@ public:
 
 		}
 
-		return Think{ tem.DecideStepByDirection(agents[0].position, Direction(agent1[agent1.size() - 1].first[0])), tem.DecideStepByDirection(agents[1].position, Direction(agent2[agent2.size() - 1].first[0])) } ;
-
-
+		_think = Think{ tem.DecideStepByDirection(agents[0].GetPosition(), Direction(agent1[agent1.size() - 1].first[0])), tem.DecideStepByDirection(agents[1].GetPosition(), Direction(agent2[agent2.size() - 1].first[0])) } ;
+		_is_ready = true;
 	}
 
-	void Update() override {
-
+	void Initialize() override
+	{
+		_is_ready = false;
 	}
 
 public:

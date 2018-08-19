@@ -120,8 +120,8 @@ namespace Scenes
 			auto type = getData().teamType;
 
 			// Clientを初期化
-			//user_client.reset(new T_Monte_Carlo(type));
-			user_client.reset(new KeyboardClient(type, { KeyD, KeyE, KeyW, KeyQ, KeyA, KeyZ, KeyX, KeyC, KeyS }, KeyShift));
+			user_client.reset(new T_Monte_Carlo(type));
+			// user_client.reset(new KeyboardClient(type, { KeyD, KeyE, KeyW, KeyQ, KeyA, KeyZ, KeyX, KeyC, KeyS }, KeyShift));
 			// user_client.reset(new RandomClient(type));
 
 			Window::SetTitle(U"Client ", Transform::ToString(type));
@@ -164,17 +164,19 @@ namespace Scenes
 			}
 
 			// Clientを更新
-			user_client->Update();
+			user_client->Update(data.info);
 
 			// ServerにThinkを送信
 			if (user_client->IsReady())
 			{
-				auto think = user_client->NextThink(data.info);
+				auto think = user_client->GetNextThink();
 				auto str = Unicode::Widen(Transform::CreateJson(think));
 				str.push_back('\n');
 
 				getData().tcp_client.sendString(str);
 				_is_update = false;
+
+				user_client->Initialize();
 			}
 		}
 
@@ -188,16 +190,7 @@ namespace Scenes
 			getData().drawer.DrawField(getData().info.GetField());
 			getData().drawer.DrawAgents(getData().info.GetAllAgent());
 
-			try
-			{
-				// 手動クライアントの場合のみ入力状態を描画
-				auto& client = dynamic_cast<ManualClient&>(*user_client);
-				getData().drawer.DrawInputState(client);
-			}
-			catch (const std::bad_cast&)
-			{
-				return;
-			}
+			getData().drawer.DrawInputState(*user_client);
 		}
 	};
 }
