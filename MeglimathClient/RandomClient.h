@@ -4,6 +4,11 @@ class RandomClient :
 	public Client
 {
 public:
+	String Name() override
+	{
+		return U"Random";
+	}
+
 	void Update(GameInfo info) override
 	{
 		if (IsReady())
