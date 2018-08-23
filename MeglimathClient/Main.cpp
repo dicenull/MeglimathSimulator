@@ -120,11 +120,11 @@ namespace Scenes
 			auto type = getData().teamType;
 
 			// Clientを初期化
-			user_client.reset(new T_Monte_Carlo(type));
-			// user_client.reset(new KeyboardClient(type, { KeyD, KeyE, KeyW, KeyQ, KeyA, KeyZ, KeyX, KeyC, KeyS }, KeyShift));
+			// user_client.reset(new T_Monte_Carlo(type));
+			user_client.reset(new KeyboardClient(type, { KeyD, KeyE, KeyW, KeyQ, KeyA, KeyZ, KeyX, KeyC, KeyS }, KeyShift));
 			// user_client.reset(new RandomClient(type));
 
-			Window::SetTitle(U"Client ", Transform::ToString(type));
+			Window::SetTitle(user_client->Name(), U"Client ", Transform::ToString(type));
 		}
 
 		void update() override

@@ -29,6 +29,11 @@ private:
 	TileType TeamtoTile(TeamType t);
 
 public:
+	String Name() override
+	{
+		return U"T MonteCarlo";
+	}
+
 	void Update(GameInfo info) override {
 
 		if (IsReady())

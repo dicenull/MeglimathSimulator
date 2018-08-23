@@ -7,6 +7,12 @@ private:
 	Array<Key> _operation_keys;
 	Key _toggle_key;
 
+public:
+	String Name() override
+	{
+		return U"Keyboard";
+	}
+
 protected:
 	Optional<Step> decideStep() override
 	{

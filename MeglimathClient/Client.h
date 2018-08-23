@@ -23,6 +23,8 @@ public:
 	/// </summary>
 	virtual void Initialize() = 0;
 
+	virtual String Name() = 0; 
+
 	bool IsReady();
 
 protected:
