@@ -15,6 +15,7 @@
 struct GameData
 {
 	asc::TCPStringClient tcp_client;
+	std::unique_ptr<Client> user_client;
 	ClientDrawer drawer;
 	GameInfo info;
 	TeamType teamType;
@@ -24,6 +25,68 @@ using MyApp = SceneManager<String, GameData>;
 
 namespace Scenes
 {
+	struct SetClient :MyApp::Scene
+	{
+		const static int count = 3;
+		std::unique_ptr<Client> clients[count];
+
+		SetClient(const InitData& init) : IScene(init)
+		{
+			// user_client.reset(new T_Monte_Carlo(type));
+			// user_client.reset(new KeyboardClient(type, { KeyD, KeyE, KeyW, KeyQ, KeyA, KeyZ, KeyX, KeyC, KeyS }, KeyShift));
+			// user_client.reset(new RandomClient(type));
+
+			auto type = getData().teamType;
+			clients[0] = std::make_unique<T_Monte_Carlo>(type);
+			clients[1] = std::make_unique<RandomClient>(type);
+			clients[2] = std::unique_ptr<Client>(new KeyboardClient(type, { KeyD, KeyE, KeyW, KeyQ, KeyA, KeyZ, KeyX, KeyC, KeyS }, KeyShift));
+		}
+
+		void update() override
+		{
+			int idx = -1;
+			int is_key_down = false;
+			if(Key0.down())
+			{
+				idx = 0;
+				is_key_down = true;
+			}
+
+			if(Key1.down())
+			{
+				idx = 1;
+				is_key_down = true;
+			}
+
+			if(Key2.down())
+			{
+				idx = 2;
+				is_key_down = true;
+			}
+
+			if(is_key_down)
+			{
+				getData().user_client = std::move(clients[idx]);
+				changeScene(U"Game");
+			}
+		}
+
+		void draw() const override
+		{
+			ClearPrint();
+			for(int i = 0;i < count;i++)
+			{
+				if(clients[i] == nullptr)
+				{
+					ClearPrint();
+					continue;
+				}
+
+				Print << i << U" : " << clients[i]->Name();
+			}
+		}
+	};
+
 	struct Connection : MyApp::Scene
 	{
 		Connection(const InitData& init) : IScene(init)
@@ -98,7 +161,7 @@ namespace Scenes
 			{
 				getData().teamType = team_type.value();
 				tcp_client.sendString(U"OK\n");
-				changeScene(U"Game");
+				changeScene(U"SetClient");
 				return;
 			}
 		}
@@ -111,7 +174,6 @@ namespace Scenes
 
 	struct Game : MyApp::Scene
 	{
-		std::unique_ptr<Client> user_client;
 		bool _is_init = false;
 		bool _is_update = false;
 
@@ -119,17 +181,14 @@ namespace Scenes
 		{
 			auto type = getData().teamType;
 
-			// Clientを初期化
-			// user_client.reset(new T_Monte_Carlo(type));
-			user_client.reset(new KeyboardClient(type, { KeyD, KeyE, KeyW, KeyQ, KeyA, KeyZ, KeyX, KeyC, KeyS }, KeyShift));
-			// user_client.reset(new RandomClient(type));
-
-			Window::SetTitle(user_client->Name(), U"Client ", Transform::ToString(type));
+			Window::SetTitle(getData().user_client->Name(), U"Client ", Transform::ToString(type));
 		}
 
 		void update() override
 		{
 			auto & data = getData();
+			auto & user_client = data.user_client;
+
 			if (data.tcp_client.hasError())
 			{
 				data.tcp_client.disconnect();
@@ -190,7 +249,7 @@ namespace Scenes
 			getData().drawer.DrawField(getData().info.GetField());
 			getData().drawer.DrawAgents(getData().info.GetAllAgent());
 
-			getData().drawer.DrawInputState(*user_client);
+			getData().drawer.DrawInputState(*(getData().user_client));
 		}
 	};
 }
@@ -201,7 +260,8 @@ void Main()
 	manager
 		.add<Scenes::Connection>(U"Connection")
 		.add<Scenes::Game>(U"Game")
-		.add<Scenes::HandShake>(U"HandShake");
+		.add<Scenes::HandShake>(U"HandShake")
+		.add<Scenes::SetClient>(U"SetClient");
 
 	FontAsset::Register(U"Msg", 32);
 	FontAsset::Register(U"Cell", 16, Typeface::Black);
