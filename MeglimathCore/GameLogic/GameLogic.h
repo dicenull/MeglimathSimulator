@@ -75,5 +75,6 @@ public:
 	GameLogic(int turn);
 	GameLogic(int turn, _Size size);
 	GameLogic(const GameLogic& gamelogic);
+	GameLogic(const Field &field, int t, const std::vector<TeamLogic>& tl);
 	virtual ~GameLogic();
 };

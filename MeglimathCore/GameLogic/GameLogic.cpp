@@ -332,7 +332,9 @@ GameLogic::GameLogic(int turn, _Size size) : _turn(turn), _teamlogics({ TeamLogi
 GameLogic::GameLogic(const GameLogic & gamelogic):_turn(gamelogic.GetTurn()),_field(gamelogic.GetField()),_teamlogics(gamelogic.getTeamLogics())
 {
 }
-
+GameLogic::GameLogic(const Field &field, int t, const std::vector<TeamLogic>& tl) : _field(field), _turn(t), _teamlogics(tl)
+{
+}
 GameLogic::~GameLogic()
 {
 }
