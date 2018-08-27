@@ -22,7 +22,7 @@ int Field::aggregateAreaPoint(TileType tile)
 			{
 				continue;
 			}
-			
+
 			area_point += std::abs(cell.GetPoint());
 		}
 	}
@@ -143,7 +143,7 @@ Step Field::DecideStepByDirection(_Point<> pos, Direction dir) const
 	}
 
 	// 座標から指定の方向に進んだ後の座標
-	_Point<int> next_pos = pos+Transform::DirToDelta(dir);
+	_Point<int> next_pos = pos + Transform::DirToDelta(dir);
 
 	if (!IsInField(next_pos))
 	{
@@ -161,7 +161,7 @@ Step Field::DecideStepByDirection(_Point<> pos, Direction dir) const
 	}
 }
 
-Field::Field():Field(_Point<size_t>{6,6})
+Field::Field() :Field(_Point<size_t>{6, 6})
 {
 }
 
@@ -177,9 +177,11 @@ Field::Field(_Size size)
 	_Size data_size = _Size((size.x + 1) / 2, (size.y + 1) / 2);
 	_cells = _Grid<Cell>(size);
 	srand(time(nullptr));
-	for ( int i : step(data_size.y) ) {
-		for ( int k : step(data_size.x) ) {
-			_cells[i][k] = ( rand() >> 7 ) % 33 - 16;
+	for (int i : step(data_size.y)) {
+		for (int k : step(data_size.x)) {
+			_cells[i][k] = (rand() >> 7) % 5 != 0 ?
+				(rand() >> 7) % 17 :
+				-((rand() >> 7) % 17);
 			// データをコピー
 			_cells[size.y - 1 - i][size.x - 1 - k] = _cells[i][k];
 			_cells[size.y - 1 - i][k] = _cells[i][k];
