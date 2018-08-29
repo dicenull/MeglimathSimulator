@@ -218,9 +218,6 @@
     <ClInclude Include="LogicUtil.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GameLogic\Util.h">
-      <Filter>Header Files\GameLogic</Filter>
-    </ClInclude>
     <ClInclude Include="GameLogic\Format.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -238,19 +235,10 @@
     <ClCompile Include="GameInfo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GameLogic\Agent.cpp">
-      <Filter>Source Files\GameLogic</Filter>
-    </ClCompile>
-    <ClCompile Include="GameLogic\Cell.cpp">
-      <Filter>Source Files\GameLogic</Filter>
-    </ClCompile>
     <ClCompile Include="GameLogic\Field.cpp">
       <Filter>Source Files\GameLogic</Filter>
     </ClCompile>
     <ClCompile Include="GameLogic\GameLogic.cpp">
-      <Filter>Source Files\GameLogic</Filter>
-    </ClCompile>
-    <ClCompile Include="GameLogic\GamePoints.cpp">
       <Filter>Source Files\GameLogic</Filter>
     </ClCompile>
     <ClCompile Include="GameLogic\TeamLogic.cpp">

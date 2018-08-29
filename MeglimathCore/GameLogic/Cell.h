@@ -22,10 +22,25 @@ struct Cell
 	/// 指定のチームによってセルにタイルが置かれる
 	/// </summary>
 	/// <param name="team">セルにタイルを置くチーム</param>
-	void PaintedBy(TeamType team);
+	void PaintedBy(TeamType team)
+	{
+		switch (team)
+		{
+		case TeamType::A:
+			tile = TileType::A;
+			break;
+
+		case TeamType::B:
+			tile = TileType::B;
+			break;
+		}
+	}
 
 	/// <summary>
 	/// 置かれたタイルを取る
 	/// </summary>
-	void RemoveTile();
+	void RemoveTile()
+	{
+		tile = TileType::None;
+	}
 };

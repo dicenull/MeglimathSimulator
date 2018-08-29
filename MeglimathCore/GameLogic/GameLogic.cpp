@@ -1,20 +1,22 @@
 #include "GameLogic.h"
 #include<random>
 
-std::unordered_map<TeamType, std::vector<Agent>> GameLogic::GetAgentMap() const
+std::unordered_map<TeamType, std::array<Agent, 2>> GameLogic::GetAgentMap() const
 {
-	std::unordered_map<TeamType, std::vector<Agent>> agents;
+	std::unordered_map<TeamType, std::array<Agent,2>> agents;
 	agents[TeamType::A] = _teamlogics[0].GetAgents();
 	agents[TeamType::B] = _teamlogics[1].GetAgents();
 
 	return agents;
 }
-std::vector<Agent> GameLogic::GetAgents() const
+std::vector<Agent>  GameLogic::GetAgents() const
 {
-	std::vector<Agent> ret{ _teamlogics[0].GetAgents() };
-	auto && other = _teamlogics[1].GetAgents();
-	ret.push_back(other[0]);
-	ret.push_back(other[1]);
+	std::vector<Agent>  ret{ 
+		_teamlogics[0].GetAgents()[0],
+		_teamlogics[0].GetAgents()[1],
+		_teamlogics[1].GetAgents()[0],
+		_teamlogics[1].GetAgents()[1]
+	};
 	return ret;
 }
 const std::vector<TeamLogic>& GameLogic::getTeamLogics()const
@@ -150,7 +152,7 @@ void GameLogic::NextTurn(const std::unordered_map<TeamType, Think> &_thinks)
 		{
 			Direction dir = _thinks.at(team).steps[i].direction;
 			// エージェントを動かしたい方向に動かした場合の座標
-			_Point<int> pos = agents_map[team][i].GetPosition();
+			_Point<int> pos = agents_map[team][i].position;
 			_Point<int> after_pos = pos+Transform::DirToDelta(dir);
 
 			// エージェントが動作する座標を追加
@@ -273,7 +275,7 @@ bool GameLogic::IsThinkAble(TeamType team, Think think)const
 		Direction dir = step.direction;
 		if ( step.action == Action::Move ) {
 			// エージェントを動かしたい方向に動かした場合の座標
-			_Point pos = agents_map[team][i].GetPosition() + Transform::DirToDelta(dir);
+			_Point pos = agents_map[team][i].position + Transform::DirToDelta(dir);
 			if ( _field.IsInField(pos)
 				&& _field.GetCells()[pos.y][pos.x].tile != their_tile ) {
 			} else {
@@ -281,7 +283,7 @@ bool GameLogic::IsThinkAble(TeamType team, Think think)const
 			}
 		} else if ( step.action == Action::RemoveTile ) {
 			// エージェントを動かしたい方向に動かした場合の座標
-			_Point pos = agents_map[team][i].GetPosition() + Transform::DirToDelta(dir);
+			_Point pos = agents_map[team][i].position + Transform::DirToDelta(dir);
 			if ( _field.IsInField(pos)
 				&& _field.GetCells()[pos.y][pos.x].tile != TileType::None ) {
 			} else {

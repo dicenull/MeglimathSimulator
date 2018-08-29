@@ -2,25 +2,25 @@
 
 void TeamLogic::InitAgentsPos(_Point<> pos1, _Point<> pos2)
 {
-	_agents[0] = Agent(pos1);
-	_agents[1] = Agent(pos2);
+	agents[0] = Agent{ pos1 };
+	agents[1] = Agent{ pos2 };
 }
 
-std::vector<Agent> TeamLogic::GetAgents() const
+const std::array<Agent, 2>& TeamLogic::GetAgents() const
 {
-	return std::vector<Agent>({ _agents[0], _agents[1] });
+	return agents;
 }
 
 void TeamLogic::MoveAgent(int idx, Direction dir)
 {
-	_agents[idx].Move(dir);
+	agents[idx].Move(dir);
 }
 
 void TeamLogic::MoveAgent(_Point<> pos, Direction dir)
 {
-	for (auto & agent : _agents)
+	for (auto & agent : agents)
 	{
-		if (agent.GetPosition() == pos)
+		if (agent.position == pos)
 		{
 			agent.Move(dir);
 			return;
@@ -39,11 +39,13 @@ TeamLogic::TeamLogic()
 
 TeamLogic::TeamLogic(TeamType type, Agent agent1, Agent agent2)
 {
-	_agents[0] = agent1;
-	_agents[1] = agent2;
+	agents[0] = agent1;
+	agents[1] = agent2;
 
 	_type = type;
 }
 
-TeamLogic::TeamLogic(const TeamLogic &tl) :_type(tl.getTeamType()), _agents{ {tl._agents[0].GetPosition()},{tl._agents[1].GetPosition() } }
+TeamLogic::TeamLogic(const TeamLogic &tl) :
+	_type(tl.getTeamType()), 
+	agents{tl.GetAgents()}
 {}
