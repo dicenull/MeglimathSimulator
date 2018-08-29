@@ -23,7 +23,7 @@ int T_Monte_Carlo::decideMove(Array<int> *movelist, Agent agent, Field field) {
 			if (field.IsInField(preP) //&& field.GetCells()[preP.y][preP.x].GetTile() != TeamtoTile(this->_type)
 				){
 				(*movelist).push_back(preMove);
-				return (field.GetCells()[preP.y][preP.x]).GetPoint();
+				return (field.GetCells()[preP.y][preP.x]).point;
 			}
 		}
 	}
@@ -43,7 +43,7 @@ int T_Monte_Carlo::decideMove(Array<int> *movelist, Agent agent, Field field) {
 				//&& field.GetCells()[preP.y][preP.x].GetTile() != TeamtoTile(this->_type)
 				) {
 				(*movelist).push_back(preMove);
-				return field.GetCells()[preP.y][preP.x].GetPoint();
+				return field.GetCells()[preP.y][preP.x].point;
 			}
 		}
 	}

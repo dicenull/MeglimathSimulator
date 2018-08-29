@@ -209,7 +209,7 @@ void GameLogic::NextTurn(const std::unordered_map<TeamType, Think> &_thinks)
 		if (   std::count_if(remove_points.cbegin(), remove_points.cend(), [pos](auto p) {return p == pos; }) > 0
 			|| std::count_if(stop_points.cbegin(), stop_points.cend(), [pos](auto p) {return p == pos; }) > 0
 			|| _field.IsInField(pos) == false
-			|| _field.GetCells()[pos.y][pos.x].GetTile() == their_tile)
+			|| _field.GetCells()[pos.y][pos.x].tile == their_tile)
 		{
 			// 停留に変更する
 			stop_points.push_back(pos - Transform::DirToDelta(dir));
@@ -275,7 +275,7 @@ bool GameLogic::IsThinkAble(TeamType team, Think think)const
 			// エージェントを動かしたい方向に動かした場合の座標
 			_Point pos = agents_map[team][i].GetPosition() + Transform::DirToDelta(dir);
 			if ( _field.IsInField(pos)
-				&& _field.GetCells()[pos.y][pos.x].GetTile() != their_tile ) {
+				&& _field.GetCells()[pos.y][pos.x].tile != their_tile ) {
 			} else {
 				return false;
 			}
@@ -283,7 +283,7 @@ bool GameLogic::IsThinkAble(TeamType team, Think think)const
 			// エージェントを動かしたい方向に動かした場合の座標
 			_Point pos = agents_map[team][i].GetPosition() + Transform::DirToDelta(dir);
 			if ( _field.IsInField(pos)
-				&& _field.GetCells()[pos.y][pos.x].GetTile() != TileType::None ) {
+				&& _field.GetCells()[pos.y][pos.x].tile != TileType::None ) {
 			} else {
 				return false;
 			}

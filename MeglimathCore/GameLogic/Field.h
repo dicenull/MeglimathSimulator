@@ -17,6 +17,7 @@ private:
 	/// </summary>
 	_Grid<bool> _status;
 
+
 	GamePoints _points[2];
 
 private:

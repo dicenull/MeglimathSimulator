@@ -252,6 +252,11 @@
     <Text Include="App\engine\font\fontawesome\LICENSE.txt" />
     <Text Include="App\engine\font\noto\LICENSE_OFL.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MeglimathCore\MeglimathCore.vcxproj">
+      <Project>{d7f2c72d-cdc8-43af-bdc8-2b12a04c9c3e}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
