@@ -24,7 +24,7 @@ const std::string Transform::CreateJson(const GameInfo& info)
 	{
 		for (int x : step(size.x))
 		{
-			writer.Int(cells[y][x].GetPoint());
+			writer.Int(cells[y][x].point);
 		}
 	}
 	writer.EndArray();
@@ -36,7 +36,7 @@ const std::string Transform::CreateJson(const GameInfo& info)
 		std::string str;
 		for (auto x : step(cells.size().x))
 		{
-			str.push_back(Transform::ToChar(cells[y][x].GetTile()));
+			str.push_back(Transform::ToChar(cells[y][x].tile));
 		}
 
 		writer.String(str.data());

@@ -19,14 +19,14 @@ void Drawer::DrawField(const Field & field) const
 
 			r.draw(Palette::White);
 
-			if (cells[k][i].GetTile() != TileType::None)
+			if (cells[k][i].tile != TileType::None)
 			{
-				r.draw(Color(TeamColor::ColorOf(cells[k][i].GetTile()), 50U));
+				r.draw(Color(TeamColor::ColorOf(cells[k][i].tile), 50U));
 			}
 			
 			r.drawFrame(1.0, Palette::Gray);
 			
-			FontAsset(U"Cell")(cells[k][i].GetPoint())
+			FontAsset(U"Cell")(cells[k][i].point)
 				.drawAt(r.center(), Palette::Black);
 		}
 	}
