@@ -182,7 +182,7 @@ Field::Field(_Size size)
 	srand(time(nullptr));
 	for (int i : step(data_size.y)) {
 		for (int k : step(data_size.x)) {
-			_cells[i][k] = { (rand() >> 7) % 5 != 0 ?
+			_cells[i][k] = { (rand() >> 7) % 10 != 0 ?
 				(rand() >> 7) % 17 :
 				-((rand() >> 7) % 17)
 			};
