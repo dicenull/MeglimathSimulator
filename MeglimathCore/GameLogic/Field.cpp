@@ -1,8 +1,7 @@
 #include "Field.h"
-#include"util.h"
 #include <time.h>
 #include<boost/range/irange.hpp>
-auto step(int s) {return boost::irange(0, s);}
+auto step(int s) { return boost::irange(0, s); }
 
 int Field::aggregateAreaPoint(TileType tile)
 {
@@ -61,12 +60,11 @@ void Field::dfsAreaPoint(_Point<> pos, TileType tile)
 		return;
 	}
 
-	_Point<> delta[] = { _Point<int>(0, 1), _Point<int>(1, 0), _Point<int>(0, -1), _Point<int>(-1, 0) };
 
 	// élï˚Ç÷íTçıÇ∑ÇÈ
-	for (int i : step(4))
+	for (auto delta : { _Point<>{0, 1},_Point<>{1, 0}, _Point<>{0, -1}, _Point<>{-1, 0} })
 	{
-		dfsAreaPoint(pos + delta[i], tile);
+		dfsAreaPoint(pos + delta, tile);
 	}
 }
 
@@ -195,9 +193,7 @@ Field::Field(_Size size)
 }
 
 Field::Field(_Grid<Cell> cells) :_cells(cells)
-{
-	//_cells = cells;
-}
+{}
 
 Field::Field(std::string json)
 {
@@ -250,10 +246,11 @@ Field::Field(std::string json)
 
 }
 
-Field::Field(const Field & field) :_cells(field.GetCells()), _status(field._status), _points{ field._points[0],field._points[1] }
-{
-}
+Field::Field(const Field & field) :
+	_cells(field.GetCells()), 
+	_status(field._status), 
+	_points{field._points}
+{}
 
 Field::~Field()
-{
-}
+{}

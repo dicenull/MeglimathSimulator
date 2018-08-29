@@ -1,14 +1,14 @@
 #pragma once
 #include "Types.h"
 #include "Agent.h"
-
+#include <array>
 class TeamLogic
 {
 private:
 	/// <summary>
 	/// チームに所属するエージェント
 	/// </summary>
-	Agent _agents[2];
+	std::array<Agent,2> agents;
 
 	/// <summary>
 	/// チームA,Bを判断するためのチームの種類
@@ -23,7 +23,7 @@ public:
 	/// <param name="pos2">エージェント2の初期座標</param>
 	void InitAgentsPos(_Point<> pos1, _Point <>pos2);
 
-	std::vector<Agent> GetAgents() const;
+	const std::array<Agent, 2>& GetAgents() const;
 
 	/// <summary>
 	/// 指定のエージェントを動かす

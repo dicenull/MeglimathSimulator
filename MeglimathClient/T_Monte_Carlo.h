@@ -89,7 +89,7 @@ public:
 
 		}
 
-		return Think{ tem.DecideStepByDirection(agents[0].GetPosition(), Direction(agent1[agent1.size() - 1].first[0])), tem.DecideStepByDirection(agents[1].GetPosition(), Direction(agent2[agent2.size() - 1].first[0])) } ;
+		return Think{ tem.DecideStepByDirection(agents[0].position, Direction(agent1[agent1.size() - 1].first[0])), tem.DecideStepByDirection(agents[1].position, Direction(agent2[agent2.size() - 1].first[0])) } ;
 
 
 	}

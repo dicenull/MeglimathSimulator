@@ -52,7 +52,7 @@ public:
 	/// チームごとのエージェントの情報を取得する
 	/// </summary>
 	/// <returns>チームごとのエージェント情報</returns>
-	std::unordered_map<TeamType, std::vector<Agent>> GetAgentMap() const;
+	std::unordered_map<TeamType, std::array<Agent, 2>> GetAgentMap() const;
 
 	/// <summary>
 	/// ゲームを次のターンに進める
