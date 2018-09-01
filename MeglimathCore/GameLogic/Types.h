@@ -4,11 +4,11 @@
 #include<string>
 #include<memory>
 #include<boost/multi_array.hpp>
-enum class TileType {
+enum struct TileType {
 	A, B, None
 };
 
-enum class TeamType {
+enum struct TeamType {
 	A, B
 };
 

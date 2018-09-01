@@ -10,7 +10,7 @@ class GameLogic
 private:
 	Field _field;
 	int _turn;
-	std::vector<TeamLogic> _teamlogics;
+	std::array<TeamLogic,2> _teamlogics;
 
 public:
 
@@ -30,7 +30,7 @@ public:
 	void initAgentPos(std::vector<_Point<>> init_pos);
 
 public:
-	const std::vector<TeamLogic>& getTeamLogics()const;
+	const std::array<TeamLogic, 2>& getTeamLogics()const;
 	/// <summary>
 	/// jsonからゲームを初期化する
 	/// </summary>
@@ -52,7 +52,7 @@ public:
 	/// チームごとのエージェントの情報を取得する
 	/// </summary>
 	/// <returns>チームごとのエージェント情報</returns>
-	std::unordered_map<TeamType, std::vector<Agent>> GetAgentMap() const;
+	std::unordered_map<TeamType, std::array<Agent, 2>> GetAgentMap() const;
 
 	/// <summary>
 	/// ゲームを次のターンに進める
@@ -75,6 +75,6 @@ public:
 	GameLogic(int turn);
 	GameLogic(int turn, _Size size);
 	GameLogic(const GameLogic& gamelogic);
-	GameLogic(const Field &field, int t, const std::vector<TeamLogic>& tl);
+	GameLogic(const Field &field, int t, const std::array<TeamLogic, 2>& tl);
 	virtual ~GameLogic();
 };

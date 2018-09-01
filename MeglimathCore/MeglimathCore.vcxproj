@@ -260,7 +260,6 @@
     <ClInclude Include="GameLogic\Think.h" />
     <ClInclude Include="GameLogic\Transform.h" />
     <ClInclude Include="GameLogic\Types.h" />
-    <ClInclude Include="GameLogic\Util.h" />
     <ClInclude Include="LogicUtil.h" />
     <ClInclude Include="StatusDrawer.h" />
     <ClInclude Include="TeamColor.h" />
@@ -270,13 +269,9 @@
     <ClCompile Include="Drawer.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameInfo.cpp" />
-    <ClCompile Include="GameLogic\Agent.cpp" />
-    <ClCompile Include="GameLogic\Cell.cpp" />
     <ClCompile Include="GameLogic\Field.cpp" />
     <ClCompile Include="GameLogic\Format.cpp" />
     <ClCompile Include="GameLogic\GameLogic.cpp" />
-    <ClCompile Include="GameLogic\GamePoints.cpp" />
-    <ClCompile Include="GameLogic\TeamLogic.cpp" />
     <ClCompile Include="GameLogic\Think.cpp" />
     <ClCompile Include="GameLogic\Transform.cpp" />
     <ClCompile Include="StatusDrawer.cpp" />

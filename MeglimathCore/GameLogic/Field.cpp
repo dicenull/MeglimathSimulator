@@ -1,6 +1,8 @@
 #include "Field.h"
-#include"util.h"
 #include <time.h>
+#include<boost/range/irange.hpp>
+auto step(int s) { return boost::irange(0, s); }
+
 int Field::aggregateAreaPoint(TileType tile)
 {
 	_status = _Grid<bool>(_cells.size() + _Point<int>(2, 2));
@@ -18,12 +20,12 @@ int Field::aggregateAreaPoint(TileType tile)
 			}
 
 			auto cell = _cells[k - 1][i - 1];
-			if (cell.GetTile() == tile)
+			if (cell.tile == tile)
 			{
 				continue;
 			}
 
-			area_point += std::abs(cell.GetPoint());
+			area_point += std::abs(cell.point);
 		}
 	}
 
@@ -52,18 +54,17 @@ void Field::dfsAreaPoint(_Point<> pos, TileType tile)
 	{
 		// 端は探索のみ行う
 	}
-	else if (_cells[pos.y - 1][pos.x - 1].GetTile() == tile)
+	else if (_cells[pos.y - 1][pos.x - 1].tile == tile)
 	{
 		// 調査中のタイルが置かれていたら終了
 		return;
 	}
 
-	_Point<> delta[] = { _Point<int>(0, 1), _Point<int>(1, 0), _Point<int>(0, -1), _Point<int>(-1, 0) };
 
 	// 四方へ探索する
-	for (int i : step(4))
+	for (auto delta : { _Point<>{0, 1},_Point<>{1, 0}, _Point<>{0, -1}, _Point<>{-1, 0} })
 	{
-		dfsAreaPoint(pos + delta[i], tile);
+		dfsAreaPoint(pos + delta, tile);
 	}
 }
 
@@ -76,9 +77,9 @@ int Field::aggregateTilePoint(TileType tile)
 	{
 		for (size_t k : step(_cells.height()))
 		{
-			if (_cells[k][i].GetTile() == tile)
+			if (_cells[k][i].tile == tile)
 			{
-				sum_tile_point += _cells[k][i].GetPoint();
+				sum_tile_point += _cells[k][i].point;
 			}
 		}
 	}
@@ -107,17 +108,17 @@ _Grid<Cell> Field::GetCells() const
 
 std::vector<int> Field::GetAreaPoints() const
 {
-	return std::vector<int>{_points[0].GetArea(), _points[1].GetArea() };
+	return std::vector<int>{_points[0].area, _points[1].area };
 }
 
 std::vector<int> Field::GetTilePoints() const
 {
-	return std::vector<int>{ _points[0].GetTile(), _points[1].GetTile() };
+	return std::vector<int>{ _points[0].tile, _points[1].tile };
 }
 
 std::vector<int> Field::GetTotalPoints() const
 {
-	return std::vector<int>{ _points[0].GetTotal(), _points[1].GetTotal() };
+	return std::vector<int>{ _points[0].getTotal(), _points[1].getTotal()};
 }
 
 void Field::PaintCell(_Point<> pos, TeamType team)
@@ -151,7 +152,7 @@ Step Field::DecideStepByDirection(_Point<> pos, Direction dir) const
 	}
 
 	// 進んだ先のタイルの有無でアクションを決める
-	if (_cells[next_pos.y][next_pos.x].GetTile() == TileType::None)
+	if (_cells[next_pos.y][next_pos.x].tile == TileType::None)
 	{
 		return Step{ Action::Move, dir };
 	}
@@ -179,9 +180,10 @@ Field::Field(_Size size)
 	srand(time(nullptr));
 	for (int i : step(data_size.y)) {
 		for (int k : step(data_size.x)) {
-			_cells[i][k] = (rand() >> 7) % 5 != 0 ?
+			_cells[i][k] = { (rand() >> 7) % 10 != 0 ?
 				(rand() >> 7) % 17 :
-				-((rand() >> 7) % 17);
+				-((rand() >> 7) % 17)
+			};
 			// データをコピー
 			_cells[size.y - 1 - i][size.x - 1 - k] = _cells[i][k];
 			_cells[size.y - 1 - i][k] = _cells[i][k];
@@ -191,9 +193,7 @@ Field::Field(_Size size)
 }
 
 Field::Field(_Grid<Cell> cells) :_cells(cells)
-{
-	//_cells = cells;
-}
+{}
 
 Field::Field(std::string json)
 {
@@ -213,7 +213,7 @@ Field::Field(std::string json)
 	{
 		for (int k : step(data_size.x))
 		{
-			_cells[i][k] = points[idx].GetInt();
+			_cells[i][k] = { points[idx].GetInt() };
 			// データをコピー
 			_cells[size.y - 1 - i][size.x - 1 - k] = _cells[i][k];
 			_cells[size.y - 1 - i][k] = _cells[i][k];
@@ -246,10 +246,11 @@ Field::Field(std::string json)
 
 }
 
-Field::Field(const Field & field) :_cells(field.GetCells()), _status(field._status), _points{ field._points[0],field._points[1] }
-{
-}
+Field::Field(const Field & field) :
+	_cells(field.GetCells()), 
+	_status(field._status), 
+	_points{field._points}
+{}
 
 Field::~Field()
-{
-}
+{}

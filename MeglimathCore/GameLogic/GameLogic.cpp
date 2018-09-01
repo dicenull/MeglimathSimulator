@@ -1,23 +1,25 @@
 #include "GameLogic.h"
 #include<random>
 
-std::unordered_map<TeamType, std::vector<Agent>> GameLogic::GetAgentMap() const
+std::unordered_map<TeamType, std::array<Agent, 2>> GameLogic::GetAgentMap() const
 {
-	std::unordered_map<TeamType, std::vector<Agent>> agents;
-	agents[TeamType::A] = _teamlogics[0].GetAgents();
-	agents[TeamType::B] = _teamlogics[1].GetAgents();
+	std::unordered_map<TeamType, std::array<Agent,2>> agents;
+	agents[TeamType::A] = _teamlogics[0].agents;
+	agents[TeamType::B] = _teamlogics[1].agents;
 
 	return agents;
 }
-std::vector<Agent> GameLogic::GetAgents() const
+std::vector<Agent>  GameLogic::GetAgents() const
 {
-	std::vector<Agent> ret{ _teamlogics[0].GetAgents() };
-	auto && other = _teamlogics[1].GetAgents();
-	ret.push_back(other[0]);
-	ret.push_back(other[1]);
+	std::vector<Agent>  ret{ 
+		_teamlogics[0].agents[0],
+		_teamlogics[0].agents[1],
+		_teamlogics[1].agents[0],
+		_teamlogics[1].agents[1]
+	};
 	return ret;
 }
-const std::vector<TeamLogic>& GameLogic::getTeamLogics()const
+const std::array<TeamLogic, 2>& GameLogic::getTeamLogics()const
 {
 	return _teamlogics;
 }
@@ -150,7 +152,7 @@ void GameLogic::NextTurn(const std::unordered_map<TeamType, Think> &_thinks)
 		{
 			Direction dir = _thinks.at(team).steps[i].direction;
 			// エージェントを動かしたい方向に動かした場合の座標
-			_Point<int> pos = agents_map[team][i].GetPosition();
+			_Point<int> pos = agents_map[team][i].position;
 			_Point<int> after_pos = pos+Transform::DirToDelta(dir);
 
 			// エージェントが動作する座標を追加
@@ -209,7 +211,7 @@ void GameLogic::NextTurn(const std::unordered_map<TeamType, Think> &_thinks)
 		if (   std::count_if(remove_points.cbegin(), remove_points.cend(), [pos](auto p) {return p == pos; }) > 0
 			|| std::count_if(stop_points.cbegin(), stop_points.cend(), [pos](auto p) {return p == pos; }) > 0
 			|| _field.IsInField(pos) == false
-			|| _field.GetCells()[pos.y][pos.x].GetTile() == their_tile)
+			|| _field.GetCells()[pos.y][pos.x].tile == their_tile)
 		{
 			// 停留に変更する
 			stop_points.push_back(pos - Transform::DirToDelta(dir));
@@ -273,17 +275,17 @@ bool GameLogic::IsThinkAble(TeamType team, Think think)const
 		Direction dir = step.direction;
 		if ( step.action == Action::Move ) {
 			// エージェントを動かしたい方向に動かした場合の座標
-			_Point pos = agents_map[team][i].GetPosition() + Transform::DirToDelta(dir);
+			_Point pos = agents_map[team][i].position + Transform::DirToDelta(dir);
 			if ( _field.IsInField(pos)
-				&& _field.GetCells()[pos.y][pos.x].GetTile() != their_tile ) {
+				&& _field.GetCells()[pos.y][pos.x].tile != their_tile ) {
 			} else {
 				return false;
 			}
 		} else if ( step.action == Action::RemoveTile ) {
 			// エージェントを動かしたい方向に動かした場合の座標
-			_Point pos = agents_map[team][i].GetPosition() + Transform::DirToDelta(dir);
+			_Point pos = agents_map[team][i].position + Transform::DirToDelta(dir);
 			if ( _field.IsInField(pos)
-				&& _field.GetCells()[pos.y][pos.x].GetTile() != TileType::None ) {
+				&& _field.GetCells()[pos.y][pos.x].tile != TileType::None ) {
 			} else {
 				return false;
 			}
@@ -327,12 +329,20 @@ GameLogic::GameLogic(int turn) : _turn(turn), _teamlogics({ TeamLogic(),TeamLogi
 {
 }
 
-GameLogic::GameLogic(int turn, _Size size) : _turn(turn), _teamlogics({ TeamLogic(),TeamLogic() }),_field(size){}
+GameLogic::GameLogic(int turn, _Size size) : 
+	_turn(turn), 
+	_teamlogics({ TeamLogic(),TeamLogic() }),_field(size){}
 
-GameLogic::GameLogic(const GameLogic & gamelogic):_turn(gamelogic.GetTurn()),_field(gamelogic.GetField()),_teamlogics(gamelogic.getTeamLogics())
+GameLogic::GameLogic(const GameLogic & gamelogic):
+	_turn(gamelogic.GetTurn()),
+	_field(gamelogic.GetField()),
+	_teamlogics(gamelogic.getTeamLogics())
 {
 }
-GameLogic::GameLogic(const Field &field, int t, const std::vector<TeamLogic>& tl) : _field(field), _turn(t), _teamlogics(tl)
+GameLogic::GameLogic(const Field &field, int t, const std::array<TeamLogic, 2>& tl) :
+	_field(field), 
+	_turn(t), 
+	_teamlogics(tl)
 {
 }
 GameLogic::~GameLogic()
