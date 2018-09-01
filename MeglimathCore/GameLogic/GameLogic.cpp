@@ -19,10 +19,7 @@ std::vector<Agent>  GameLogic::GetAgents() const
 	};
 	return ret;
 }
-const std::array<TeamLogic, 2>& GameLogic::getTeamLogics()const
-{
-	return _teamlogics;
-}
+
 void GameLogic::initAgentsPos()
 {
 	_Size size = _field.GetCells().size();
@@ -336,15 +333,15 @@ GameLogic::GameLogic(int turn, _Size size) :
 GameLogic::GameLogic(const GameLogic & gamelogic):
 	_turn(gamelogic.GetTurn()),
 	_field(gamelogic.GetField()),
-	_teamlogics(gamelogic.getTeamLogics())
+	_teamlogics(gamelogic._teamlogics)
 {
 }
-GameLogic::GameLogic(const Field &field, int t, const std::array<TeamLogic, 2>& tl) :
-	_field(field), 
-	_turn(t), 
-	_teamlogics(tl)
-{
-}
+//GameLogic::GameLogic(const Field &field, int t, const std::array<TeamLogic, 2>& tl) :
+//	_field(field), 
+//	_turn(t), 
+//	_teamlogics(tl)
+//{
+//}
 GameLogic::~GameLogic()
 {
 }

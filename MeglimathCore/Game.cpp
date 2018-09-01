@@ -27,11 +27,6 @@ void Game::initAgentsPos(Point init_pos)
 	_gamelogic.initAgentsPos({ init_pos.x,init_pos.y });
 }
 
-//Array<TeamLogic> Game::getTeamLogics()
-//{
-//	return LogicUtil::toS3dArray(_gamelogic.getTeamLogics());
-//}
-
 Game::Game(const String field_json)
 {
 	_gamelogic.InitalizeFromJson(field_json.narrow());
