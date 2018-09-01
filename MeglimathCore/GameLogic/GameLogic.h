@@ -10,7 +10,7 @@ class GameLogic
 private:
 	Field _field;
 	int _turn;
-	std::vector<TeamLogic> _teamlogics;
+	std::array<TeamLogic,2> _teamlogics;
 
 public:
 
@@ -30,7 +30,7 @@ public:
 	void initAgentPos(std::vector<_Point<>> init_pos);
 
 public:
-	const std::vector<TeamLogic>& getTeamLogics()const;
+	const std::array<TeamLogic, 2>& getTeamLogics()const;
 	/// <summary>
 	/// json‚©‚çƒQ[ƒ€‚ğ‰Šú‰»‚·‚é
 	/// </summary>
@@ -75,6 +75,6 @@ public:
 	GameLogic(int turn);
 	GameLogic(int turn, _Size size);
 	GameLogic(const GameLogic& gamelogic);
-	GameLogic(const Field &field, int t, const std::vector<TeamLogic>& tl);
+	GameLogic(const Field &field, int t, const std::array<TeamLogic, 2>& tl);
 	virtual ~GameLogic();
 };

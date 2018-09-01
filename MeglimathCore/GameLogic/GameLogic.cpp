@@ -4,22 +4,22 @@
 std::unordered_map<TeamType, std::array<Agent, 2>> GameLogic::GetAgentMap() const
 {
 	std::unordered_map<TeamType, std::array<Agent,2>> agents;
-	agents[TeamType::A] = _teamlogics[0].GetAgents();
-	agents[TeamType::B] = _teamlogics[1].GetAgents();
+	agents[TeamType::A] = _teamlogics[0].agents;
+	agents[TeamType::B] = _teamlogics[1].agents;
 
 	return agents;
 }
 std::vector<Agent>  GameLogic::GetAgents() const
 {
 	std::vector<Agent>  ret{ 
-		_teamlogics[0].GetAgents()[0],
-		_teamlogics[0].GetAgents()[1],
-		_teamlogics[1].GetAgents()[0],
-		_teamlogics[1].GetAgents()[1]
+		_teamlogics[0].agents[0],
+		_teamlogics[0].agents[1],
+		_teamlogics[1].agents[0],
+		_teamlogics[1].agents[1]
 	};
 	return ret;
 }
-const std::vector<TeamLogic>& GameLogic::getTeamLogics()const
+const std::array<TeamLogic, 2>& GameLogic::getTeamLogics()const
 {
 	return _teamlogics;
 }
@@ -329,12 +329,20 @@ GameLogic::GameLogic(int turn) : _turn(turn), _teamlogics({ TeamLogic(),TeamLogi
 {
 }
 
-GameLogic::GameLogic(int turn, _Size size) : _turn(turn), _teamlogics({ TeamLogic(),TeamLogic() }),_field(size){}
+GameLogic::GameLogic(int turn, _Size size) : 
+	_turn(turn), 
+	_teamlogics({ TeamLogic(),TeamLogic() }),_field(size){}
 
-GameLogic::GameLogic(const GameLogic & gamelogic):_turn(gamelogic.GetTurn()),_field(gamelogic.GetField()),_teamlogics(gamelogic.getTeamLogics())
+GameLogic::GameLogic(const GameLogic & gamelogic):
+	_turn(gamelogic.GetTurn()),
+	_field(gamelogic.GetField()),
+	_teamlogics(gamelogic.getTeamLogics())
 {
 }
-GameLogic::GameLogic(const Field &field, int t, const std::vector<TeamLogic>& tl) : _field(field), _turn(t), _teamlogics(tl)
+GameLogic::GameLogic(const Field &field, int t, const std::array<TeamLogic, 2>& tl) :
+	_field(field), 
+	_turn(t), 
+	_teamlogics(tl)
 {
 }
 GameLogic::~GameLogic()

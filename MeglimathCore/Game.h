@@ -23,7 +23,7 @@ private:
 	void initAgentsPos(Point init_pos);
 
 public:
-	Array<TeamLogic> getTeamLogics();
+	//Array<TeamLogic> getTeamLogics();
 	/// <summary>
 	/// ƒQ[ƒ€î•ñ‚ğæ“¾‚·‚é
 	/// </summary>

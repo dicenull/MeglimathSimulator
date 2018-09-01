@@ -12,7 +12,7 @@ HashTable<TeamType, Array<Agent>> Game::GetAgentMap() const
 
 Array<Agent> Game::GetAgents() const
 {
-	return LogicUtil::toS3dArray(_gamelogic.GetAgents());
+	return LogicUtil::toS3dArray<Agent>(_gamelogic.GetAgents());
 }
 
 void Game::initAgentsPos()
@@ -27,10 +27,10 @@ void Game::initAgentsPos(Point init_pos)
 	_gamelogic.initAgentsPos({ init_pos.x,init_pos.y });
 }
 
-Array<TeamLogic> Game::getTeamLogics()
-{
-	return LogicUtil::toS3dArray(_gamelogic.getTeamLogics());
-}
+//Array<TeamLogic> Game::getTeamLogics()
+//{
+//	return LogicUtil::toS3dArray(_gamelogic.getTeamLogics());
+//}
 
 Game::Game(const String field_json)
 {

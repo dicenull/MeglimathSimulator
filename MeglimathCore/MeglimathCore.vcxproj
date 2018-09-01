@@ -272,7 +272,6 @@
     <ClCompile Include="GameLogic\Field.cpp" />
     <ClCompile Include="GameLogic\Format.cpp" />
     <ClCompile Include="GameLogic\GameLogic.cpp" />
-    <ClCompile Include="GameLogic\TeamLogic.cpp" />
     <ClCompile Include="GameLogic\Think.cpp" />
     <ClCompile Include="GameLogic\Transform.cpp" />
     <ClCompile Include="StatusDrawer.cpp" />
