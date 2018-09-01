@@ -24,7 +24,7 @@ const std::string Transform::CreateJson(const GameInfo& info)
 	{
 		for (int x : step(size.x))
 		{
-			writer.Int(cells[y][x].GetPoint());
+			writer.Int(cells[y][x].point);
 		}
 	}
 	writer.EndArray();
@@ -36,7 +36,7 @@ const std::string Transform::CreateJson(const GameInfo& info)
 		std::string str;
 		for (auto x : step(cells.size().x))
 		{
-			str.push_back(Transform::ToChar(cells[y][x].GetTile()));
+			str.push_back(Transform::ToChar(cells[y][x].tile));
 		}
 
 		writer.String(str.data());
@@ -47,7 +47,7 @@ const std::string Transform::CreateJson(const GameInfo& info)
 	writer.StartArray();
 	for (int i : step(2))
 	{
-		Point pos{ agents[TeamType::A][i].GetPosition().x, agents[TeamType::A][i].GetPosition().y };
+		Point pos{ agents[TeamType::A][i].position.x, agents[TeamType::A][i].position.y };
 		writer.String(Format(pos).narrow().data());
 	}
 	writer.EndArray();
@@ -56,7 +56,7 @@ const std::string Transform::CreateJson(const GameInfo& info)
 	writer.StartArray();
 	for (int i : step(2))
 	{
-		Point pos{ agents[TeamType::B][i].GetPosition().x, agents[TeamType::B][i].GetPosition().y };
+		Point pos{ agents[TeamType::B][i].position.x, agents[TeamType::B][i].position.y };
 		writer.String(Format(pos).narrow().data());
 	}
 	writer.EndArray();

@@ -3,7 +3,7 @@
 #include "Transform.h"
 #include "GamePoints.h"
 #include <rapidjson\document.h>
-
+#include <array>
 class Field
 {
 private:
@@ -17,7 +17,8 @@ private:
 	/// </summary>
 	_Grid<bool> _status;
 
-	GamePoints _points[2];
+
+	std::array<GamePoints,2> _points;
 
 private:
 	/// <summary>
