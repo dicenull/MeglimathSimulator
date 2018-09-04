@@ -3,7 +3,7 @@
 
 std::unordered_map<TeamType, std::array<Agent, 2>> GameLogic::GetAgentMap() const
 {
-	std::unordered_map<TeamType, std::array<Agent,2>> agents;
+	std::unordered_map<TeamType, std::array<Agent, 2>> agents;
 	agents[TeamType::A] = _teamlogics[0].agents;
 	agents[TeamType::B] = _teamlogics[1].agents;
 
@@ -11,7 +11,7 @@ std::unordered_map<TeamType, std::array<Agent, 2>> GameLogic::GetAgentMap() cons
 }
 std::vector<Agent>  GameLogic::GetAgents() const
 {
-	std::vector<Agent>  ret{ 
+	std::vector<Agent>  ret{
 		_teamlogics[0].agents[0],
 		_teamlogics[0].agents[1],
 		_teamlogics[1].agents[0],
@@ -22,14 +22,14 @@ std::vector<Agent>  GameLogic::GetAgents() const
 
 void GameLogic::initAgentsPos()
 {
-	_Size size = _field.GetCells().size();
+	_Size size = _field.cells.size();
 
 	initAgentsPos(_Point<int>(std::rand() / (double)INT_MAX*(size.x - 2) / 2, std::rand() / (double)INT_MAX*(size.x - 2) / 2));
 }
 
 void GameLogic::initAgentsPos(_Point<> init_pos)
 {
-	_Size size = _field.GetCells().size();
+	_Size size = _field.cells.size();
 
 	size -= _Point<int>(1, 1);
 	_Point<> agent_pos[] =
@@ -46,7 +46,7 @@ void GameLogic::initAgentsPos(_Point<> init_pos)
 
 void GameLogic::initAgentsPos(_Point<> init_pos1, _Point<> init_pos2)
 {
-	_Size size = _field.GetCells().size();
+	_Size size = _field.cells.size();
 	_Point<> top_left;
 	if (init_pos1.x > size.x / 2)
 	{
@@ -78,7 +78,7 @@ void GameLogic::initAgentsPos(_Point<> init_pos1, _Point<> init_pos2)
 			if (init_map[i][k] == false)
 			{
 				_Point<> pos;
-				pos.x = i 
+				pos.x = i
 					? (int)(size.x - 1) - top_left.x
 					: top_left.x;
 
@@ -112,7 +112,7 @@ void GameLogic::InitalizeFromJson(const std::string json)
 	rapidjson::Document document;
 	document.Parse(json.data());
 
-	_field = { json };
+	_field = Field::makeFieldFromJson(json);
 	// TODO: 必要であれば二人分の初期位置を取得
 	if (document.HasMember("InitPos")) {
 		auto init_pos = document["InitPos"].GetArray();
@@ -150,7 +150,7 @@ void GameLogic::NextTurn(const std::unordered_map<TeamType, Think> &_thinks)
 			Direction dir = _thinks.at(team).steps[i].direction;
 			// エージェントを動かしたい方向に動かした場合の座標
 			_Point<int> pos = agents_map[team][i].position;
-			_Point<int> after_pos = pos+Transform::DirToDelta(dir);
+			_Point<int> after_pos = pos + Transform::DirToDelta(dir);
 
 			// エージェントが動作する座標を追加
 			switch (_thinks.at(team).steps[i].action)
@@ -170,7 +170,7 @@ void GameLogic::NextTurn(const std::unordered_map<TeamType, Think> &_thinks)
 	}
 
 	// 衝突していないエージェントの行動のみ実行する
-	for (auto i = 0;i < move_point_arr.size();i++)
+	for (auto i = 0; i < move_point_arr.size(); i++)
 	{
 		auto & pos_map = move_point_arr[i];
 		auto pos = pos_map.first;
@@ -205,10 +205,10 @@ void GameLogic::NextTurn(const std::unordered_map<TeamType, Think> &_thinks)
 		// その座標にとどまるエージェントがいないこと
 		// その座標がフィールド内であること
 		// その座標に相手のタイルがないこと
-		if (   std::count_if(remove_points.cbegin(), remove_points.cend(), [pos](auto p) {return p == pos; }) > 0
+		if (std::count_if(remove_points.cbegin(), remove_points.cend(), [pos](auto p) {return p == pos; }) > 0
 			|| std::count_if(stop_points.cbegin(), stop_points.cend(), [pos](auto p) {return p == pos; }) > 0
 			|| _field.IsInField(pos) == false
-			|| _field.GetCells()[pos.y][pos.x].tile == their_tile)
+			|| _field.cells[pos.y][pos.x].tile == their_tile)
 		{
 			// 停留に変更する
 			stop_points.push_back(pos - Transform::DirToDelta(dir));
@@ -258,7 +258,7 @@ void GameLogic::NextTurn(const std::unordered_map<TeamType, Think> &_thinks)
 	_turn--;
 
 	// チームの得点を更新
-	_field.UpdatePoint();
+	//_field.UpdatePoint();
 }
 
 bool GameLogic::IsThinkAble(TeamType team, Think think)const
@@ -270,20 +270,23 @@ bool GameLogic::IsThinkAble(TeamType team, Think think)const
 	int i = 0;
 	for (auto step : think.steps) {
 		Direction dir = step.direction;
-		if ( step.action == Action::Move ) {
+		if (step.action == Action::Move) {
 			// エージェントを動かしたい方向に動かした場合の座標
 			_Point pos = agents_map[team][i].position + Transform::DirToDelta(dir);
-			if ( _field.IsInField(pos)
-				&& _field.GetCells()[pos.y][pos.x].tile != their_tile ) {
-			} else {
+			if (_field.IsInField(pos)
+				&& _field.cells[pos.y][pos.x].tile != their_tile) {
+			}
+			else {
 				return false;
 			}
-		} else if ( step.action == Action::RemoveTile ) {
+		}
+		else if (step.action == Action::RemoveTile) {
 			// エージェントを動かしたい方向に動かした場合の座標
 			_Point pos = agents_map[team][i].position + Transform::DirToDelta(dir);
-			if ( _field.IsInField(pos)
-				&& _field.GetCells()[pos.y][pos.x].tile != TileType::None ) {
-			} else {
+			if (_field.IsInField(pos)
+				&& _field.cells[pos.y][pos.x].tile != TileType::None) {
+			}
+			else {
 				return false;
 			}
 		}
@@ -326,11 +329,11 @@ GameLogic::GameLogic(int turn) : _turn(turn), _teamlogics({ TeamLogic(),TeamLogi
 {
 }
 
-GameLogic::GameLogic(int turn, _Size size) : 
-	_turn(turn), 
-	_teamlogics({ TeamLogic(),TeamLogic() }),_field(size){}
+GameLogic::GameLogic(int turn, _Size size) :
+	_turn(turn),
+	_teamlogics({ TeamLogic(),TeamLogic() }), _field{ { size } } {}
 
-GameLogic::GameLogic(const GameLogic & gamelogic):
+GameLogic::GameLogic(const GameLogic & gamelogic) :
 	_turn(gamelogic.GetTurn()),
 	_field(gamelogic.GetField()),
 	_teamlogics(gamelogic._teamlogics)
