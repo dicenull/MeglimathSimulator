@@ -2,12 +2,12 @@
 #include"LogicUtil.h"
 GameInfo Game::GetGameInfo() const
 {
-	return GameInfo(_gamelogic.GetField(), _gamelogic.GetTurn(), LogicUtil::toS3dHashTable(_gamelogic.GetAgentMap()));
+	return GameInfo(_gamelogic.GetField(), _gamelogic.GetTurn(), LogicUtil::toS3dHashTable(_gamelogic.GetTeams()));
 }
 
 HashTable<TeamType, Array<Agent>> Game::GetAgentMap() const
 {
-	return LogicUtil::toS3dHashTable(_gamelogic.GetAgentMap());
+	return LogicUtil::toS3dHashTable(_gamelogic.GetTeams());
 }
 
 Array<Agent> Game::GetAgents() const

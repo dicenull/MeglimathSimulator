@@ -54,6 +54,10 @@ public:
 		return x == r.x && y == r.y;
 	}
 	template <class Comp = int>
+	bool operator<(const _Point<Comp>& r) {
+		return x < r.x || (x==r.x && y < r.y);
+	}
+	template <class Comp = int>
 	operator _Point<Comp>() {
 		return _Point<Comp>{( Comp )this->x, ( Comp )this->y};
 	}

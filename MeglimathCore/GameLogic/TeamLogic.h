@@ -4,12 +4,6 @@
 #include <array>
 struct TeamLogic
 {	
-	// フィールド //
-	/// <summary>
-	/// チームA,Bを判断するためのチームの種類
-	/// </summary>
-	TeamType type;
-
 	/// <summary>
 	/// チームに所属するエージェント
 	/// </summary>
