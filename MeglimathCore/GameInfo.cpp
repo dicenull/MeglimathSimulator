@@ -31,7 +31,7 @@ GameInfo::GameInfo()
 
 GameInfo::GameInfo(std::string json)
 {
-	_field = { json };
+	_field =Field::makeFieldFromJson(json);
 
 	rapidjson::Document document;
 	document.Parse(json.data());

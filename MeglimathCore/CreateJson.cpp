@@ -6,7 +6,7 @@ const std::string Transform::CreateJson(const GameInfo& info)
 	auto agents = info.GetAllAgent();
 	int turn = info.GetTurn();
 
-	auto cells = field.GetCells();
+	const auto &cells = field.cells;
 	Size size = { (cells.size().x + 1) / 2, (cells.size().y + 1) / 2 };
 
 	rapidjson::StringBuffer buffer;

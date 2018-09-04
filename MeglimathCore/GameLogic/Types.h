@@ -4,14 +4,17 @@
 #include<string>
 #include<memory>
 #include<boost/multi_array.hpp>
-enum struct TileType {
-	A, B, None
+
+enum TeamType {
+	A=0, 
+	B=1
 };
 
-enum struct TeamType {
-	A, B
+enum class TileType {
+	A = TeamType::A, 
+	B = TeamType::B, 
+	None
 };
-
 template <class Component = int>
 class _Point {
 public:

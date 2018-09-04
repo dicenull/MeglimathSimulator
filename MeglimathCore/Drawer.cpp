@@ -6,7 +6,7 @@ void Drawer::DrawField(const Field & field) const
 	// セルとタイルポイントの描画
 	Rect r;
 	
-	auto cells = field.GetCells();
+	const auto &cells = field.cells;
 	
 	for (int i = 0; i < cells.size().x; i++)
 	{

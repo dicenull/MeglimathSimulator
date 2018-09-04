@@ -17,7 +17,7 @@ Array<Agent> Game::GetAgents() const
 
 void Game::initAgentsPos()
 {
-	Size size = LogicUtil::toS3dPoint(_gamelogic.GetField().GetCells().size());
+	Size size = LogicUtil::toS3dPoint(_gamelogic.GetField().cells.size());
 
 	initAgentsPos(Point(Random((size.x - 2) / 2), Random((size.y - 2) / 2)));
 }
