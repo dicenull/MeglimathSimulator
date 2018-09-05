@@ -20,7 +20,7 @@ public:
 		{
 			if (!_steps[i].has_value())
 			{
-				_steps[i] = Step((Action)Random(0, 1), (Direction)Random(0, 7));
+				_steps[i] = Step{ (Action)Random(0, 1), (Direction)Random(0, 7) };
 			}
 		}
 

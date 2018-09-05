@@ -6,7 +6,7 @@ void Drawer::DrawField(const Field & field) const
 	// セルとタイルポイントの描画
 	Rect r;
 	
-	auto cells = field.GetCells();
+	const auto &cells = field.cells;
 	
 	for (int i = 0; i < cells.size().x; i++)
 	{
@@ -19,14 +19,14 @@ void Drawer::DrawField(const Field & field) const
 
 			r.draw(Palette::White);
 
-			if (cells[k][i].GetTile() != TileType::None)
+			if (cells[k][i].tile != TileType::None)
 			{
-				r.draw(Color(TeamColor::ColorOf(cells[k][i].GetTile()), 50U));
+				r.draw(Color(TeamColor::ColorOf(cells[k][i].tile), 50U));
 			}
 			
 			r.drawFrame(1.0, Palette::Gray);
 			
-			FontAsset(U"Cell")(cells[k][i].GetPoint())
+			FontAsset(U"Cell")(cells[k][i].point)
 				.drawAt(r.center(), Palette::Black);
 		}
 	}
@@ -40,11 +40,11 @@ void Drawer::DrawAgents(HashTable<TeamType, Array<Agent>> agents) const
 	for(TeamType team : {TeamType::A, TeamType::B})
 	{
 		// 一人目のエージェントを描画
-		Circle(center(LogicUtil::toS3dPoint(agents[team][0].GetPosition())), cellSize.x / 2)
+		Circle(center(LogicUtil::toS3dPoint(agents[team][0].position)), cellSize.x / 2)
 			.drawFrame(2.0, TeamColor::ColorOf(team));
 
 		// 二人目のエージェントを描画
-		Rect(Arg::center = center(LogicUtil::toS3dPoint(agents[team][1].GetPosition())), edge_width).rotated(45_deg)
+		Rect(Arg::center = center(LogicUtil::toS3dPoint(agents[team][1].position)), edge_width).rotated(45_deg)
 			.drawFrame(2.0, TeamColor::ColorOf(team));
 	}
 }

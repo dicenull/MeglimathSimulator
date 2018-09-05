@@ -146,7 +146,7 @@ namespace Scenes
 				rapidjson::Document doc;
 				doc.Parse(json_dat.narrow().data());
 
-				data.thinks[id] = { json_dat.narrow() };
+				data.thinks[id] = Think::makeThink( json_dat.narrow() );
 			}
 			
 			// Client二つ分のThinkが更新されたら次のターンへ

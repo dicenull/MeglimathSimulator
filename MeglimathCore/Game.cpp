@@ -2,22 +2,22 @@
 #include"LogicUtil.h"
 GameInfo Game::GetGameInfo() const
 {
-	return GameInfo(_gamelogic.GetField(), _gamelogic.GetTurn(), LogicUtil::toS3dHashTable(_gamelogic.GetAgentMap()));
+	return GameInfo(_gamelogic.GetField(), _gamelogic.GetTurn(), LogicUtil::toS3dHashTable(_gamelogic.GetTeams()));
 }
 
 HashTable<TeamType, Array<Agent>> Game::GetAgentMap() const
 {
-	return LogicUtil::toS3dHashTable(_gamelogic.GetAgentMap());
+	return LogicUtil::toS3dHashTable(_gamelogic.GetTeams());
 }
 
 Array<Agent> Game::GetAgents() const
 {
-	return LogicUtil::toS3dArray(_gamelogic.GetAgents());
+	return LogicUtil::toS3dArray<Agent>(_gamelogic.GetAgents());
 }
 
 void Game::initAgentsPos()
 {
-	Size size = LogicUtil::toS3dPoint(_gamelogic.GetField().GetCells().size());
+	Size size = LogicUtil::toS3dPoint(_gamelogic.GetField().cells.size());
 
 	initAgentsPos(Point(Random((size.x - 2) / 2), Random((size.y - 2) / 2)));
 }
@@ -25,11 +25,6 @@ void Game::initAgentsPos()
 void Game::initAgentsPos(Point init_pos)
 {
 	_gamelogic.initAgentsPos({ init_pos.x,init_pos.y });
-}
-
-Array<TeamLogic> Game::getTeamLogics()
-{
-	return LogicUtil::toS3dArray(_gamelogic.getTeamLogics());
 }
 
 Game::Game(const String field_json)

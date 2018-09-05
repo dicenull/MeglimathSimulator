@@ -27,17 +27,17 @@ void Main()
 		if (index < paths.size() && MouseL.down())
 		{
 			TextReader reader(paths[index]);
-			field = Field{ reader.readAll().narrow() };
+			field = Field::makeFieldFromJson( reader.readAll().narrow() );
 			json = JSONReader(paths[index]);
 
 			index++;
 
-			field.UpdatePoint();
+			auto point = field.GetAreaPoints();
 			points_a.first = json[U"TeamA"].get<int>();
-			points_a.second = field.GetAreaPoints()[0];
+			points_a.second = point[0];
 
 			points_b.first = json[U"TeamB"].get<int>();
-			points_b.second = field.GetAreaPoints()[1];
+			points_b.second = point[1];
 		}
 
 		drawer.DrawField(field);

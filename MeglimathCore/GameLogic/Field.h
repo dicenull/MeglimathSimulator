@@ -3,21 +3,14 @@
 #include "Transform.h"
 #include "GamePoints.h"
 #include <rapidjson\document.h>
-
+#include <array>
 class Field
 {
-private:
+public:
 	/// <summary>
 	/// フィールド情報
 	/// </summary>
-	_Grid<Cell> _cells;
-
-	/// <summary>
-	/// 領域ポイントを計算するとき探索したかを格納する
-	/// </summary>
-	_Grid<bool> _status;
-
-	GamePoints _points[2];
+	_Grid<Cell> cells = { {6,6} };
 
 private:
 	/// <summary>
@@ -25,40 +18,28 @@ private:
 	/// </summary>
 	/// <param name="pos">探索を開始する座標</param>
 	/// <param name="tile">どのタイルで囲まれているか</param>
-	void dfsAreaPoint(_Point<> pos, TileType tile);
+	void dfsAreaPoint(_Point<> pos, TileType tile, _Grid<bool>& _status)const;
 
 	/// <summary>
 	/// 指定のタイルで囲まれた領域の得点を集計します
 	/// </summary>
 	/// <param name="tile">どのタイルで囲まれているか</param>
 	/// <returns>領域ポイント</returns>
-	int aggregateAreaPoint(TileType tile);
+	int aggregateAreaPoint(TileType tile)const;
 
 	/// <summary>
 	/// 指定のタイルのタイルポイントを集計します
 	/// </summary>
 	/// <param name="tile">得点を集計するタイル</param>
 	/// <returns>タイルポイント</returns>
-	int aggregateTilePoint(TileType tile);
-
-	int aggregateTotalPoint(TileType tile);
+	int aggregateTilePoint(TileType tile)const;
+	int aggregateTotalPoint(TileType tile)const;
 
 public:
 
-	/// <summary>
-	/// タイルと領域のポイントを集計し、データを更新する
-	/// </summary>
-	void UpdatePoint();
-
-	/// <summary>
-	/// セル情報を取得する
-	/// </summary>
-	/// <returns>フィールドのセル情報</returns>
-	_Grid<Cell> GetCells() const;
-
-	std::vector<int> GetAreaPoints() const;
-	std::vector<int> GetTilePoints() const;
-	std::vector<int> GetTotalPoints() const;
+	std::array<int, 2> GetAreaPoints() const;
+	std::array<int, 2> GetTilePoints() const;
+	std::array<int, 2> GetTotalPoints() const;
 
 	/// <summary>
 	/// セルを塗る
@@ -89,29 +70,6 @@ public:
 	Step DecideStepByDirection(_Point<> pos, Direction dir) const;
 
 public:
-	Field();
-
-	void operator=(const Field& other);
-
-	/// <summary>
-	/// コンストラクタ
-	/// </summary>
-	/// <param name="size">フィールドの大きさ</param>
-	Field(_Size size);
-
-	/// <summary>
-	/// セルを元にフィールドを生成するコンストラクタ
-	/// </summary>
-	/// <param name="cells">元となるセル</param>
-	Field(_Grid<Cell> cells);
-
-	/// <summary>
-	/// フィールドを生成します
-	/// </summary>
-	/// <param name="file">フィールド情報のあるjsonファイル</param>
-	Field(std::string json);
-
-	//コピーコンストラクタ
-	Field(const Field &field);
-	virtual ~Field();
+	static Field makeFieldFromJson(std::string json);
+	static Field makeFieldRandom(_Size size = { 6,6 });
 };

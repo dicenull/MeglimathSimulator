@@ -4,14 +4,17 @@
 #include<string>
 #include<memory>
 #include<boost/multi_array.hpp>
+
+enum TeamType {
+	A=0, 
+	B=1
+};
+
 enum class TileType {
-	A, B, None
+	A = TeamType::A, 
+	B = TeamType::B, 
+	None
 };
-
-enum class TeamType {
-	A, B
-};
-
 template <class Component = int>
 class _Point {
 public:
@@ -49,6 +52,10 @@ public:
 	template <class Comp = int>
 	bool operator==(const _Point<Comp>& r) {
 		return x == r.x && y == r.y;
+	}
+	template <class Comp = int>
+	bool operator<(const _Point<Comp>& r) {
+		return x < r.x || (x==r.x && y < r.y);
 	}
 	template <class Comp = int>
 	operator _Point<Comp>() {

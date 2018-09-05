@@ -7,14 +7,9 @@
 /// <summary>
 /// エージェント二人分の行動
 /// </summary>
-class Think
+struct Think
 {
-public:
-	Step steps[2];
+	std::array<Step,2> steps;
 
-	Think(std::string json);
-	Think(Step steps[2]);
-	Think(Step step1, Step step2);
-	Think();
-	~Think();
+	static Think makeThink(std::string json);
 };

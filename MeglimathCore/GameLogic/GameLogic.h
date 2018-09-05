@@ -8,9 +8,9 @@
 class GameLogic
 {
 private:
-	Field _field;
-	int _turn;
-	std::vector<TeamLogic> _teamlogics;
+	int _turn = 60;
+	Field _field { {{6,6}} };
+	std::array<TeamLogic, 2> teams = {};
 
 public:
 
@@ -27,10 +27,9 @@ public:
 
 	void initAgentsPos(_Point<> init_pos1, _Point<> init_pos2);
 
-	void initAgentPos(std::vector<_Point<>> init_pos);
+	void initAgentPos(std::array<_Point<>,4> init_pos);
 
 public:
-	const std::vector<TeamLogic>& getTeamLogics()const;
 	/// <summary>
 	/// jsonからゲームを初期化する
 	/// </summary>
@@ -38,8 +37,8 @@ public:
 	void InitalizeFromJson(const std::string json);
 
 	int GetTurn() const;
-
-	Field GetField() const;
+	std::array<TeamLogic, 2> GetTeams()const;
+	const Field& GetField() const;
 
 	/// <summary>
 	/// ゲームの状態を更新する
@@ -47,12 +46,6 @@ public:
 	/// </summary>
 	/// <returns>すべてのエージェント情報リスト</returns>
 	std::vector<Agent> GetAgents() const;
-
-	/// <summary>
-	/// チームごとのエージェントの情報を取得する
-	/// </summary>
-	/// <returns>チームごとのエージェント情報</returns>
-	std::unordered_map<TeamType, std::vector<Agent>> GetAgentMap() const;
 
 	/// <summary>
 	/// ゲームを次のターンに進める
@@ -66,14 +59,4 @@ public:
 
 	bool GetGameEnd();
 	int GetWinner();
-
-public:
-	/// <summary>
-	/// コンストラクタ
-	/// </summary>
-	GameLogic();
-	GameLogic(int turn);
-	GameLogic(int turn, _Size size);
-	GameLogic(const GameLogic& gamelogic);
-	virtual ~GameLogic();
 };
