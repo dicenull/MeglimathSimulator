@@ -1,4 +1,4 @@
-#include "Field.h"
+﻿#include "Field.h"
 #include <time.h>
 #include<boost/range/irange.hpp>
 auto step(int s) { return boost::irange(0, s); }
@@ -96,13 +96,6 @@ std::array<int, 2> Field::GetAreaPoints() const
 {
 	return { aggregateAreaPoint(TileType::A),aggregateAreaPoint(TileType::B) };
 }
-
-void Field::GetCellsTo(_Grid<Cell>* cells)
-{
-	cells = &_cells;
-}
-
-
 
 std::array<int, 2> Field::GetTilePoints() const
 {
@@ -225,16 +218,4 @@ Field Field::makeFieldRandom(_Size size)
 		}
 	}
 	return { cells };
-}
-
-Field::Field(const Field & field) :_cells(field.GetCells())
-{
-	auto areas = field.GetAreaPoints();
-	auto tiles = field.GetTilePoints();
-	_points[0] = { areas[0], tiles[0] };
-	_points[1] = { areas[1], tiles[1] };
-}
-
-Field::~Field()
-{
 }
