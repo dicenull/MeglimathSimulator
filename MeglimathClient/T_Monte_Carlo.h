@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <Siv3D.hpp>
 #include "Client.h"
 #include "../MeglimathCore/GameLogic/Think.h"
@@ -99,7 +99,7 @@ public:
 
 		}
 
-		_think = Think{ tem.DecideStepByDirection(agents[0].GetPosition(), Direction(agent1[agent1.size() - 1].first[0])), tem.DecideStepByDirection(agents[1].GetPosition(), Direction(agent2[agent2.size() - 1].first[0])) } ;
+		_think = Think{ tem.DecideStepByDirection(agents[0].position, Direction(agent1[agent1.size() - 1].first[0])), tem.DecideStepByDirection(agents[1].position, Direction(agent2[agent2.size() - 1].first[0])) } ;
 		_is_ready = true;
 	}
 

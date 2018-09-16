@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Client.h"
 class RandomClient :
 	public Client
@@ -16,11 +16,9 @@ public:
 			return;
 		}
 
-		_think =
-		{
-			{Action(Random(0,1)),Direction(Random(0,7))},
-			{Action(Random(0,1)),Direction(Random(0,7))}
-		};
+		_think.steps[0] = { Action(Random(0,1)),Direction(Random(0,7)) };
+		_think.steps[1] = { Action(Random(0,1)),Direction(Random(0,7)) };
+
 		_is_ready = true;
 	}
 

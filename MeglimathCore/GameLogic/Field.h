@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Cell.h"
 #include "Transform.h"
 #include "GamePoints.h"
@@ -44,14 +44,6 @@ public:
 	/// �^�C���Ɨ̈�̃|�C���g��W�v���A�f�[�^��X�V����
 	/// </summary>
 	void UpdatePoint();
-
-	/// <summary>
-	/// �Z������擾����
-	/// </summary>
-	/// <returns>�t�B�[���h�̃Z�����</returns>
-	_Grid<Cell> GetCells() const;
-
-	void GetCellsTo(_Grid<Cell>* cells);
 
 	/// <summary>
 	/// �Z����h��
