@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "Types.h"
 #include "Action.h"
 
@@ -7,10 +7,10 @@ namespace Transform
 {
 	
 	/// <summary>
-	/// •ûŒü‚©‚çˆÚ“®•ûŒü‚É•ÏŠ·‚·‚é
+	/// æ–¹å‘ã‹ã‚‰ç§»å‹•æ–¹å‘ã«å¤‰æ›ã™ã‚‹
 	/// </summary>
-	/// <param name="dir">•ÏŠ·Œ³‚Ì•ûŒü</param>
-	/// <returns>•ûŒü‚ğ•ÏŠ·‚µ‚½ˆÚ“®•ûŒü</returns>
+	/// <param name="dir">å¤‰æ›å…ƒã®æ–¹å‘</param>
+	/// <returns>æ–¹å‘ã‚’å¤‰æ›ã—ãŸç§»å‹•æ–¹å‘</returns>
 	constexpr _Point<int> DirToDelta(Direction dir)
 	{
 		switch (dir)
@@ -57,7 +57,7 @@ namespace Transform
 		return TileType::None;
 	}
 
-	constexpr TileType GetInverseType(TileType tile)
+	constexpr TileType GetInverseTile(TileType tile)
 	{
 		switch (tile)
 		{
@@ -68,6 +68,17 @@ namespace Transform
 		}
 
 		return TileType::None;
+	}
+
+	constexpr TeamType GetInverseTeam(TeamType team)
+	{
+		switch (team)
+		{
+		case TeamType::A:
+			return TeamType::B;
+		case TeamType::B:
+			return TeamType::A;
+		}
 	}
 
 	const std::u32string ToString(Action action);
