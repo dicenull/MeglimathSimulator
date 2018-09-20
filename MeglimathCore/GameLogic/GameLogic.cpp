@@ -155,7 +155,7 @@ void GameLogic::NextTurn(const std::unordered_map<TeamType, Think> &_thinks)
 		for (auto& p : point_map) {
 			_Point <> pos = p.target;
 			TileType our_tile = Transform::ToTile(p.team);
-			TileType their_tile = Transform::GetInverseType(our_tile);
+			TileType their_tile = Transform::GetInverseTile(our_tile);
 
 			// 行動対象の重複しておらず、移動しないエージェントの現在位置とも重ならない
 			if (std::count_if(point_map.cbegin(), point_map.cend(),
@@ -212,7 +212,7 @@ void GameLogic::NextTurn(const std::unordered_map<TeamType, Think> &_thinks)
 bool GameLogic::IsThinkAble(TeamType team, Think think)const
 {
 	TileType our_tile = Transform::ToTile(team);
-	TileType their_tile = Transform::GetInverseType(our_tile);
+	TileType their_tile = Transform::GetInverseTile(our_tile);
 	int i = 0;
 	for (auto step : think.steps) {
 		_Point pos = teams[team].agents[i].position + Transform::DirToDelta(step.direction);
