@@ -264,6 +264,7 @@
     <ClInclude Include="LogicUtil.h" />
     <ClInclude Include="StatusDrawer.h" />
     <ClInclude Include="TeamColor.h" />
+    <ClInclude Include="Utility.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CreateJson.cpp" />
