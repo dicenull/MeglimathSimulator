@@ -7,24 +7,24 @@ class T_Monte_Carlo : public Client {
 private:
 
 	/// <summary>
-	/// ������̌���T���֐�
+	/// 動く先の候補を探す関数
 	/// </summary>
-	/// <param name="movelist">����܂œ������}�X</param>
-	/// <param name="agent">�����߂�Ώۂ̃G�[�W�F���g</param>
-	/// <param name="field">�t�B�[���h���</param>
-	/// <returns>������</returns>
+	/// <param name="movelist">これまで動いたマス</param>
+	/// <param name="agent">動作を決める対象のエージェント</param>
+	/// <param name="field">フィールド情報</param>
+	/// <returns>動く先</returns>
 	int decideMove(Array<int> *movelist, Agent agent, Field field);
 
 	/// <summary>
-	/// �N�C�b�N�\�[�g
+	/// クイックソート
 	/// </summary>
-	/// <param name="target">�\�[�g�Ώ�</param>
-	/// <param name="left">�\�[�g�Ώۂ̔z��̈�ԍ��̗v�f</param>
-	/// <param name="right">�\�[�g�Ώۂ̈�ԉE�̗v�f</param>
+	/// <param name="target">ソート対象</param>
+	/// <param name="left">ソート対象の配列の一番左の要素</param>
+	/// <param name="right">ソート対象の一番右の要素</param>
 	void sort(Array <std::pair<Array<int>, int> > *target, int left, int right);
 
 	/// <summary>
-	/// TeamType��TileType�ɕϊ�����֐�
+	/// TeamTypeをTileTypeに変換する関数
 	/// </summary>
 	TileType TeamtoTile(TeamType t);
 
@@ -41,7 +41,7 @@ public:
 			return;
 		}
 
-		//�G�[�W�F���g1�A2�̃��[�g�Ƃ��̃��[�g�ɂ���ē�����^�C���|�C���g��Z�b�g�ŕ�������Ă����ϐ�
+		//エージェント1、2のルートとそのルートによって得られるタイルポイントをセットで複数入れておく変数
 		Array< std::pair<Array<int>, int> > agent1;
 		Array< std::pair<Array<int>, int> > agent2;
 
@@ -56,7 +56,7 @@ public:
 		Point preP;
 
 		while (1) {
-			//�G�[�W�F���g�̈ړ������_����20��v�Z�A���ʂ�z���push
+			//エージェントの移動先をランダムに20手計算、結果を配列にpush
 			for (int i = 0; i < 20; i++) {
 				temppoint = decideMove(&(agenttemp1.first), agents[0], tem);
 				agenttemp1.second += temppoint;
@@ -66,10 +66,10 @@ public:
 			agenttemp1.second = 0;
 
 
-			//�v�Z���ʂ�2�ʂ�ȏ�ɂȂ�����^�C���|�C���g���Ń\�[�g�J�n
+			//計算結果が2通り以上になったらタイルポイント順でソート開始
 			if (agent1.size() > 2) {
 				sort(&agent1, 0, agent1.size() - 1);
-				//�^�C���|�C���g����ԍ������[�g�ƁA2�Ԗڂɍ������[�g�̈�ԍŏ��̈ړ��悪������1�}�X�����Y���Ă�����A��ԃ^�C���|�C���g���������[�g�̍ŏ��̈ړ����ŏI�I�Ȉړ���Ƃ���
+				//タイルポイントが一番高いルートと、2番目に高いルートの一番最初の移動先が同じか1マスだけズレていたら、一番タイルポイントが高いルートの最初の移動先を最終的な移動先とする
 				if (agent1[agent1.size() - 1].first[0] == agent1[agent1.size() - 2].first[0] || agent1[agent1.size() - 1].first[0] == (agent1[agent1.size() - 2].first[0]) + 1 || agent1[agent1.size() - 1].first[0] ==( agent1[agent1.size() - 2].first[0])- 1
 					|| agent1.size() > 100) {
 					break;
