@@ -36,6 +36,8 @@ public:
 	/// <param name="path">json</param>
 	void InitalizeFromJson(const std::string json);
 
+	void InitializeRandom(int turn, int height, int width);
+
 	int GetTurn() const;
 	std::array<TeamLogic, 2> GetTeams()const;
 	const Field& GetField() const;

@@ -112,6 +112,13 @@ void GameLogic::InitalizeFromJson(const std::string json)
 	_turn = document["Turn"].GetInt();
 }
 
+void GameLogic::InitializeRandom(int turn, int height, int width)
+{
+	_turn = turn;
+	_field = Field{ _Size{static_cast<size_t>(height),static_cast<size_t>(width)} };
+	initAgentsPos();
+}
+
 
 int GameLogic::GetTurn() const
 {
