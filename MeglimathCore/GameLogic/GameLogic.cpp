@@ -114,9 +114,16 @@ void GameLogic::InitalizeFromJson(const std::string json)
 
 void GameLogic::InitializeRandom(int turn, int height, int width)
 {
-	_turn = turn;
-	_field = Field{ _Size{static_cast<size_t>(height),static_cast<size_t>(width)} };
+	this->_turn = turn;
+	this->_field = Field{ _Size{static_cast<size_t>(height),static_cast<size_t>(width)} };
 	initAgentsPos();
+}
+
+void GameLogic::InitializeVariable(int turn, const Field & field, const std::array<TeamLogic, 2>& teams)
+{
+	this->_turn = turn;
+	this->_field = field;
+	this->teams = teams;
 }
 
 

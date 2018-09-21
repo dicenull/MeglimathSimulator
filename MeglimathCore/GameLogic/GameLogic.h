@@ -37,7 +37,7 @@ public:
 	void InitalizeFromJson(const std::string json);
 
 	void InitializeRandom(int turn, int height, int width);
-
+	void InitializeVariable(int turn, const Field& field, const std::array<TeamLogic, 2>& teams);
 	int GetTurn() const;
 	std::array<TeamLogic, 2> GetTeams()const;
 	const Field& GetField() const;
