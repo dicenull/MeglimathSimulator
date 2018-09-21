@@ -7,7 +7,7 @@ int Field::aggregateAreaPoint(TileType tile)const
 {
 	auto _status = _Grid<bool>(cells.size() + _Point<int>(2, 2));
 
-	dfsAreaPoint(_Point<int>(0, 0), tile,_status);
+	dfsAreaPoint(_Point<int>(0, 0), tile, _status);
 
 	int area_point = 0;
 	for (size_t i : step(_status.width()))
@@ -33,16 +33,16 @@ int Field::aggregateAreaPoint(TileType tile)const
 }
 
 
-void Field::dfsAreaPoint(_Point<> pos, TileType tile,_Grid<bool>& _status)const
+void Field::dfsAreaPoint(_Point<> pos, TileType tile, _Grid<bool>& _status)const
 {
-	// �͈͊O�Ȃ�I��
+	// 範囲外なら終了
 	if (pos.x < 0 || pos.x > cells.width() + 1
 		|| pos.y < 0 || pos.y > cells.height() + 1)
 	{
 		return;
 	}
 
-	// �T���ς݂Ȃ�I��
+	// 探索済みなら終了
 	if (_status[pos.y][pos.x] == true)
 	{
 		return;
@@ -52,19 +52,19 @@ void Field::dfsAreaPoint(_Point<> pos, TileType tile,_Grid<bool>& _status)const
 	if (pos.x == 0 || pos.x == cells.width() + 1 ||
 		pos.y == 0 || pos.y == cells.height() + 1)
 	{
-		// �[�͒T���̂ݍs��
+		// 端は探索のみ行う
 	}
 	else if (cells[pos.y - 1][pos.x - 1].tile == tile)
 	{
-		// �������̃^�C�����u����Ă�����I��
+		// 調査中のタイルが置かれていたら終了
 		return;
 	}
 
 
-	// �l���֒T������
+	// 四方へ探索する
 	for (auto delta : { _Point<>{0, 1},_Point<>{1, 0}, _Point<>{0, -1}, _Point<>{-1, 0} })
 	{
-		dfsAreaPoint(pos + delta, tile,_status);
+		dfsAreaPoint(pos + delta, tile, _status);
 	}
 }
 
@@ -72,7 +72,7 @@ int Field::aggregateTilePoint(TileType tile)const
 {
 	int sum_tile_point = 0;
 
-	//	�^�C���̎�ނ���v����Z���̓��_�̍��v��v�Z����
+	//	タイルの種類が一致するセルの得点の合計を計算する
 	for (size_t i : step(cells.width()))
 	{
 		for (size_t k : step(cells.height()))
@@ -129,7 +129,7 @@ Step Field::DecideStepByDirection(_Point<> pos, Direction dir) const
 		return Step{ Action::Stop, Direction::Stop };
 	}
 
-	// ���W����w��̕����ɐi�񂾌�̍��W
+	// 座標から指定の方向に進んだ後の座標
 	_Point<int> next_pos = pos + Transform::DirToDelta(dir);
 
 	if (!IsInField(next_pos))
@@ -137,7 +137,7 @@ Step Field::DecideStepByDirection(_Point<> pos, Direction dir) const
 		return Step{ Action::Stop, Direction::Stop };
 	}
 
-	// �i�񂾐�̃^�C���̗L���ŃA�N�V������߂�
+	// 進んだ先のタイルの有無でアクションを決める
 	if (cells[next_pos.y][next_pos.x].tile == TileType::None)
 	{
 		return Step{ Action::Move, dir };
@@ -155,19 +155,19 @@ Field Field::makeFieldFromJson(std::string json)
 	_Size size = _Size{ document["Size"].GetString() };
 	auto points = document["Points"].GetArray();
 
-	// ���͂����^�C���|�C���g�̐�
+	// 入力されるタイルポイントの数
 	_Size data_size = _Size((size.x + 1) / 2, (size.y + 1) / 2);
 
 	auto cells = _Grid<Cell>(size);
 
-	// �^�C���|�C���g��O���b�h��ɐ��^���ē���
+	// タイルポイントをグリッド状に成型して入力
 	int idx = 0;
 	for (int i : step(data_size.y))
 	{
 		for (int k : step(data_size.x))
 		{
 			cells[i][k] = { points[idx].GetInt() };
-			// �f�[�^��R�s�[
+			// データをコピー
 			cells[size.y - 1 - i][size.x - 1 - k] = cells[i][k];
 			cells[size.y - 1 - i][k] = cells[i][k];
 			cells[i][size.x - 1 - k] = cells[i][k];
@@ -177,7 +177,7 @@ Field Field::makeFieldFromJson(std::string json)
 	}
 	if (!document.HasMember("Tiles"))return Field{ cells };
 
-	// �e�X�g�p�Ƀ^�C����񂪂���ꍇ�ǂݍ���œ��͂���
+	// テスト用にタイル情報がある場合読み込んで入力する
 	auto tiles = document["Tiles"].GetArray();
 	for (int i : step(size.y))
 	{
@@ -201,7 +201,7 @@ Field Field::makeFieldFromJson(std::string json)
 Field Field::makeFieldRandom(_Size size)
 {
 	auto cells = _Grid<Cell>(size);
-	// ���͂����^�C���|�C���g�̐�
+	// 入力されるタイルポイントの数
 	_Size data_size = _Size((size.x + 1) / 2, (size.y + 1) / 2);
 	cells = _Grid<Cell>(size);
 	srand(time(nullptr));
@@ -211,7 +211,7 @@ Field Field::makeFieldRandom(_Size size)
 				(rand() >> 7) % 17 :
 				-((rand() >> 7) % 17)
 			};
-			// �f�[�^��R�s�[
+			// データをコピー
 			cells[size.y - 1 - i][size.x - 1 - k] = cells[i][k];
 			cells[size.y - 1 - i][k] = cells[i][k];
 			cells[i][size.x - 1 - k] = cells[i][k];
