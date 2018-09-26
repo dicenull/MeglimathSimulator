@@ -9,7 +9,7 @@ class GameLogic
 {
 private:
 	int _turn = 60;
-	Field _field { {{6,6}} };
+	Field _field;
 	std::array<TeamLogic, 2> teams = {};
 
 public:
