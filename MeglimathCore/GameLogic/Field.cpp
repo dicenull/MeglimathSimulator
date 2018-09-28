@@ -148,6 +148,46 @@ Step Field::DecideStepByDirection(_Point<> pos, Direction dir) const
 	}
 }
 
+Field Field::MakeFieldFromStep(TeamType team, Agent agent, Step step)
+{
+	Field field = *this;
+	auto pos = agent.position;
+	switch (step.action)
+	{
+	case Action::RemoveTile:
+		if (!field.CanRemoveTile(pos, team))
+		{
+			return *this;
+		}
+
+		field.cells[pos.y][pos.x].RemoveTile();
+		return field;
+
+	case Action::Move:
+		auto pos = agent.Moved(step.direction).position;
+		if (!field.CanMove(pos, team))
+		{
+			return *this;
+		}
+
+		field.cells[pos.y][pos.x].PaintedBy(team);
+		return field;
+	}
+
+}
+
+bool Field::CanMove(_Point<> pos, TeamType team)
+{
+	auto other_tile = Transform::GetInverseTile(Transform::ToTile(team));
+
+	return IsInField(pos) && cells[pos.y][pos.x].tile != other_tile;
+}
+
+bool Field::CanRemoveTile(_Point<> pos, TeamType team)
+{
+	return IsInField(pos) && cells[pos.y][pos.x].tile != TileType::None;
+}
+
 Field Field::makeFieldFromJson(std::string json)
 {
 	rapidjson::Document document;

@@ -11,6 +11,7 @@
 #include "KeyboardClient.h"
 #include "RandomClient.h"
 #include "T_Monte_Carlo.h"
+#include "NextBestClient.h"
 
 struct GameData
 {
@@ -27,9 +28,8 @@ namespace Scenes
 {
 	struct SetClient :MyApp::Scene
 	{
-		const static int count = 3;
-		std::unique_ptr<Client> clients[count];
-
+		std::vector<std::unique_ptr<Client>> clients;
+		
 		SetClient(const InitData& init) : IScene(init)
 		{
 			// user_client.reset(new T_Monte_Carlo(type));
@@ -37,44 +37,31 @@ namespace Scenes
 			// user_client.reset(new RandomClient(type));
 
 			auto type = getData().teamType;
-			clients[0] = std::make_unique<T_Monte_Carlo>(type);
-			clients[1] = std::make_unique<RandomClient>(type);
-			clients[2] = std::unique_ptr<Client>(new KeyboardClient(type, { KeyD, KeyE, KeyW, KeyQ, KeyA, KeyZ, KeyX, KeyC, KeyS }, KeyShift));
+			clients.push_back(std::make_unique<T_Monte_Carlo>(type));
+			clients.push_back(std::make_unique<RandomClient>(type));
+			clients.push_back(std::unique_ptr<Client>(new KeyboardClient(type, { KeyD, KeyE, KeyW, KeyQ, KeyA, KeyZ, KeyX, KeyC, KeyS }, KeyShift)));
+			clients.push_back(std::make_unique<NextBestClient>(type));
 		}
 
 		void update() override
 		{
-			int idx = -1;
-			int is_key_down = false;
-			if(Key0.down())
+			for (int i = 0; i < clients.size(); i++)
 			{
-				idx = 0;
-				is_key_down = true;
-			}
+				Key key = { InputDevice::Keyboard, (uint8)(Key0.code() + i) };
 
-			if(Key1.down())
-			{
-				idx = 1;
-				is_key_down = true;
-			}
-
-			if(Key2.down())
-			{
-				idx = 2;
-				is_key_down = true;
-			}
-
-			if(is_key_down)
-			{
-				getData().user_client = std::move(clients[idx]);
-				changeScene(U"Game");
+				if (key.down())
+				{
+					getData().user_client = std::move(clients[i]);
+					ClearPrint();
+					changeScene(U"Game");
+				}
 			}
 		}
 
 		void draw() const override
 		{
 			ClearPrint();
-			for(int i = 0;i < count;i++)
+			for(int i = 0;i < clients.size();i++)
 			{
 				if(clients[i] == nullptr)
 				{

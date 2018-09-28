@@ -69,6 +69,11 @@ public:
 	/// <returns>必要な行動</returns>
 	Step DecideStepByDirection(_Point<> pos, Direction dir) const;
 
+	Field MakeFieldFromStep(TeamType team, Agent agent, Step step);
+
+	bool CanMove(_Point<> pos, TeamType team);
+	bool CanRemoveTile(_Point<> pos, TeamType team);
+
 public:
 	static Field makeFieldFromJson(std::string json);
 	static Field makeFieldRandom(_Size size = { 6,6 });

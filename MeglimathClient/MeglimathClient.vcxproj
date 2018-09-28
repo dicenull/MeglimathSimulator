@@ -209,6 +209,7 @@
     <ClCompile Include="KeyboardClient.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="ManualClient.cpp" />
+    <ClCompile Include="NextBestClient.cpp" />
     <ClCompile Include="RandomClient.cpp" />
     <ClCompile Include="T_Monte_Carlo.cpp" />
   </ItemGroup>
@@ -260,6 +261,7 @@
     <ClInclude Include="ClientDrawer.h" />
     <ClInclude Include="KeyboardClient.h" />
     <ClInclude Include="ManualClient.h" />
+    <ClInclude Include="NextBestClient.h" />
     <ClInclude Include="RandomClient.h" />
     <ClInclude Include="T_Monte_Carlo.h" />
   </ItemGroup>
