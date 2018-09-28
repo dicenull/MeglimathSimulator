@@ -1,21 +1,29 @@
-#pragma once
+ï»¿#pragma once
 #include "Types.h"
 #include "Action.h"
 #include "Transform.h"
 struct Agent
 {
 	/// <summary>
-	/// À•W
+	/// åº§æ¨™
 	/// </summary>
 	_Point<> position;
 
 	/// <summary>
-	/// ƒG[ƒWƒFƒ“ƒg‚ğ“®‚©‚·
+	/// ã‚¨ãƒ¼ã‚¸ã‚§ãƒ³ãƒˆã‚’å‹•ã‹ã™
 	/// </summary>
-	/// <param name="dir">“®‚©‚·•ûŒü</param>
+	/// <param name="dir">å‹•ã‹ã™æ–¹å‘</param>
 	void Move(Direction dir)
 	{
 		position += Transform::DirToDelta(dir);
+	}
+
+	Agent Moved(Direction dir)
+	{
+		Agent agent;
+		agent.position = this->position;
+		agent.Move(dir);
+		return agent;
 	}
 };
 
