@@ -17,7 +17,7 @@ void GameLogic::initAgentsPos()
 {
 	_Size size = _field.cells.size();
 
-	initAgentsPos({ (std::rand() >> 8) % static_cast<int>(size.y / 2) , (std::rand() >> 8) % static_cast<int>(size.x / 2) });
+	initAgentsPos({ (std::rand() >> 8) % static_cast<int>(size.x / 2) , (std::rand() >> 8) % static_cast<int>(size.y / 2) });
 }
 
 void GameLogic::initAgentsPos(_Point<> init_pos)
