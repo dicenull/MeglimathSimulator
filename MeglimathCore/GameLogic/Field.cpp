@@ -151,7 +151,8 @@ Step Field::DecideStepByDirection(_Point<> pos, Direction dir) const
 Field Field::MakeFieldFromStep(TeamType team, Agent agent, Step step)
 {
 	Field field = *this;
-	auto pos = agent.position;
+	auto pos = agent.Moved(step.direction).position;
+
 	switch (step.action)
 	{
 	case Action::RemoveTile:
@@ -159,12 +160,11 @@ Field Field::MakeFieldFromStep(TeamType team, Agent agent, Step step)
 		{
 			return *this;
 		}
-
+		
 		field.cells[pos.y][pos.x].RemoveTile();
 		return field;
 
 	case Action::Move:
-		auto pos = agent.Moved(step.direction).position;
 		if (!field.CanMove(pos, team))
 		{
 			return *this;
