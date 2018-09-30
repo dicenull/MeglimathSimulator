@@ -27,7 +27,11 @@ public:
 		auto other_team = Transform::GetInverseTeam(_type);
 
 		int best_point = -1000;
-		Think next_think;
+		Think next_think =
+		{
+			Step{ Action(Random(0, 1)), Direction(Random(0, 7)) },
+			Step{ Action(Random(0,1)),Direction(Random(0,7)) }
+		};
 
 		auto all_step = Utility::AllStep();
 		for(int i = 0;i < all_step.size();i++)
