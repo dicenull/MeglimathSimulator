@@ -1,5 +1,5 @@
-#include "ClientDrawer.h"
-#include "Transform.h"
+﻿#include "ClientDrawer.h"
+#include "../MeglimathCore/GameLogic/Transform.h"
 
 void ClientDrawer::DrawInputState(Client& client)
 {

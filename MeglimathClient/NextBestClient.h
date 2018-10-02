@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include "Client.h"
-#include "../Utility.h"
+#include "../MeglimathCore/Utility.h"
 #include "../MeglimathCore/GameLogic/Think.h"
 
 class NextBestClient :
@@ -27,6 +27,7 @@ public:
 		auto other_team = Transform::GetInverseTeam(_type);
 
 		int best_point = -1000;
+		Reseed(info.GetTurn());
 		Think next_think =
 		{
 			Step{ Action(Random(0, 1)), Direction(Random(0, 7)) },
