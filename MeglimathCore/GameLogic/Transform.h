@@ -43,6 +43,37 @@ namespace Transform
 		return _Point<int>(0, 0);
 	}
 
+	constexpr Direction DeltaToDir(_Point<int> p)
+	{
+		if (p == _Point<int>(1, 0)) {
+			return Direction::Right;
+		}
+		else if (p == _Point<int>(1, -1)) {
+			return Direction::RightUp;
+		}
+		else if (p == _Point<int>(0, -1)) {
+			return Direction::Up;
+		}
+		else if (p == _Point<int>(-1, -1)) {
+			return Direction::LeftUp;
+		}
+		else if (p == _Point<int>(-1, 0)) {
+			return Direction::Left;
+		}
+		else if (p == _Point<int>(-1, 1)) {
+			return Direction::LeftDown;
+		}
+		else if (p == _Point<int>(0, 1)) {
+			return Direction::Down;
+		}
+		else if (p == _Point<int>(1, 1)) {
+			return Direction::RightDown;
+		}
+		else {
+			return Direction::Stop;
+		}
+	}
+
 	constexpr TileType ToTile(TeamType team)
 	{
 		switch (team)
