@@ -22,8 +22,9 @@ using MyApp = SceneManager<String, GameData>;
 
 namespace Scenes
 {
-	struct ReadFieldJson : MyApp::Scene
+	class ReadFieldJson : public MyApp::Scene
 	{
+	public:
 		ReadFieldJson(const InitData& init) : IScene(init)
 		{
 			// フィールド情報を受け取るための通信
@@ -60,8 +61,9 @@ namespace Scenes
 	};
 
 
-	struct Connection : MyApp::Scene
+	class Connection : public MyApp::Scene
 	{
+	public:
 		Connection(const InitData& init) : IScene(init)
 		{
 			// 二つのクライアントと接続する
@@ -83,7 +85,7 @@ namespace Scenes
 		}
 	};
 
-	struct HandShake : MyApp::Scene
+	class HandShake : public MyApp::Scene
 	{
 	private:
 		bool _has_connection[2] = { false, false };
@@ -171,7 +173,7 @@ namespace Scenes
 		}
 	};
 
-	struct Game : MyApp::Scene
+	class Game : public MyApp::Scene
 	{
 	private:
 		void sendGameInfo()
