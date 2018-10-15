@@ -26,16 +26,14 @@ using MyApp = SceneManager<String, GameData>;
 
 namespace Scenes
 {
-	struct SetClient :MyApp::Scene
+	class SetClient : public MyApp::Scene
 	{
+	private:
 		std::vector<std::unique_ptr<Client>> clients;
 		
+	public:
 		SetClient(const InitData& init) : IScene(init)
 		{
-			// user_client.reset(new T_Monte_Carlo(type));
-			// user_client.reset(new KeyboardClient(type, { KeyD, KeyE, KeyW, KeyQ, KeyA, KeyZ, KeyX, KeyC, KeyS }, KeyShift));
-			// user_client.reset(new RandomClient(type));
-
 			auto type = getData().teamType;
 			clients.push_back(std::make_unique<T_Monte_Carlo>(type));
 			clients.push_back(std::make_unique<RandomClient>(type));
@@ -53,7 +51,7 @@ namespace Scenes
 				{
 					getData().user_client = std::move(clients[i]);
 					ClearPrint();
-					changeScene(U"Game");
+					changeScene(U"Game", 0);
 				}
 			}
 		}
@@ -74,8 +72,9 @@ namespace Scenes
 		}
 	};
 
-	struct Connection : MyApp::Scene
+	class Connection : public MyApp::Scene
 	{
+	public:
 		Connection(const InitData& init) : IScene(init)
 		{
 			getData().tcp_client.connect(IPv4::localhost(), 31400);
@@ -85,7 +84,7 @@ namespace Scenes
 		{
 			if (getData().tcp_client.isConnected())
 			{
-				changeScene(U"HandShake");
+				changeScene(U"HandShake", 0);
 			}
 		}
 
@@ -95,12 +94,11 @@ namespace Scenes
 		}
 	};
 
-	struct HandShake : MyApp::Scene
+	class HandShake : public MyApp::Scene
 	{
+	public:
 		HandShake(const InitData& init) : IScene(init)
-		{
-
-		}
+		{ }
 
 		void update() override
 		{
@@ -110,7 +108,7 @@ namespace Scenes
 			{
 				tcp_client.disconnect();
 
-				changeScene(U"Connection");
+				changeScene(U"Connection", 0);
 				return;
 			}
 
@@ -148,7 +146,7 @@ namespace Scenes
 			{
 				getData().teamType = team_type.value();
 				tcp_client.sendString(U"OK\n");
-				changeScene(U"SetClient");
+				changeScene(U"SetClient", 0);
 				return;
 			}
 		}
@@ -159,11 +157,13 @@ namespace Scenes
 		}
 	};
 
-	struct Game : MyApp::Scene
+	class Game : public MyApp::Scene
 	{
+	private:
 		bool _is_init = false;
 		bool _is_update = false;
 
+	public:
 		Game(const InitData& init) : IScene(init)
 		{
 			auto type = getData().teamType;
@@ -180,7 +180,7 @@ namespace Scenes
 			{
 				data.tcp_client.disconnect();
 
-				changeScene(U"Connection");
+				changeScene(U"Connection", 0);
 			}
 
 			// ゲームの更新
@@ -208,7 +208,7 @@ namespace Scenes
 
 				_is_update = true;
 			}
-
+			
 			// Clientを更新
 			user_client->Update(data.info);
 

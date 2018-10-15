@@ -25,7 +25,7 @@ public:
 		auto agents = info.GetAgents(_type);		
 		auto field = info.GetField();
 		auto other_team = Transform::GetInverseTeam(_type);
-
+		
 		int best_point = -1000;
 		Reseed(info.GetTurn());
 		Think next_think =
