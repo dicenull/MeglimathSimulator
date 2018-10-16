@@ -5,6 +5,7 @@
 #include<unordered_map>
 #include<vector>
 #include <rapidjson\document.h>
+
 class GameLogic
 {
 private:
