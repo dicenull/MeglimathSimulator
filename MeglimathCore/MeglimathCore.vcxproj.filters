@@ -185,22 +185,10 @@
     <ClInclude Include="TeamColor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GameLogic\Action.h">
-      <Filter>Header Files\GameLogic</Filter>
-    </ClInclude>
-    <ClInclude Include="GameLogic\Agent.h">
-      <Filter>Header Files\GameLogic</Filter>
-    </ClInclude>
-    <ClInclude Include="GameLogic\Cell.h">
-      <Filter>Header Files\GameLogic</Filter>
-    </ClInclude>
     <ClInclude Include="GameLogic\Field.h">
       <Filter>Header Files\GameLogic</Filter>
     </ClInclude>
     <ClInclude Include="GameLogic\GameLogic.h">
-      <Filter>Header Files\GameLogic</Filter>
-    </ClInclude>
-    <ClInclude Include="GameLogic\GamePoints.h">
       <Filter>Header Files\GameLogic</Filter>
     </ClInclude>
     <ClInclude Include="GameLogic\TeamLogic.h">
@@ -228,7 +216,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Utility.h">
-      <Filter>Header Files\GameLogic</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -263,7 +251,7 @@
       <Filter>Source Files\GameLogic</Filter>
     </ClCompile>
     <ClCompile Include="Utility.cpp">
-      <Filter>Source Files\GameLogic</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
