@@ -318,4 +318,4 @@ Linux/Test/example
 Linux/Test/resources
 Linux/Test/Siv3D_Test
 /MeglimathCore/rapidjson
-/MeglimathCore/App/MeglimathCore(debug_64-bit).lib
+/MeglimathCore/App/*.lib
