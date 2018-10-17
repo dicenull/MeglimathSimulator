@@ -27,11 +27,36 @@ using MyApp = SceneManager<String, GameData>;
 
 namespace Scenes
 {
+	class SelectTeamType : public MyApp::Scene
+	{
+	public:
+		SelectTeamType(const InitData& init) : IScene(init)
+		{
+			Print << U"左 : 赤(B),右 : 青(A)";
+		}
+
+		void update() override
+		{
+			if (KeyLeft.down())
+			{
+				getData().teamType = TeamType::B;
+				changeScene(U"SetClient", 0);
+			}
+
+			if (KeyRight.down())
+			{
+				getData().teamType = TeamType::A;
+				changeScene(U"SetClient", 0);
+			}
+		}
+
+	};
+
 	class SetClient : public MyApp::Scene
 	{
 	private:
 		std::vector<std::unique_ptr<Client>> clients;
-		
+
 	public:
 		SetClient(const InitData& init) : IScene(init)
 		{
@@ -53,7 +78,7 @@ namespace Scenes
 				{
 					getData().user_client = std::move(clients[i]);
 					ClearPrint();
-					changeScene(U"Game", 0);
+					changeScene(U"HandShake", 0);
 				}
 			}
 		}
@@ -61,9 +86,9 @@ namespace Scenes
 		void draw() const override
 		{
 			ClearPrint();
-			for(int i = 0;i < clients.size();i++)
+			for (int i = 0; i < clients.size(); i++)
 			{
-				if(clients[i] == nullptr)
+				if (clients[i] == nullptr)
 				{
 					ClearPrint();
 					continue;
@@ -86,7 +111,7 @@ namespace Scenes
 		{
 			if (getData().tcp_client.isConnected())
 			{
-				changeScene(U"HandShake", 0);
+				changeScene(U"Game", 0);
 			}
 		}
 
@@ -210,7 +235,7 @@ namespace Scenes
 
 				_is_update = true;
 			}
-			
+
 			// Clientを更新
 			user_client->Update(data.info);
 
@@ -247,6 +272,7 @@ void Main()
 {
 	MyApp manager;
 	manager
+		.add<Scenes::SelectTeamType>(U"SelectTeamType")
 		.add<Scenes::Connection>(U"Connection")
 		.add<Scenes::Game>(U"Game")
 		.add<Scenes::HandShake>(U"HandShake")
