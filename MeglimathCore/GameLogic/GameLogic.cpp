@@ -17,7 +17,7 @@ void GameLogic::initAgentsPos()
 {
 	_Size size = _field.cells.size();
 
-	initAgentsPos({ std::rand() >> 8 % (size.y / 2) , std::rand() >> 8 % (size.x / 2) });
+	initAgentsPos({ (std::rand() >> 8) % static_cast<int>(size.x / 2) , (std::rand() >> 8) % static_cast<int>(size.y / 2) });
 }
 
 void GameLogic::initAgentsPos(_Point<> init_pos)
@@ -110,6 +110,20 @@ void GameLogic::InitalizeFromJson(const std::string json)
 		initAgentsPos();
 	}
 	_turn = document["Turn"].GetInt();
+}
+
+void GameLogic::InitializeRandom(int turn, int height, int width)
+{
+	this->_turn = turn;
+	this->_field = Field::makeFieldRandom( _Size{static_cast<size_t>(height),static_cast<size_t>(width)} );
+	initAgentsPos();
+}
+
+void GameLogic::InitializeVariable(int turn, const Field & field, const std::array<TeamLogic, 2>& teams)
+{
+	this->_turn = turn;
+	this->_field = field;
+	this->teams = teams;
 }
 
 

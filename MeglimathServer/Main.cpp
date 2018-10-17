@@ -22,8 +22,9 @@ using MyApp = SceneManager<String, GameData>;
 
 namespace Scenes
 {
-	struct ReadFieldJson : MyApp::Scene
+	class ReadFieldJson : public MyApp::Scene
 	{
+	public:
 		ReadFieldJson(const InitData& init) : IScene(init)
 		{
 			// フィールド情報を受け取るための通信
@@ -47,7 +48,7 @@ namespace Scenes
 
 					// クライアントとの接続へ移行
 					server.disconnect();
-					changeScene(U"Connection");
+					changeScene(U"Connection", 0);
 					return;
 				}
 			}
@@ -60,8 +61,9 @@ namespace Scenes
 	};
 
 
-	struct Connection : MyApp::Scene
+	class Connection : public MyApp::Scene
 	{
+	public:
 		Connection(const InitData& init) : IScene(init)
 		{
 			// 二つのクライアントと接続する
@@ -72,7 +74,7 @@ namespace Scenes
 		{
 			if (getData().server.num_sessions() == 2)
 			{
-				changeScene(U"HandShake");
+				changeScene(U"HandShake", 0);
 			}
 		}
 
@@ -83,7 +85,7 @@ namespace Scenes
 		}
 	};
 
-	struct HandShake : MyApp::Scene
+	class HandShake : public MyApp::Scene
 	{
 	private:
 		bool _has_connection[2] = { false, false };
@@ -119,7 +121,7 @@ namespace Scenes
 				server.disconnect();
 				server.cancelAccept();
 
-				changeScene(U"Connection");
+				changeScene(U"Connection", 0);
 			}
 
 			for (auto i = 0; i < server.num_sessions(); i++)
@@ -160,7 +162,7 @@ namespace Scenes
 
 			if (_has_connection[0] && _has_connection[1])
 			{
-				changeScene(U"Game");
+				changeScene(U"Game", 0);
 				return;
 			}
 		}
@@ -171,7 +173,7 @@ namespace Scenes
 		}
 	};
 
-	struct Game : MyApp::Scene
+	class Game : public MyApp::Scene
 	{
 	private:
 		void sendGameInfo()
@@ -205,7 +207,7 @@ namespace Scenes
 				data.server.disconnect();
 				data.server.cancelAccept();
 
-				changeScene(U"Connection");
+				changeScene(U"Connection", 0);
 			}
 
 			// Clientから次ターンの行動を受け取る

@@ -5,11 +5,12 @@
 #include<unordered_map>
 #include<vector>
 #include <rapidjson\document.h>
+
 class GameLogic
 {
 private:
 	int _turn = 60;
-	Field _field { {{6,6}} };
+	Field _field;
 	std::array<TeamLogic, 2> teams = {};
 
 public:
@@ -36,6 +37,8 @@ public:
 	/// <param name="path">json</param>
 	void InitalizeFromJson(const std::string json);
 
+	void InitializeRandom(int turn, int height, int width);
+	void InitializeVariable(int turn, const Field& field, const std::array<TeamLogic, 2>& teams);
 	int GetTurn() const;
 	std::array<TeamLogic, 2> GetTeams()const;
 	const Field& GetField() const;

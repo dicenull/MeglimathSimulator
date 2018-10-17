@@ -1,9 +1,61 @@
 ﻿#pragma once
-#include "Cell.h"
+#include "TeamLogic.h"
 #include "Transform.h"
-#include "GamePoints.h"
 #include <rapidjson\document.h>
 #include <array>
+
+struct Cell
+{
+
+	/// <summary>
+	/// マスの点数
+	/// </summary>
+	int point = 0;
+
+	// フィールド //
+	/// <summary>
+	/// マスにはめられたタイル
+	/// </summary>
+	TileType tile = TileType::None;
+
+	// メソッド //
+
+	/// <summary>
+	/// 指定のチームによってセルにタイルが置かれる
+	/// </summary>
+	/// <param name="team">セルにタイルを置くチーム</param>
+	void PaintedBy(TeamType team)
+	{
+		switch (team)
+		{
+		case TeamType::A:
+			tile = TileType::A;
+			break;
+
+		case TeamType::B:
+			tile = TileType::B;
+			break;
+		}
+	}
+
+	/// <summary>
+	/// 置かれたタイルを取る
+	/// </summary>
+	void RemoveTile()
+	{
+		tile = TileType::None;
+	}
+};
+
+
+struct GamePoints {
+	int area, tile;
+	int getTotal() const {
+		return area + tile;
+	}
+};
+
+
 class Field
 {
 public:

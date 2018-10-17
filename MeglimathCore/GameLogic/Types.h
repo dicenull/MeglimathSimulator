@@ -50,7 +50,7 @@ public:
 		return *this;
 	}
 	template <class Comp = int>
-	bool operator==(const _Point<Comp>& r) {
+	constexpr bool operator==(const _Point<Comp>& r) {
 		return x == r.x && y == r.y;
 	}
 	template <class Comp = int>
