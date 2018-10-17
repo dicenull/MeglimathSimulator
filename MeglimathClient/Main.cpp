@@ -78,7 +78,7 @@ namespace Scenes
 				{
 					getData().user_client = std::move(clients[i]);
 					ClearPrint();
-					changeScene(U"HandShake", 0);
+					changeScene(U"Game", 0);
 				}
 			}
 		}
@@ -111,7 +111,7 @@ namespace Scenes
 		{
 			if (getData().tcp_client.isConnected())
 			{
-				changeScene(U"Game", 0);
+				changeScene(U"HandShake", 0);
 			}
 		}
 
@@ -272,7 +272,6 @@ void Main()
 {
 	MyApp manager;
 	manager
-		.add<Scenes::SelectTeamType>(U"SelectTeamType")
 		.add<Scenes::Connection>(U"Connection")
 		.add<Scenes::Game>(U"Game")
 		.add<Scenes::HandShake>(U"HandShake")
