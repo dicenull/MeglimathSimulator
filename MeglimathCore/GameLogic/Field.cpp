@@ -259,3 +259,28 @@ Field Field::makeFieldRandom(_Size size)
 	}
 	return { cells };
 }
+
+bool Field::IsSameStateField(const Field & other)
+{
+	auto s1 = this->cells.size();
+	auto s2 = other.cells.size();
+
+	if (s1.x != s2.x || s1.y != s2.y)
+	{
+		return false;
+	}
+
+	auto& size = s1;
+	for (auto x = 0; x < size.x; x++)
+	{
+		for (auto y = 0; y < size.y; y++)
+		{
+			if (this->cells[y][x].tile != other.cells[y][x].tile)
+			{
+				return false;
+			}
+		}
+	}
+
+	return true;
+}
