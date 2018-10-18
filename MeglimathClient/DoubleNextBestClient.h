@@ -9,6 +9,11 @@ class DoubleNextBestClient :
 public:
 	DoubleNextBestClient();
 	DoubleNextBestClient(TeamType type);
+	
+	int double_stop_cnt = 0;
+	const int DOUBLE_STOP_LIMIT = 2;
+	const int DOUBLE_STOP_LIMIT_FORCE = 5;
+	_Point<> pos_history[2] = { _Point<>(), _Point<>() };
 
 	String Name() override
 	{
@@ -32,7 +37,16 @@ public:
         int eval_point1;     // 一手目の評価値
 		int eval_point2;     // 二手目の評価値
 
-		Reseed(info.GetTurn());
+		if (!(pos_history[0] == agents[0].position)
+			|| !(pos_history[1] == agents[1].position))
+			double_stop_cnt = 0;
+		else
+			double_stop_cnt++;
+
+		pos_history[0] = agents[0].position;
+		pos_history[1] = agents[1].position;
+
+		//Reseed(info.GetTurn());
 		Think next_think =
 		{
 			Step{ Action(Random(0, 1)), Direction(Random(0, 7)) },
@@ -44,6 +58,10 @@ public:
 			Step{ Action(Random(0, 1)), Direction(Random(0, 7)) },
 			Step{ Action(Random(0, 1)), Direction(Random(0, 7)) }
 		};      //２番目に最善とされる行動
+
+		Array<Think> candidates, candidates2;
+		candidates.clear();
+		candidates2.clear();
 
 		auto all_step = Utility::AllStep();
 
@@ -78,21 +96,51 @@ public:
                 }
                 
 				auto eval_point_total = eval_point1 + eval_point2;
-
-				if (best_eval_point <= eval_point_total)
+				
+				if (!next_field1b.IsSameStateField(field))		//自分のエージェント同士の衝突を検出
 				{
-					best_eval_point = eval_point_total;
-					next_think = { all_step[i], all_step[k] };
-				}
-                else if (second_eval_point <= eval_point_total)
-                {
-                    second_eval_point = eval_point_total;
-					next_think2 = { all_step[i], all_step[k] };
-                }
-			}
-		}	
+					if (best_eval_point <= eval_point_total)
+					{
+						if (best_eval_point != eval_point_total)
+							candidates.clear();
 
-		_think = next_think;
+						best_eval_point = eval_point_total;
+
+						candidates.push_back({ all_step[i], all_step[k] });
+					}
+					else if (second_eval_point <= eval_point_total)
+					{
+						if (second_eval_point != eval_point_total)
+							candidates2.clear();
+
+						second_eval_point = eval_point_total;
+
+						candidates2.push_back({ all_step[i], all_step[k] });
+					}
+				}
+			}
+		}
+
+		if (candidates.count() != (size_t)0)
+			next_think = Sample(candidates);
+		if (candidates2.count() != (size_t)0)
+			next_think2 = Sample(candidates2);
+
+		auto points = field.GetTotalPoints();
+		auto point_diff = points[this_team] - points[other_team];
+
+		// 劣勢時に両方のエージェントが足止めされている場合、妥協して２番目に良い手を打つ
+		if (double_stop_cnt > DOUBLE_STOP_LIMIT_FORCE)
+			_think =
+				{
+					Step{ Action(Random(0, 1)), Direction(Random(0, 7)) },
+					Step{ Action(Random(0, 1)), Direction(Random(0, 7)) }
+				};
+		else if (double_stop_cnt > DOUBLE_STOP_LIMIT && point_diff < 0)
+			_think = next_think2;
+		else
+			_think = next_think;
+
 		_is_ready = true;
 	}
 };
