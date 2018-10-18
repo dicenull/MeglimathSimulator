@@ -14,8 +14,14 @@ public:
 	const int DOUBLE_STOP_LIMIT = 2;		// 自分のエージェント両方の行動の失敗が連続して DOUBLE_STOP_LIMIT 回を超えた場合かつ劣勢時に妥協した手を打つ
 	// DOUBLE_STOP_LIMIT_FORCE は 今後消去する(無限にする)予定
 	const int DOUBLE_STOP_LIMIT_FORCE = 5;		// 自分のエージェント両方の行動の失敗が連続して DOUBLE_STOP_LIMIT_FORCE 回を超えた場合ランダムな手を打つ
+	static const int EXPLORE_DEPTH = 2;		// 探索の深さ = 何手先まで読むか
+
 	_Point<> pos_history[2] = { _Point<>(), _Point<>() };		// 前のターン自分のエージェントがどこにいたか
 	Array<Think> candidates[2];		// candidates[n] は (n+1)番目に優先される行動の候補リスト
+
+	int eval_points[2] = { -100000, -100000 };		// eval_points[n] は (n+1)番目に優先される 1手後の行動 の評価値
+	int eval_points_next[EXPLORE_DEPTH];		// eval_points_next[n] は (n+1)手後の行動 の評価値
+
 
 	String Name() override
 	{
@@ -27,69 +33,53 @@ public:
 		_is_ready = false;
 	}
 
-	void Explore(GameInfo info)
+	void Explore(GameInfo info, Field field, int depth, int s1, int s2)
 	{
 		auto agents = info.GetAgents(_type);
-		auto field = info.GetField();
+		auto original = info.GetField();
 		auto this_team = _type;
 		auto other_team = Transform::GetInverseTeam(this_team);
 
-		int eval_points[2] = { -100000, -100000 };		// eval_points[n] は (n+1)番目に優先される 1手後の行動 の評価値
-		int eval_points_next[2];		// eval_points_next[n] は (n+1)手後の行動 の評価値
-		int point_diff[2];		// point_diff[n] は (n+1)手目を打ったときの 自チームと相手チームの得点差
-
-		for (auto c : candidates)
-			c.clear();
-
 		auto all_step = Utility::AllStep();
 
-		for (int i = 0; i < all_step.size(); i++)
+		if (depth == 0)
 		{
-			auto next_field1a = field.MakeFieldFromStep(this_team, agents[0], all_step[i]);
+			auto eval_point_total = 0;		// eval_point_total は eval_points_next の総和, 次の一手の評価基準
+			for (int e : eval_points_next)
+				eval_point_total += e;
 
-			for (int k = 0; k < all_step.size(); k++)
+			if (!field.IsSameStateField(original))		//自分のエージェント同士の衝突を検出
 			{
-				auto next_field1b = next_field1a.MakeFieldFromStep(this_team, agents[1], all_step[k]);
-
-				point_diff[0] = next_field1b.GetTotalPoints()[this_team] - next_field1b.GetTotalPoints()[other_team];
-
-				eval_points_next[0] = point_diff[0];
-
-				eval_points_next[1] = -100000;
-
-				for (int m = 0; m < all_step.size(); m++)
+				for (int it = 0; it < 2; it++)
 				{
-					auto next_field2a = next_field1b.MakeFieldFromStep(this_team, agents[0], all_step[m]);
-
-					for (int p = 0; p < all_step.size(); p++)
+					if (eval_points[it] <= eval_point_total)
 					{
-						auto next_field2b = next_field2a.MakeFieldFromStep(this_team, agents[1], all_step[p]);
+						if (eval_points[it] != eval_point_total)
+							candidates[it].clear();
 
-						point_diff[1] = next_field2b.GetTotalPoints()[this_team] - next_field2b.GetTotalPoints()[other_team];
-
-						if (eval_points_next[1] < point_diff[1])
-							eval_points_next[1] = point_diff[1];
+						eval_points[it] = eval_point_total;
+						candidates[it].push_back({ all_step[s1], all_step[s2] });
+						break;
 					}
 				}
+			}
+		}
+		else
+		{
+			for (int i = 0; i < all_step.size(); i++)
+			{
+				auto next_field_a = field.MakeFieldFromStep(this_team, agents[0], all_step[i]);
 
-				auto eval_point_total = 0;		// eval_point_total は eval_points_next の総和, 次の一手の評価基準
-				for (int e : eval_points_next)
-					eval_point_total += e;
-
-				if (!next_field1b.IsSameStateField(field))		//自分のエージェント同士の衝突を検出
+				for (int k = 0; k < all_step.size(); k++)
 				{
-					for (int it = 0; it < 2; it++)
-					{
-						if (eval_points[it] <= eval_point_total)
-						{
-							if (eval_points[it] != eval_point_total)
-								candidates[it].clear();
+					auto next_field_b = next_field_a.MakeFieldFromStep(this_team, agents[1], all_step[k]);
 
-							eval_points[it] = eval_point_total;
-							candidates[it].push_back({ all_step[i], all_step[k] });
-							break;
-						}
-					}
+					eval_points_next[depth - 1] = next_field_b.GetTotalPoints()[this_team] - next_field_b.GetTotalPoints()[other_team];
+
+					if (depth == EXPLORE_DEPTH)
+						Explore(info, next_field_b, depth - 1, i, k);		// 最初のみ 仮引数 s1, s2 を更新
+					else
+						Explore(info, next_field_b, depth - 1, s1, s2);
 				}
 			}
 		}
@@ -123,8 +113,14 @@ public:
 				Step{ Action(Random(0, 1)), Direction(Random(0, 7)) }
 			}
 		};		// next_thinks[n] は (n+1)番目に優先される行動
-		
-		Explore(info);
+
+		for (int it = 0; it < 2; it++)
+			eval_points[it] = -100000;
+
+		for (auto c : candidates)
+			c.clear();
+
+		Explore(info, field, EXPLORE_DEPTH, 0, 0);
 
 		for (int it = 0; it < 2; it++)
 			if (candidates[it].count() != (size_t)0)
