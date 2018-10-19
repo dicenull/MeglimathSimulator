@@ -125,7 +125,10 @@ namespace Scenes
 	public:
 		HandShake(const InitData& init) : IScene(init)
 		{
-			getData().tcp_client.sendString(Transform::ToString(getData().teamType));
+			// チーム情報を送信
+			String send_team = Transform::ToString(getData().teamType);
+			send_team += U"\n";
+			getData().tcp_client.sendString(send_team);
 		}
 
 		void update() override
@@ -140,9 +143,6 @@ namespace Scenes
 				return;
 			}
 
-			// チーム情報を送信
-			while (!tcp_client.sendString(Transform::ToString(getData().teamType)));
-
 			String string_dat;
 			tcp_client.readLine(string_dat);
 
@@ -152,6 +152,7 @@ namespace Scenes
 			}
 
 			auto res = string_dat;
+			res.remove(U"\n");
 
 			if (res == U"OK")
 			{
@@ -163,6 +164,7 @@ namespace Scenes
 			{
 				// チームを反転
 				getData().teamType = Transform::GetInverseTeam(getData().teamType);
+				changeScene(U"HandShake", 0);
 				return;
 			}
 		}

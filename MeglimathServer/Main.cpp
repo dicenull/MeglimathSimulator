@@ -128,12 +128,12 @@ namespace Scenes
 				{
 					getData().team_table[ids[i]] = type;
 
-					server.sendString(U"OK", ids[i]);
+					server.sendString(U"OK\n", ids[i]);
 				}
 				else
 				{
 					// チーム種類が重複している
-					server.sendString(U"Type", ids[i]);
+					server.sendString(U"Type\n", ids[i]);
 				}
 			}
 
