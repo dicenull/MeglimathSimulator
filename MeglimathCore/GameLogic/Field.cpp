@@ -204,11 +204,7 @@ Field Field::makeFieldFromJson(std::string json)
 		for (int k : step(size.x))
 		{
 			cells[i][k] = { points[idx].GetInt() };
-			// データをコピー
-			cells[size.y - 1 - i][size.x - 1 - k] = cells[i][k];
-			cells[size.y - 1 - i][k] = cells[i][k];
-			cells[i][size.x - 1 - k] = cells[i][k];
-
+			
 			idx++;
 		}
 	}

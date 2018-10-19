@@ -41,6 +41,7 @@ namespace Scenes
 				// フィールド情報を受信
 				String field_json;
 				server.readLine(field_json);
+				field_json.remove(U"\n");
 
 				if (field_json != U"")
 				{
