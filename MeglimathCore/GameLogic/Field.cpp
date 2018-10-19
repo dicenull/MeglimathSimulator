@@ -195,16 +195,13 @@ Field Field::makeFieldFromJson(std::string json)
 	_Size size = _Size{ document["Size"].GetString() };
 	auto points = document["Points"].GetArray();
 
-	// 入力されるタイルポイントの数
-	_Size data_size = _Size((size.x + 1) / 2, (size.y + 1) / 2);
-
 	auto cells = _Grid<Cell>(size);
 
 	// タイルポイントをグリッド状に成型して入力
 	int idx = 0;
-	for (int i : step(data_size.y))
+	for (int i : step(size.y))
 	{
-		for (int k : step(data_size.x))
+		for (int k : step(size.x))
 		{
 			cells[i][k] = { points[idx].GetInt() };
 			// データをコピー

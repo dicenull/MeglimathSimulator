@@ -101,7 +101,7 @@ void GameLogic::InitalizeFromJson(const std::string json)
 	document.Parse(json.data());
 
 	_field = Field::makeFieldFromJson(json);
-	// TODO: 必要であれば二人分の初期位置を取得
+	// 二人分の初期位置を取得
 	if (document.HasMember("InitPos")) {
 		auto init_pos = document["InitPos"].GetArray();
 		initAgentsPos(_Point<int>{ init_pos[0].GetString()}, _Point<int>{init_pos[1].GetString()});
