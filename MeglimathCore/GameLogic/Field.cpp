@@ -94,17 +94,17 @@ int Field::aggregateTotalPoint(TileType tile)const
 
 std::array<int, 2> Field::GetAreaPoints() const
 {
-	return { aggregateAreaPoint(TileType::A),aggregateAreaPoint(TileType::B) };
+	return { aggregateAreaPoint(TileType::Blue),aggregateAreaPoint(TileType::Red) };
 }
 
 std::array<int, 2> Field::GetTilePoints() const
 {
-	return { aggregateTilePoint(TileType::A),aggregateTilePoint(TileType::B) };
+	return { aggregateTilePoint(TileType::Blue),aggregateTilePoint(TileType::Red) };
 }
 
 std::array<int, 2> Field::GetTotalPoints() const
 {
-	return { aggregateTotalPoint(TileType::A),aggregateTotalPoint(TileType::B) };
+	return { aggregateTotalPoint(TileType::Blue),aggregateTotalPoint(TileType::Red) };
 }
 
 void Field::PaintCell(_Point<> pos, TeamType team)
@@ -226,10 +226,10 @@ Field Field::makeFieldFromJson(std::string json)
 			switch (tiles[i].GetString()[k])
 			{
 			case 'a':
-				cells[i][k].PaintedBy(TeamType::A);
+				cells[i][k].PaintedBy(TeamType::Blue);
 				break;
 			case 'b':
-				cells[i][k].PaintedBy(TeamType::B);
+				cells[i][k].PaintedBy(TeamType::Red);
 				break;
 			default:
 				break;

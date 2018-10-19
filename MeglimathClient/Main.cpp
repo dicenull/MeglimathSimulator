@@ -32,20 +32,20 @@ namespace Scenes
 	public:
 		SelectTeamType(const InitData& init) : IScene(init)
 		{
-			Print << U"左 : 赤(B),右 : 青(A)";
+			Print << U"左 : 赤,右 : 青";
 		}
 
 		void update() override
 		{
 			if (KeyLeft.down())
 			{
-				getData().teamType = TeamType::B;
+				getData().teamType = TeamType::Red;
 				changeScene(U"SetClient", 0);
 			}
 
 			if (KeyRight.down())
 			{
-				getData().teamType = TeamType::A;
+				getData().teamType = TeamType::Blue;
 				changeScene(U"SetClient", 0);
 			}
 		}
@@ -66,6 +66,16 @@ namespace Scenes
 			clients.push_back(std::unique_ptr<Client>(new KeyboardClient(type, { KeyD, KeyE, KeyW, KeyQ, KeyA, KeyZ, KeyX, KeyC, KeyS }, KeyShift)));
 			clients.push_back(std::make_unique<NextBestClient>(type));
 			clients.push_back(std::make_unique<DoubleNextBestClient>(type));
+
+			for (int i = 0; i < clients.size(); i++)
+			{
+				if (clients[i] == nullptr)
+				{
+					continue;
+				}
+
+				Print << i << U" : " << clients[i]->Name();
+			}
 		}
 
 		void update() override
@@ -78,24 +88,13 @@ namespace Scenes
 				{
 					getData().user_client = std::move(clients[i]);
 					ClearPrint();
-					changeScene(U"Game", 0);
+					changeScene(U"Connection", 0);
 				}
 			}
 		}
 
 		void draw() const override
 		{
-			ClearPrint();
-			for (int i = 0; i < clients.size(); i++)
-			{
-				if (clients[i] == nullptr)
-				{
-					ClearPrint();
-					continue;
-				}
-
-				Print << i << U" : " << clients[i]->Name();
-			}
 		}
 	};
 
@@ -125,7 +124,9 @@ namespace Scenes
 	{
 	public:
 		HandShake(const InitData& init) : IScene(init)
-		{ }
+		{
+			getData().tcp_client.sendString(Transform::ToString(getData().teamType));
+		}
 
 		void update() override
 		{
@@ -139,41 +140,29 @@ namespace Scenes
 				return;
 			}
 
-			String json_dat;
-			tcp_client.readLine(json_dat);
+			// チーム情報を送信
+			while (!tcp_client.sendString(Transform::ToString(getData().teamType)));
 
-			if (json_dat.isEmpty())
-			{
-				tcp_client.sendString(U"Type\n");
-				return;
-			}
+			String string_dat;
+			tcp_client.readLine(string_dat);
 
-			rapidjson::Document document;
-			document.Parse(json_dat.narrow().data());
-
-			if (!document.HasMember("TeamType"))
+			if (string_dat.isEmpty())
 			{
 				return;
 			}
 
-			std::string type = document["TeamType"].GetString();
-			Optional<TeamType> team_type = none;
+			auto res = string_dat;
 
-			if (type == "A")
+			if (res == U"OK")
 			{
-				team_type = TeamType::A;
+				changeScene(U"Game", 0);
+				return;
 			}
 
-			if (type == "B")
+			if (res == U"Type")
 			{
-				team_type = TeamType::B;
-			}
-
-			if (team_type.has_value())
-			{
-				getData().teamType = team_type.value();
-				tcp_client.sendString(U"OK\n");
-				changeScene(U"SetClient", 0);
+				// チームを反転
+				getData().teamType = Transform::GetInverseTeam(getData().teamType);
 				return;
 			}
 		}
@@ -272,6 +261,7 @@ void Main()
 {
 	MyApp manager;
 	manager
+		.add<Scenes::SelectTeamType>(U"SelectTeamType")
 		.add<Scenes::Connection>(U"Connection")
 		.add<Scenes::Game>(U"Game")
 		.add<Scenes::HandShake>(U"HandShake")
