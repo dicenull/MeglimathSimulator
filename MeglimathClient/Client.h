@@ -23,9 +23,13 @@ public:
 	/// </summary>
 	virtual void Initialize(const GameInfo& info) = 0;
 
+	virtual void Draw();
+
 	virtual String Name() = 0; 
 
 	bool IsReady();
+
+	virtual bool IsDraw();
 
 protected:
 	bool _is_ready = false;
