@@ -9,7 +9,7 @@ public:
 		return U"Random";
 	}
 
-	void Update(GameInfo info) override
+	void Update(const GameInfo& info) override
 	{
 		if (IsReady())
 		{
@@ -22,7 +22,7 @@ public:
 		_is_ready = true;
 	}
 
-	void Initialize() override
+	void Initialize(const GameInfo& info) override
 	{
 		_is_ready = false;
 	}

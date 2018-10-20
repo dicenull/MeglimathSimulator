@@ -187,6 +187,8 @@ namespace Scenes
 			auto type = getData().teamType;
 
 			Window::SetTitle(getData().user_client->Name(), U"Client ", Transform::ToString(type));
+
+			getData().user_client->Initialize(getData().info);
 		}
 
 		void update() override
@@ -240,7 +242,7 @@ namespace Scenes
 				getData().tcp_client.sendString(str);
 				_is_update = false;
 
-				user_client->Initialize();
+				user_client->Initialize(data.info);
 			}
 		}
 

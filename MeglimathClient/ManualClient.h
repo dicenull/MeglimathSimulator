@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Client.h"
 
 #include <Siv3D.hpp>
@@ -13,7 +13,7 @@ private:
 	Optional<Step> _steps[2];
 
 public:
-	void Update(GameInfo info) override
+	void Update(const GameInfo& info) override
 	{
 		if (IsReady())
 		{
@@ -35,7 +35,7 @@ public:
 		}
 	}
 
-	void Initialize() override
+	void Initialize(const GameInfo& info) override
 	{
 		_is_ready = false;
 	}

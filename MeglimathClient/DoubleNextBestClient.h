@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Client.h"
 #include "../MeglimathCore/Utility.h"
 #include "../MeglimathCore/GameLogic/Think.h"
@@ -15,12 +15,12 @@ public:
 		return U"DoubleNextBest";
 	}
 
-	void Initialize() override
+	void Initialize(const GameInfo& info) override
 	{
 		_is_ready = false;
 	}
 
-	void Update(GameInfo info) override
+	void Update(const GameInfo& info) override
 	{
 		auto agents = info.GetAgents(_type);		
 		auto field = info.GetField();
