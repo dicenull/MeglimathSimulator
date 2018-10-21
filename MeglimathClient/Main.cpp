@@ -13,6 +13,7 @@
 #include "T_Monte_Carlo.h"
 #include "NextBestClient.h"
 #include "DoubleNextBestClient.h"
+#include "DoubleNextBestClient2.h"
 
 struct GameData
 {
@@ -66,6 +67,7 @@ namespace Scenes
 			clients.push_back(std::unique_ptr<Client>(new KeyboardClient(type, { KeyD, KeyE, KeyW, KeyQ, KeyA, KeyZ, KeyX, KeyC, KeyS }, KeyShift)));
 			clients.push_back(std::make_unique<NextBestClient>(type));
 			clients.push_back(std::make_unique<DoubleNextBestClient>(type));
+			clients.push_back(std::make_unique<DoubleNextBestClient2>(type));
 		}
 
 		void update() override

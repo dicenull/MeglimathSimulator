@@ -92,7 +92,7 @@ public:
 	_Grid() :_Grid(_Size(0, 0)) {}
 	_Grid(_Size size) :_size(size) {}
 
-	_Grid(const _Grid<Component>& g) : _size(g.size()), component(g.component) {}
+	/*_Grid(const _Grid<Component>& g) : _size(g.size()), component(g.component) {}*/
 	_Grid& operator=(const _Grid<Component>& g) {
 		_size = g.size();
 		component = g.component;
