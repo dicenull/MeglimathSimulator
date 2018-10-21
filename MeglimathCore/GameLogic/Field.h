@@ -70,7 +70,7 @@ private:
 	/// </summary>
 	/// <param name="pos">探索を開始する座標</param>
 	/// <param name="tile">どのタイルで囲まれているか</param>
-	void dfsAreaPoint(_Point<> pos, TileType tile, _Grid<bool>& _status)const;
+	//void dfsAreaPoint(_Point<> pos, TileType tile, _Grid<bool>& _status)const;
 
 	/// <summary>
 	/// 指定のタイルで囲まれた領域の得点を集計します

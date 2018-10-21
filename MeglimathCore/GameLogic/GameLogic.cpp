@@ -194,7 +194,7 @@ void GameLogic::NextTurn(const std::unordered_map<TeamType, Think> &_thinks)
 			// その座標がフィールド内であること
 			// 移動なら、その座標に相手のタイルがないこと
 			if (_field.IsInField(pos) == false
-				|| p.step.action == Action::Move && _field.cells[pos.y][pos.x].tile == their_tile)
+				|| p.step.action == Action::Move && _field.cells[pos].tile == their_tile)
 			{
 				// 停留に変更する
 				p.step = { Action::Stop,Direction::Stop };
@@ -232,9 +232,9 @@ bool GameLogic::IsThinkAble(TeamType team, Think think)const
 		_Point pos = teams[team].agents[i].position + Transform::DirToDelta(step.direction);
 		if (!_field.IsInField(pos))return false;
 		if (step.action == Action::Move)
-			if (_field.cells[pos.y][pos.x].tile == their_tile)return false;
+			if (_field.cells[pos].tile == their_tile)return false;
 		else if (step.action == Action::RemoveTile)
-			if (_field.cells[pos.y][pos.x].tile == TileType::None)return false;
+			if (_field.cells[pos].tile == TileType::None)return false;
 		i++;
 	}
 	return true;
