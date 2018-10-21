@@ -64,7 +64,7 @@ public:
 	/// <summary>
 	/// 指定したフィールド内の指定したマスからみて指定した方向にあるタイルの色
 	/// </summary>
-	TileType getTeamFromNext(Field field, _Point<int> pos, Step step)
+	TileType GetTeamFromNext(Field field, _Point<int> pos, Step step)
 	{
 		Direction dir = step.direction;
 		_Point<int> pos_next = pos + DirectionToDeltaPos(dir);
@@ -74,11 +74,43 @@ public:
 	/// <summary>
 	/// 指定したフィールド内の指定したマスからみて指定した方向にあるタイルの得点が負数かどうか
 	/// </summary>
-	bool getIsNegativeFromNext(Field field, _Point<int> pos, Step step)
+	bool GetIsNegativeFromNext(Field field, _Point<int> pos, Step step)
 	{
 		Direction dir = step.direction;
 		_Point<int> pos_next = pos + DirectionToDeltaPos(dir);
 		return field.cells[pos_next.y][pos_next.x].point >= 0;
+	}
+
+	/// <summary>
+	/// フィールドの状態とエージェントの位置を見て、探索に有効と思われる Step を選択する。
+	/// </summary>
+	Array<Step> GetEssentialStep(Field field, TeamType team, _Point<int> pos)
+	{
+		Array<Step> essential_step = {};
+		TileType thiss_tile = static_cast<TileType>(team);
+		TileType others_tile = Transform::GetInverseTile(thiss_tile);
+
+		for (auto act : { Action::Move, Action::RemoveTile })
+		{
+			for (auto i = 0; i < 8; i++)
+			{
+				auto dir = static_cast<Direction>(i);
+				Step step = { act, dir };		// stepの生成を省く実装をすることでより高速化できるかもしれない
+				TileType tile = GetTeamFromNext(field, pos, step);
+				bool is_negative = GetIsNegativeFromNext(field, pos, step);
+
+				if (tile == TileType::None && act == Action::RemoveTile)
+					continue;
+				if (tile == thiss_tile && !is_negative && act == Action::RemoveTile)
+					continue;
+				if (tile == others_tile && act == Action::Move)
+					continue;
+
+				essential_step.push_back({ act, dir });
+			}
+		}
+
+		return essential_step;
 	}
 
 	/// <summary>
