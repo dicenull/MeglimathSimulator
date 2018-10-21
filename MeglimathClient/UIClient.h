@@ -1,9 +1,9 @@
 ﻿#pragma once
-#include "ManualClient.h"
+#include "Client.h"
 #include <Siv3D.hpp>
 
 class UIClient :
-	public ManualClient
+	public Client
 {
 private:
 	const Texture const com_imgs[2] =
@@ -14,9 +14,57 @@ private:
 	Rect coms[2] = { Rect(com_imgs[0].size()), Rect(com_imgs[1].size()) };
 	Grid<Rect> field_ui;
 	Point agent_points[2];
+	bool is_left = false;
+	int idx = 0;
 
 public:
 	String Name() override { return U"UI"; }
+
+	void Update(const GameInfo& info) override
+	{
+		if (IsReady())
+		{
+			return;
+		}
+
+		// 司令入力
+		for (auto i : step(2))
+		{
+			if (coms[i].leftClicked())
+			{
+				is_left = (i == 0);
+			}
+		}
+
+		auto w = field_ui.width();
+		auto h = field_ui.height();
+		for (int x = -1; x + 1 < 3;x++)
+		{
+			for (int y = -1;y + 1 < 3;y++)
+			{
+				if (x <= 0 || y <= 0 || x >= w || y >= h) continue;
+
+				Point dp(x, y);
+				for (auto i : step(2))
+				{
+					Point p = agent_points[i] + dp;
+					if (field_ui[p.y][p.x].leftPressed())
+					{
+						_think.steps[idx].action =
+							KeyControl.down() ? Action::RemoveTile : Action::Move;
+
+						_think.steps[idx].direction =
+							Transform::DeltaToDir(_Point(x, y));
+
+						if (idx == 1) _is_ready = true;
+						else idx++;
+
+						return;
+					}
+				}
+			}
+		}
+	}
 
 	void Initialize(const GameInfo& info) override
 	{
@@ -64,14 +112,8 @@ public:
 				// 移動、削除入力
 				if (r.leftPressed())
 				{
-					if (KeyControl.pressed())
-					{
-						r.draw(Palette::Red);
-					}
-					if (KeyLShift.pressed())
-					{
-						r.draw(Palette::Blue);
-					}
+					if (KeyControl.pressed()) r.draw(Palette::Red);
+					else r.draw(Palette::Blue);
 				}
 
 				for (auto i : step(2))
@@ -84,6 +126,8 @@ public:
 
 			}
 		}
+
+		for (auto i : step(2)) coms[i](com_imgs[i]).draw();
 	}
 public:
 	UIClient(TeamType type);
