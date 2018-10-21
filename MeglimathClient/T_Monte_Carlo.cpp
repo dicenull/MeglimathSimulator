@@ -1,6 +1,6 @@
 #include "T_Monte_Carlo.h"
 
-TileType T_Monte_Carlo::TeamtoTile(TeamType t) {
+TileType TMC::TeamtoTile(TeamType t) {
 	switch (t) {
 	case TeamType::A:
 		return TileType::A;
@@ -9,44 +9,66 @@ TileType T_Monte_Carlo::TeamtoTile(TeamType t) {
 	}
 }
 
-int T_Monte_Carlo::decideMove(Array<int> *movelist, Agent agent, Field field) {
+int T_Monte_Carlo::decideMove(Array<int> *movelist, _Point<> preP, Field field) {
 
 	int preMove;
-	_Point<> preP;
-	if ((*movelist).isEmpty()) {
-		while (1) {
-			//周囲8マスをランダムに選ぶ
+	//_Point<> preP;
+
+	bool okflag = false;
+	int temp;
+
+	Array<int> candinate = { 0,1,2,3,4,5,6,7 };
+
+	while (1) {
+		//周囲8マスをランダムに選ぶ
+		if (candinate.isEmpty()) {
 			preMove = Random(0, 7);
-			preP = agent.position + Transform::DirToDelta((Direction(preMove)));
-			//ランダムに選んだマスがフィールド内か確認する。フィールド外だったらやり直し
-			//自チームのタイルは検索から除外するようにしたのがコメントアウトされている部分だが、これを適用するととんでもなく処理が長くなる
-			if (field.IsInField(preP) //&& field.cells[preP.y][preP.x].GetTile() != TeamtoTile(this->_type)
-				){
-				(*movelist).push_back(preMove);
-				return (field.cells[preP.y][preP.x]).point;
+			if (field.IsInField(preP + Transform::DirToDelta(Direction(preMove)))) {
+				okflag = true;
 			}
 		}
-	}
-	else {
-		//これまで動いたマスリスト(movelist)にある動作記録を反映させ、動作リストを適用するとどこにエージェントがいることになるのか計算する
-		preP = agent.position;
-		for (int i = 0; i < (*movelist).size(); i++) {
-			preP += Transform::DirToDelta(Direction((*movelist)[i]));
+		else {
+			temp = candinate.count() - 1;
+			preMove = candinate[Random(0, temp)];
+			if (field.IsInField(preP + Transform::DirToDelta(Direction(preMove)))) {
+				if (field.cells[(preP + Transform::DirToDelta(Direction(preMove))).y][(preP + Transform::DirToDelta(Direction(preMove))).x].tile != TMC::TeamtoTile(this->_type)) {
+					okflag = true;
+				}
+			}
 		}
 
-		while (1) {
-			//周囲8マスをランダムに選ぶ
-			preMove = Random(0, 7);
-			//選んだマスがフィールド内か確認する
-			//コメントアウト部分は自チームのタイルを検索から除外するもの。適用すると処理が長くなる
-			if (field.IsInField(preP + Transform::DirToDelta(Direction(preMove)))
-				//&& field.cells[preP.y][preP.x].GetTile() != TeamtoTile(this->_type)
-				) {
-				(*movelist).push_back(preMove);
-				return field.cells[preP.y][preP.x].point;
-			}
+		//preP = agent.position + Transform::DirToDelta((Direction(preMove)));
+		//ランダムに選んだマスがフィールド内か確認する。フィールド外だったらやり直し
+		//自チームのタイルは検索から除外するようにしたのがコメントアウトされている部分だが、これを適用するととんでもなく処理が長くなる
+		if (okflag == true) {
+			(*movelist).push_back(preMove);
+			preP += Transform::DirToDelta(Direction(preMove));
+			return (field.cells[preP.y][preP.x]).point;
 		}
+
+		candinate.remove(preMove);
+
 	}
+	//else {
+	//	//これまで動いたマスリスト(movelist)にある動作記録を反映させ、動作リストを適用するとどこにエージェントがいることになるのか計算する
+	//	preP = agent.position;
+	//	for (int i = 0; i < (*movelist).size(); i++) {
+	//		preP += Transform::DirToDelta(Direction((*movelist)[i]));
+	//	}
+
+	//	while (1) {
+	//		//周囲8マスをランダムに選ぶ
+	//		preMove = Random(0, 7);
+	//		//選んだマスがフィールド内か確認する
+	//		//コメントアウト部分は自チームのタイルを検索から除外するもの。適用すると処理が長くなる
+	//		if (field.IsInField(preP + Transform::DirToDelta(Direction(preMove)))
+	//			//&& field.cells[preP.y][preP.x].GetTile() != TeamtoTile(this->_type)
+	//			) {
+	//			(*movelist).push_back(preMove);
+	//			return field.cells[preP.y][preP.x].point;
+	//		}
+	//	}
+	//}
 }
 
 void T_Monte_Carlo::sort(Array<std::pair<Array<int>, int>> *target, int left, int right) {
