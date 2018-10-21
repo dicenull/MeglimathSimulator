@@ -33,6 +33,62 @@ public:
 		_is_ready = false;
 	}
 
+	/// <summary>
+	/// 指定した方向に進んだときの座標の変化分を返す
+	/// </summary>
+	_Point<int> DirectionToDeltaPos(Direction dir)
+	{
+		switch (dir)
+		{
+		case Direction::Right:
+			return _Point<int>(1, 0);
+		case Direction::RightUp:
+			return _Point<int>(1, -1);
+		case Direction::Up:
+			return _Point<int>(0, -1);
+		case Direction::LeftUp:
+			return _Point<int>(-1, -1);
+		case Direction::Left:
+			return _Point<int>(-1, 0);
+		case Direction::LeftDown:
+			return _Point<int>(-1, 1);
+		case Direction::Down:
+			return _Point<int>(0, 1);
+		case Direction::RightDown:
+			return _Point<int>(1, 1);
+		default:
+			return _Point<int>(0, 0);
+		}
+	}
+
+	/// <summary>
+	/// 指定したフィールド内の指定したマスからみて指定した方向にあるタイルの色
+	/// </summary>
+	TileType getTeamFromNext(Field field, _Point<int> pos, Step step)
+	{
+		Direction dir = step.direction;
+		_Point<int> pos_next = pos + DirectionToDeltaPos(dir);
+		return field.cells[pos_next.y][pos_next.x].tile;
+	}
+
+	/// <summary>
+	/// 指定したフィールド内の指定したマスからみて指定した方向にあるタイルの得点が負数かどうか
+	/// </summary>
+	bool getIsNegativeFromNext(Field field, _Point<int> pos, Step step)
+	{
+		Direction dir = step.direction;
+		_Point<int> pos_next = pos + DirectionToDeltaPos(dir);
+		return field.cells[pos_next.y][pos_next.x].point >= 0;
+	}
+
+	/// <summary>
+	/// depth手後に相手との得点差が最大になるように探索する再帰関数
+	/// </summary>
+	/// <param name="info">現在のフィールドやエージェントの状態、チーム情報。再帰による値の変動なし</param>
+	/// <param name="field">探索中ののフィールドの状態。再帰による値の変動あり</param>
+	/// <param name="depth">現在の状態から探索する残り手数。再帰による値の変動あり</param>
+	/// <param name="s1">探索１手目のエージェント１の動き。再帰の最初の呼び出しでのみ値の変動あり</param>
+	/// <param name="s2">探索１手目のエージェント２の動き。再帰の最初の呼び出しでのみ値の変動あり</param>
 	void Explore(GameInfo info, Field field, int depth, int s1, int s2)
 	{
 		auto agents = info.GetAgents(_type);
@@ -120,7 +176,7 @@ public:
 		for (auto c : candidates)
 			c.clear();
 
-		Explore(info, field, EXPLORE_DEPTH, 0, 0);
+		Explore(info, field, EXPLORE_DEPTH, 0, 0);		// 探索本体
 
 		for (int it = 0; it < 2; it++)
 			if (candidates[it].count() != (size_t)0)
