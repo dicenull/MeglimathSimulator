@@ -68,7 +68,10 @@ public:
 	{
 		Direction dir = step.direction;
 		_Point<int> pos_next = pos + DirectionToDeltaPos(dir);
-		return field.cells[pos_next.y][pos_next.x].tile;
+		if (field.IsInField(pos_next))
+			return field.cells[pos_next.y][pos_next.x].tile;
+		else
+			return TileType::None;		//ダミー
 	}
 
 	/// <summary>
@@ -78,7 +81,10 @@ public:
 	{
 		Direction dir = step.direction;
 		_Point<int> pos_next = pos + DirectionToDeltaPos(dir);
-		return field.cells[pos_next.y][pos_next.x].point >= 0;
+		if (field.IsInField(pos_next))
+			return field.cells[pos_next.y][pos_next.x].point >= 0;
+		else
+			return true;	//ダミー
 	}
 
 	/// <summary>
@@ -113,15 +119,23 @@ public:
 		return essential_step;
 	}
 
+	Array<_Point<int>> GetNewPositionsFromSteps(Array<_Point<int>> positions, Array<Step> steps)
+	{
+		return { 
+			positions[0] + DirectionToDeltaPos(steps[0].direction),
+			positions[1] + DirectionToDeltaPos(steps[1].direction),
+		};
+	}
+
 	/// <summary>
-	/// depth手後に相手との得点差が最大になるように探索する再帰関数
+	/// depth手後に相手との得点差が最大になるように探索する再帰関数。
 	/// </summary>
 	/// <param name="info">現在のフィールドやエージェントの状態、チーム情報。再帰による値の変動なし</param>
-	/// <param name="field">探索中ののフィールドの状態。再帰による値の変動あり</param>
+	/// <param name="field">探索中のフィールドの状態。再帰による値の変動あり</param>
 	/// <param name="depth">現在の状態から探索する残り手数。再帰による値の変動あり</param>
-	/// <param name="s1">探索１手目のエージェント１の動き。再帰の最初の呼び出しでのみ値の変動あり</param>
-	/// <param name="s2">探索１手目のエージェント２の動き。再帰の最初の呼び出しでのみ値の変動あり</param>
-	void Explore(GameInfo info, Field field, int depth, int s1, int s2)
+	/// <param name="positions">探索中の２人のエージェントの位置。再帰による値の変動あり</param>
+	/// <param name="s1">探索１手目のエージェントの動き。再帰の最初の呼び出しでのみ値の変動あり</param>
+	void Explore(GameInfo info, Field field, int depth, Array<_Point<int>> positions, Array<Step> s1)
 	{
 		auto agents = info.GetAgents(_type);
 		auto original = info.GetField();
@@ -130,13 +144,13 @@ public:
 
 		auto all_step = Utility::AllStep();
 
-		if (depth == 0)
+		if (depth == 0)		// n手の探索の後処理
 		{
 			auto eval_point_total = 0;		// eval_point_total は eval_points_next の総和, 次の一手の評価基準
 			for (int e : eval_points_next)
 				eval_point_total += e;
 
-			if (!field.IsSameStateField(original))		//自分のエージェント同士の衝突を検出
+			if (!field.IsSameStateField(original))		// 自分のエージェント同士の衝突が検出されなければ最善手のリストを更新
 			{
 				for (int it = 0; it < 2; it++)
 				{
@@ -146,28 +160,29 @@ public:
 							candidates[it].clear();
 
 						eval_points[it] = eval_point_total;
-						candidates[it].push_back({ all_step[s1], all_step[s2] });
+						candidates[it].push_back({ s1[0],s1[1] });
 						break;
 					}
 				}
 			}
 		}
 		else
-		{
-			for (int i = 0; i < all_step.size(); i++)
+		{	
+			// n手の探索
+			for (auto step1 : GetEssentialStep(field, this_team, positions[0]))
 			{
-				auto next_field_a = field.MakeFieldFromStep(this_team, agents[0], all_step[i]);
+				auto next_field_a = field.MakeFieldFromStep(this_team, agents[0], step1);
 
-				for (int k = 0; k < all_step.size(); k++)
+				for (auto step2 : GetEssentialStep(field, this_team, positions[1]))
 				{
-					auto next_field_b = next_field_a.MakeFieldFromStep(this_team, agents[1], all_step[k]);
+					auto next_field_b = next_field_a.MakeFieldFromStep(this_team, agents[1], step2);
 
 					eval_points_next[depth - 1] = next_field_b.GetTotalPoints()[this_team] - next_field_b.GetTotalPoints()[other_team];
 
 					if (depth == EXPLORE_DEPTH)
-						Explore(info, next_field_b, depth - 1, i, k);		// 最初のみ 仮引数 s1, s2 を更新
+						Explore(info, next_field_b, depth - 1, GetNewPositionsFromSteps(positions, { step1,step2 }), { step1,step2 });		// 最初のみ 仮引数 s1, s2 を更新
 					else
-						Explore(info, next_field_b, depth - 1, s1, s2);
+						Explore(info, next_field_b, depth - 1, GetNewPositionsFromSteps(positions, { step1,step2 }), s1);
 				}
 			}
 		}
@@ -208,7 +223,13 @@ public:
 		for (auto c : candidates)
 			c.clear();
 
-		Explore(info, field, EXPLORE_DEPTH, 0, 0);		// 探索本体
+		Explore(
+			info,
+			field,
+			EXPLORE_DEPTH,
+			{ agents[0].position,agents[1].position },
+			{ {Action::Stop,Direction::Stop},{Action::Stop,Direction::Stop} }
+		);		// 探索本体に現在地とダミーのStepを2つ渡す
 
 		for (int it = 0; it < 2; it++)
 			if (candidates[it].count() != (size_t)0)
