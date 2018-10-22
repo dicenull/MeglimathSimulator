@@ -17,7 +17,7 @@ void GameLogic::initAgentsPos()
 {
 	_Size size = _field.cells.size();
 
-	initAgentsPos({ std::rand() >> 8 % (size.y / 2) , std::rand() >> 8 % (size.x / 2) });
+	initAgentsPos({ (std::rand() >> 8) % static_cast<int>(size.x / 2) , (std::rand() >> 8) % static_cast<int>(size.y / 2) });
 }
 
 void GameLogic::initAgentsPos(_Point<> init_pos)
@@ -112,6 +112,20 @@ void GameLogic::InitalizeFromJson(const std::string json)
 	_turn = document["Turn"].GetInt();
 }
 
+void GameLogic::InitializeRandom(int turn, int height, int width)
+{
+	this->_turn = turn;
+	this->_field = Field::makeFieldRandom( _Size{static_cast<size_t>(height),static_cast<size_t>(width)} );
+	initAgentsPos();
+}
+
+void GameLogic::InitializeVariable(int turn, const Field & field, const std::array<TeamLogic, 2>& teams)
+{
+	this->_turn = turn;
+	this->_field = field;
+	this->teams = teams;
+}
+
 
 int GameLogic::GetTurn() const
 {
@@ -155,7 +169,7 @@ void GameLogic::NextTurn(const std::unordered_map<TeamType, Think> &_thinks)
 		for (auto& p : point_map) {
 			_Point <> pos = p.target;
 			TileType our_tile = Transform::ToTile(p.team);
-			TileType their_tile = Transform::GetInverseType(our_tile);
+			TileType their_tile = Transform::GetInverseTile(our_tile);
 
 			// 行動対象の重複しておらず、移動しないエージェントの現在位置とも重ならない
 			if (std::count_if(point_map.cbegin(), point_map.cend(),
@@ -180,7 +194,7 @@ void GameLogic::NextTurn(const std::unordered_map<TeamType, Think> &_thinks)
 			// その座標がフィールド内であること
 			// 移動なら、その座標に相手のタイルがないこと
 			if (_field.IsInField(pos) == false
-				|| p.step.action == Action::Move && _field.cells[pos.y][pos.x].tile == their_tile)
+				|| p.step.action == Action::Move && _field.cells[pos].tile == their_tile)
 			{
 				// 停留に変更する
 				p.step = { Action::Stop,Direction::Stop };
@@ -212,15 +226,15 @@ void GameLogic::NextTurn(const std::unordered_map<TeamType, Think> &_thinks)
 bool GameLogic::IsThinkAble(TeamType team, Think think)const
 {
 	TileType our_tile = Transform::ToTile(team);
-	TileType their_tile = Transform::GetInverseType(our_tile);
+	TileType their_tile = Transform::GetInverseTile(our_tile);
 	int i = 0;
 	for (auto step : think.steps) {
 		_Point pos = teams[team].agents[i].position + Transform::DirToDelta(step.direction);
 		if (!_field.IsInField(pos))return false;
 		if (step.action == Action::Move)
-			if (_field.cells[pos.y][pos.x].tile == their_tile)return false;
+			if (_field.cells[pos].tile == their_tile)return false;
 		else if (step.action == Action::RemoveTile)
-			if (_field.cells[pos.y][pos.x].tile == TileType::None)return false;
+			if (_field.cells[pos].tile == TileType::None)return false;
 		i++;
 	}
 	return true;

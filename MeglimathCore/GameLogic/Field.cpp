@@ -1,31 +1,68 @@
-#include "Field.h"
+ï»¿#include "Field.h"
 #include <time.h>
 #include<boost/range/irange.hpp>
 auto step(int s) { return boost::irange(0, s); }
 
 int Field::aggregateAreaPoint(TileType tile)const
 {
-	auto _status = _Grid<bool>(cells.size() + _Point<int>(2, 2));
+	auto area_number = _Grid<int>(cells.size());	/*-1:ã‚¿ã‚¤ãƒ«*/
+	std::array<int, 12 * 12 / 2> area_relation;
+	std::array<bool, 12 * 12 / 2> area_wall;
+	int n = 0;
+	bool empty_continue = false;
+	area_relation[0] = 0;
+	int w = area_number.width(), h = area_number.height();
+	for (int i = 0; i < area_relation.size(); i++) { area_relation[i] = i; area_wall[i] = false; }
+	for (size_t i = 0; i < w; i++)
+	{
+		for (size_t k = 0; k < h; k++)
+		{
+			int number;
+			if (cells[{i,k}].tile != tile) {//ç©ºç™½é ˜åŸŸ
+				if (!empty_continue) {
+					n++;
+					empty_continue = true;
+				}
+				if (i != 0) {
+					if (area_number[{i - 1,k}] != -1) {//ä¸Šåˆ—ãŒé ˜åŸŸãªã®ã§ã€é ˜åŸŸé–¢ä¿‚ã®è¨ˆç®—
+						int nn = area_number[{i - 1,k}];
+						while (area_relation[nn] != nn) {
+							int t = nn;
+							nn = area_relation[nn];
+							area_relation[t] = n;
+						}
+						if (area_wall[nn])area_wall[n] = true;
+						area_relation[nn] = n;
+					}
+				}
+				if ((i == 0) || (k == 0) ||
+					(i == area_number.width() - 1) ||
+					(k == area_number.height() - 1)) {
+					area_wall[n] = true;
+				}
+				number = n;
+			}
+			else {//ã‚¿ã‚¤ãƒ«
+				empty_continue = false;
+				number = -1;
+			}
+			area_number[{i,k}] = number;
 
-	dfsAreaPoint(_Point<int>(0, 0), tile,_status);
+		}
+		empty_continue = false;
+	}
 
 	int area_point = 0;
-	for (size_t i : step(_status.width()))
+	for (size_t i = 0; i < w; i++)
 	{
-		for (size_t k : step(_status.height()))
+		for (size_t k = 0; k < h; k++)
 		{
-			if (_status[k][i])
-			{
-				continue;
+			int nn = area_number[{i,k}];
+			if (nn == -1)continue;
+			while (area_relation[nn] != nn) {
+				nn = area_relation[nn];
 			}
-
-			auto cell = cells[k - 1][i - 1];
-			if (cell.tile == tile)
-			{
-				continue;
-			}
-
-			area_point += std::abs(cell.point);
+			if (!area_wall[nn])area_point += std::abs(cells[{i, k}].point);
 		}
 	}
 
@@ -33,53 +70,53 @@ int Field::aggregateAreaPoint(TileType tile)const
 }
 
 
-void Field::dfsAreaPoint(_Point<> pos, TileType tile,_Grid<bool>& _status)const
-{
-	// ”ÍˆÍŠO‚È‚çI—¹
-	if (pos.x < 0 || pos.x > cells.width() + 1
-		|| pos.y < 0 || pos.y > cells.height() + 1)
-	{
-		return;
-	}
-
-	// ’TõÏ‚İ‚È‚çI—¹
-	if (_status[pos.y][pos.x] == true)
-	{
-		return;
-	}
-
-	_status[pos.y][pos.x] = true;
-	if (pos.x == 0 || pos.x == cells.width() + 1 ||
-		pos.y == 0 || pos.y == cells.height() + 1)
-	{
-		// ’[‚Í’Tõ‚Ì‚İs‚¤
-	}
-	else if (cells[pos.y - 1][pos.x - 1].tile == tile)
-	{
-		// ’²¸’†‚Ìƒ^ƒCƒ‹‚ª’u‚©‚ê‚Ä‚¢‚½‚çI—¹
-		return;
-	}
-
-
-	// l•û‚Ö’Tõ‚·‚é
-	for (auto delta : { _Point<>{0, 1},_Point<>{1, 0}, _Point<>{0, -1}, _Point<>{-1, 0} })
-	{
-		dfsAreaPoint(pos + delta, tile,_status);
-	}
-}
+//void Field::dfsAreaPoint(_Point<> pos, TileType tile, _Grid<bool>& _status)const
+//{
+//	// ç¯„å›²å¤–ãªã‚‰çµ‚äº†
+//	if (pos.x < 0 || pos.x > cells.width() + 1
+//		|| pos.y < 0 || pos.y > cells.height() + 1)
+//	{
+//		return;
+//	}
+//
+//	// æ¢ç´¢æ¸ˆã¿ãªã‚‰çµ‚äº†
+//	if (_status[{pos.y, pos.x}] == true)
+//	{
+//		return;
+//	}
+//
+//	_status[{pos.y, pos.x}] = true;
+//	if (pos.x == 0 || pos.x == cells.width() + 1 ||
+//		pos.y == 0 || pos.y == cells.height() + 1)
+//	{
+//		// ç«¯ã¯æ¢ç´¢ã®ã¿è¡Œã†
+//	}
+//	else if (cells[{pos.y - 1, pos.x - 1}].tile == tile)
+//	{
+//		// èª¿æŸ»ä¸­ã®ã‚¿ã‚¤ãƒ«ãŒç½®ã‹ã‚Œã¦ã„ãŸã‚‰çµ‚äº†
+//		return;
+//	}
+//
+//
+//	// å››æ–¹ã¸æ¢ç´¢ã™ã‚‹
+//	for (auto delta : { _Point<>{0, 1},_Point<>{1, 0}, _Point<>{0, -1}, _Point<>{-1, 0} })
+//	{
+//		dfsAreaPoint(pos + delta, tile, _status);
+//	}
+//}
 
 int Field::aggregateTilePoint(TileType tile)const
 {
 	int sum_tile_point = 0;
 
-	//	ƒ^ƒCƒ‹‚Ìí—Ş‚ªˆê’v‚·‚éƒZƒ‹‚Ì“¾“_‚Ì‡Œv‚ğŒvZ‚·‚é
+	//	ã‚¿ã‚¤ãƒ«ã®ç¨®é¡ãŒä¸€è‡´ã™ã‚‹ã‚»ãƒ«ã®å¾—ç‚¹ã®åˆè¨ˆã‚’è¨ˆç®—ã™ã‚‹
 	for (size_t i : step(cells.width()))
 	{
 		for (size_t k : step(cells.height()))
 		{
-			if (cells[k][i].tile == tile)
+			if (cells[{i, k}].tile == tile)
 			{
-				sum_tile_point += cells[k][i].point;
+				sum_tile_point += cells[{i, k}].point;
 			}
 		}
 	}
@@ -109,12 +146,12 @@ std::array<int, 2> Field::GetTotalPoints() const
 
 void Field::PaintCell(_Point<> pos, TeamType team)
 {
-	cells[pos.y][pos.x].PaintedBy(team);
+	cells[pos].PaintedBy(team);
 }
 
 void Field::RemoveTile(_Point<> pos)
 {
-	cells[pos.y][pos.x].RemoveTile();
+	cells[pos].RemoveTile();
 }
 
 bool Field::IsInField(_Point<> pos) const
@@ -129,7 +166,7 @@ Step Field::DecideStepByDirection(_Point<> pos, Direction dir) const
 		return Step{ Action::Stop, Direction::Stop };
 	}
 
-	// À•W‚©‚çw’è‚Ì•ûŒü‚Éi‚ñ‚¾Œã‚ÌÀ•W
+	// åº§æ¨™ã‹ã‚‰æŒ‡å®šã®æ–¹å‘ã«é€²ã‚“ã å¾Œã®åº§æ¨™
 	_Point<int> next_pos = pos + Transform::DirToDelta(dir);
 
 	if (!IsInField(next_pos))
@@ -137,8 +174,8 @@ Step Field::DecideStepByDirection(_Point<> pos, Direction dir) const
 		return Step{ Action::Stop, Direction::Stop };
 	}
 
-	// i‚ñ‚¾æ‚Ìƒ^ƒCƒ‹‚Ì—L–³‚ÅƒAƒNƒVƒ‡ƒ“‚ğŒˆ‚ß‚é
-	if (cells[next_pos.y][next_pos.x].tile == TileType::None)
+	// é€²ã‚“ã å…ˆã®ã‚¿ã‚¤ãƒ«ã®æœ‰ç„¡ã§ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ã‚’æ±ºã‚ã‚‹
+	if (cells[next_pos].tile == TileType::None)
 	{
 		return Step{ Action::Move, dir };
 	}
@@ -148,6 +185,46 @@ Step Field::DecideStepByDirection(_Point<> pos, Direction dir) const
 	}
 }
 
+Field Field::MakeFieldFromStep(TeamType team, Agent agent, Step step)
+{
+	Field field = *this;
+	auto pos = agent.Moved(step.direction).position;
+
+	switch (step.action)
+	{
+	case Action::RemoveTile:
+		if (!field.CanRemoveTile(pos, team))
+		{
+			return *this;
+		}
+
+		field.cells[pos].RemoveTile();
+		return field;
+
+	case Action::Move:
+		if (!field.CanMove(pos, team))
+		{
+			return *this;
+		}
+
+		field.cells[pos].PaintedBy(team);
+		return field;
+	}
+
+}
+
+bool Field::CanMove(_Point<> pos, TeamType team)
+{
+	auto other_tile = Transform::GetInverseTile(Transform::ToTile(team));
+
+	return IsInField(pos) && cells[pos].tile != other_tile;
+}
+
+bool Field::CanRemoveTile(_Point<> pos, TeamType team)
+{
+	return IsInField(pos) && cells[pos].tile != TileType::None;
+}
+
 Field Field::makeFieldFromJson(std::string json)
 {
 	rapidjson::Document document;
@@ -155,41 +232,41 @@ Field Field::makeFieldFromJson(std::string json)
 	_Size size = _Size{ document["Size"].GetString() };
 	auto points = document["Points"].GetArray();
 
-	// “ü—Í‚³‚ê‚éƒ^ƒCƒ‹ƒ|ƒCƒ“ƒg‚Ì”
+	// å…¥åŠ›ã•ã‚Œã‚‹ã‚¿ã‚¤ãƒ«ãƒã‚¤ãƒ³ãƒˆã®æ•°
 	_Size data_size = _Size((size.x + 1) / 2, (size.y + 1) / 2);
 
 	auto cells = _Grid<Cell>(size);
 
-	// ƒ^ƒCƒ‹ƒ|ƒCƒ“ƒg‚ğƒOƒŠƒbƒhó‚É¬Œ^‚µ‚Ä“ü—Í
+	// ã‚¿ã‚¤ãƒ«ãƒã‚¤ãƒ³ãƒˆã‚’ã‚°ãƒªãƒƒãƒ‰çŠ¶ã«æˆå‹ã—ã¦å…¥åŠ›
 	int idx = 0;
-	for (int i : step(data_size.y))
+	for (size_t i : step(data_size.y))
 	{
-		for (int k : step(data_size.x))
+		for (size_t k : step(data_size.x))
 		{
-			cells[i][k] = { points[idx].GetInt() };
-			// ƒf[ƒ^‚ğƒRƒs[
-			cells[size.y - 1 - i][size.x - 1 - k] = cells[i][k];
-			cells[size.y - 1 - i][k] = cells[i][k];
-			cells[i][size.x - 1 - k] = cells[i][k];
+			cells[{k,i}] = { points[idx].GetInt() };
+			// ãƒ‡ãƒ¼ã‚¿ã‚’ã‚³ãƒ”ãƒ¼
+			cells[{size.x - 1 - k, size.y - 1 - i}] = cells[{k, i}];
+			cells[{k,size.y - 1 - i}] = cells[{k, i}];
+			cells[{size.x - 1 - k,i}] = cells[{k, i}];
 
 			idx++;
 		}
 	}
 	if (!document.HasMember("Tiles"))return Field{ cells };
 
-	// ƒeƒXƒg—p‚Éƒ^ƒCƒ‹î•ñ‚ª‚ ‚éê‡“Ç‚İ‚ñ‚Å“ü—Í‚·‚é
+	// ãƒ†ã‚¹ãƒˆç”¨ã«ã‚¿ã‚¤ãƒ«æƒ…å ±ãŒã‚ã‚‹å ´åˆèª­ã¿è¾¼ã‚“ã§å…¥åŠ›ã™ã‚‹
 	auto tiles = document["Tiles"].GetArray();
-	for (int i : step(size.y))
+	for (size_t i : step(size.y))
 	{
-		for (int k : step(size.x))
+		for (size_t k : step(size.x))
 		{
 			switch (tiles[i].GetString()[k])
 			{
 			case 'a':
-				cells[i][k].PaintedBy(TeamType::A);
+				cells[{k,i}].PaintedBy(TeamType::A);
 				break;
 			case 'b':
-				cells[i][k].PaintedBy(TeamType::B);
+				cells[{k, i}].PaintedBy(TeamType::B);
 				break;
 			default:
 				break;
@@ -201,21 +278,46 @@ Field Field::makeFieldFromJson(std::string json)
 Field Field::makeFieldRandom(_Size size)
 {
 	auto cells = _Grid<Cell>(size);
-	// “ü—Í‚³‚ê‚éƒ^ƒCƒ‹ƒ|ƒCƒ“ƒg‚Ì”
+	// å…¥åŠ›ã•ã‚Œã‚‹ã‚¿ã‚¤ãƒ«ãƒã‚¤ãƒ³ãƒˆã®æ•°
 	_Size data_size = _Size((size.x + 1) / 2, (size.y + 1) / 2);
 	cells = _Grid<Cell>(size);
 	srand(time(nullptr));
-	for (int i : step(data_size.y)) {
-		for (int k : step(data_size.x)) {
-			cells[i][k] = { (rand() >> 7) % 10 != 0 ?
+	for (size_t i : step(data_size.y)) {
+		for (size_t k : step(data_size.x)) {
+			cells[{k, i}] = { (rand() >> 7) % 10 != 0 ?
 				(rand() >> 7) % 17 :
 				-((rand() >> 7) % 17)
 			};
-			// ƒf[ƒ^‚ğƒRƒs[
-			cells[size.y - 1 - i][size.x - 1 - k] = cells[i][k];
-			cells[size.y - 1 - i][k] = cells[i][k];
-			cells[i][size.x - 1 - k] = cells[i][k];
+			// ãƒ‡ãƒ¼ã‚¿ã‚’ã‚³ãƒ”ãƒ¼
+			cells[{ size.x - 1 - k,size.y - 1 - i}] = cells[{k, i}];
+			cells[{ k,size.y - 1 - i}] = cells[{k, i}];
+			cells[{size.x - 1 - k,i}] = cells[{k, i}];
 		}
 	}
 	return { cells };
+}
+
+bool Field::IsSameStateField(const Field & other) const
+{
+	auto s1 = this->cells.size();
+	auto s2 = other.cells.size();
+
+	if (s1.x != s2.x || s1.y != s2.y)
+	{
+		return false;
+	}
+
+	auto& size = s1;
+	for (size_t x = 0; x < size.x; x++)
+	{
+		for (size_t y = 0; y < size.y; y++)
+		{
+			if (this->cells[{x,y}].tile != other.cells[{x,y}].tile)
+			{
+				return false;
+			}
+		}
+	}
+
+	return true;
 }

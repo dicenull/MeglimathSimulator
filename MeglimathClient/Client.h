@@ -6,16 +6,24 @@ class Client
 {
 protected:
 	TeamType _type;
+	Think _think;
+
+public:
+	Think GetNextThink();
 
 public:
 	/// <summary>
-	/// エージェントの次の行動をゲーム情報を元に実装する
+	/// 次の行動を決定する
 	/// </summary>
-	/// <param name="info">公開されるゲーム情報</param>
-	/// <returns>エージェントの次の行動</returns>
-	virtual Think NextThink(GameInfo info) = 0;
+	/// <param name="info">ゲーム情報</param>
+	virtual void Update(GameInfo info) = 0;
 
-	virtual void Update() = 0;
+	/// <summary>
+	/// 次のターンに入る前の初期化処理
+	/// </summary>
+	virtual void Initialize() = 0;
+
+	virtual String Name() = 0; 
 
 	bool IsReady();
 

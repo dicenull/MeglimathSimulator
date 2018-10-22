@@ -8,9 +8,9 @@ void Drawer::DrawField(const Field & field) const
 	
 	const auto &cells = field.cells;
 	
-	for (int i = 0; i < cells.size().x; i++)
+	for (size_t i = 0; i < cells.size().x; i++)
 	{
-		for (int k = 0; k < cells.size().y; k++)
+		for (size_t k = 0; k < cells.size().y; k++)
 		{
 			Point pos(i, k);
 			Point top_left_pos = fieldOrigin + pos * cellSize;
@@ -19,14 +19,14 @@ void Drawer::DrawField(const Field & field) const
 
 			r.draw(Palette::White);
 
-			if (cells[k][i].tile != TileType::None)
+			if (cells[_Point<>{pos.x, pos.y}].tile != TileType::None)
 			{
-				r.draw(Color(TeamColor::ColorOf(cells[k][i].tile), 50U));
+				r.draw(Color(TeamColor::ColorOf(cells[_Point<>{pos.x, pos.y}].tile), 50U));
 			}
 			
 			r.drawFrame(1.0, Palette::Gray);
 			
-			FontAsset(U"Cell")(cells[k][i].point)
+			FontAsset(U"Cell")(cells[_Point<>{pos.x, pos.y}].point)
 				.drawAt(r.center(), Palette::Black);
 		}
 	}

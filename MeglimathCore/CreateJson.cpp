@@ -20,11 +20,11 @@ const std::string Transform::CreateJson(const GameInfo& info)
 
 	writer.Key("Points");
 	writer.StartArray();
-	for (int y : step(size.y))
+	for (size_t y : step(size.y))
 	{
-		for (int x : step(size.x))
+		for (size_t x : step(size.x))
 		{
-			writer.Int(cells[y][x].point);
+			writer.Int(cells[{x, y}].point);
 		}
 	}
 	writer.EndArray();
@@ -36,7 +36,7 @@ const std::string Transform::CreateJson(const GameInfo& info)
 		std::string str;
 		for (auto x : step(cells.size().x))
 		{
-			str.push_back(Transform::ToChar(cells[y][x].tile));
+			str.push_back(Transform::ToChar(cells[{x, y}].tile));
 		}
 
 		writer.String(str.data());

@@ -1,37 +1,89 @@
-#pragma once
-#include "Cell.h"
+ï»¿#pragma once
+#include "TeamLogic.h"
 #include "Transform.h"
-#include "GamePoints.h"
 #include <rapidjson\document.h>
 #include <array>
+
+struct Cell
+{
+
+	/// <summary>
+	/// ãƒã‚¹ã®ç‚¹æ•°
+	/// </summary>
+	int point = 0;
+
+	// ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ //
+	/// <summary>
+	/// ãƒã‚¹ã«ã¯ã‚ã‚‰ã‚ŒãŸã‚¿ã‚¤ãƒ«
+	/// </summary>
+	TileType tile = TileType::None;
+
+	// ãƒ¡ã‚½ãƒƒãƒ‰ //
+
+	/// <summary>
+	/// æŒ‡å®šã®ãƒãƒ¼ãƒ ã«ã‚ˆã£ã¦ã‚»ãƒ«ã«ã‚¿ã‚¤ãƒ«ãŒç½®ã‹ã‚Œã‚‹
+	/// </summary>
+	/// <param name="team">ã‚»ãƒ«ã«ã‚¿ã‚¤ãƒ«ã‚’ç½®ããƒãƒ¼ãƒ </param>
+	void PaintedBy(TeamType team)
+	{
+		switch (team)
+		{
+		case TeamType::A:
+			tile = TileType::A;
+			break;
+
+		case TeamType::B:
+			tile = TileType::B;
+			break;
+		}
+	}
+
+	/// <summary>
+	/// ç½®ã‹ã‚ŒãŸã‚¿ã‚¤ãƒ«ã‚’å–ã‚‹
+	/// </summary>
+	void RemoveTile()
+	{
+		tile = TileType::None;
+	}
+};
+
+
+struct GamePoints {
+	int area, tile;
+	int getTotal() const {
+		return area + tile;
+	}
+};
+
+
 class Field
 {
 public:
 	/// <summary>
-	/// ƒtƒB[ƒ‹ƒhî•ñ
+	/// ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰æƒ…å ±
 	/// </summary>
 	_Grid<Cell> cells = { {6,6} };
 
 private:
 	/// <summary>
-	/// ˆÍ‚Ü‚ê‚Ä‚¢‚é—Ìˆæ‚ğ’Tõ‚·‚é
+	/// å›²ã¾ã‚Œã¦ã„ã‚‹é ˜åŸŸã‚’æ¢ç´¢ã™ã‚‹
 	/// </summary>
-	/// <param name="pos">’Tõ‚ğŠJn‚·‚éÀ•W</param>
-	/// <param name="tile">‚Ç‚Ìƒ^ƒCƒ‹‚ÅˆÍ‚Ü‚ê‚Ä‚¢‚é‚©</param>
-	void dfsAreaPoint(_Point<> pos, TileType tile, _Grid<bool>& _status)const;
+	/// <param name="pos">æ¢ç´¢ã‚’é–‹å§‹ã™ã‚‹åº§æ¨™</param>
+	/// <param name="tile">ã©ã®ã‚¿ã‚¤ãƒ«ã§å›²ã¾ã‚Œã¦ã„ã‚‹ã‹</param>
+	//void dfsAreaPoint(_Point<> pos, TileType tile, _Grid<bool>& _status)const;
 
 	/// <summary>
-	/// w’è‚Ìƒ^ƒCƒ‹‚ÅˆÍ‚Ü‚ê‚½—Ìˆæ‚Ì“¾“_‚ğWŒv‚µ‚Ü‚·
+	/// æŒ‡å®šã®ã‚¿ã‚¤ãƒ«ã§å›²ã¾ã‚ŒãŸé ˜åŸŸã®å¾—ç‚¹ã‚’é›†è¨ˆã—ã¾ã™
 	/// </summary>
-	/// <param name="tile">‚Ç‚Ìƒ^ƒCƒ‹‚ÅˆÍ‚Ü‚ê‚Ä‚¢‚é‚©</param>
-	/// <returns>—Ìˆæƒ|ƒCƒ“ƒg</returns>
+	/// <param name="tile">ã©ã®ã‚¿ã‚¤ãƒ«ã§å›²ã¾ã‚Œã¦ã„ã‚‹ã‹</param>
+	/// <returns>é ˜åŸŸãƒã‚¤ãƒ³ãƒˆ</returns>
 	int aggregateAreaPoint(TileType tile)const;
 
 	/// <summary>
-	/// w’è‚Ìƒ^ƒCƒ‹‚Ìƒ^ƒCƒ‹ƒ|ƒCƒ“ƒg‚ğWŒv‚µ‚Ü‚·
+	/// æŒ‡å®šã®ã‚¿ã‚¤ãƒ«ã®ã‚¿ã‚¤ãƒ«ãƒã‚¤ãƒ³ãƒˆã‚’é›†è¨ˆã—ã¾ã™
 	/// </summary>
-	/// <param name="tile">“¾“_‚ğWŒv‚·‚éƒ^ƒCƒ‹</param>
-	/// <returns>ƒ^ƒCƒ‹ƒ|ƒCƒ“ƒg</returns>
+	/// <param name="tile">å¾—ç‚¹ã‚’é›†è¨ˆã™ã‚‹ã‚¿ã‚¤ãƒ«</param>
+	/// <returns>ã‚¿ã‚¤ãƒ«ãƒã‚¤ãƒ³ãƒˆ</returns>
 	int aggregateTilePoint(TileType tile)const;
 	int aggregateTotalPoint(TileType tile)const;
 
@@ -42,34 +94,41 @@ public:
 	std::array<int, 2> GetTotalPoints() const;
 
 	/// <summary>
-	/// ƒZƒ‹‚ğ“h‚é
+	/// ã‚»ãƒ«ã‚’å¡—ã‚‹
 	/// </summary>
-	/// <param name="pos">“h‚éƒZƒ‹‚ÌÀ•W</param>
-	/// <param name="team">ƒZƒ‹‚ğ“h‚éƒ`[ƒ€</param>
+	/// <param name="pos">å¡—ã‚‹ã‚»ãƒ«ã®åº§æ¨™</param>
+	/// <param name="team">ã‚»ãƒ«ã‚’å¡—ã‚‹ãƒãƒ¼ãƒ </param>
 	void PaintCell(_Point<> pos, TeamType team);
 
 	/// <summary>
-	/// ƒ^ƒCƒ‹‚ğæ‚é
+	/// ã‚¿ã‚¤ãƒ«ã‚’å–ã‚‹
 	/// </summary>
-	/// <param name="pos">ƒ^ƒCƒ‹‚ÌÀ•W</param>
+	/// <param name="pos">ã‚¿ã‚¤ãƒ«ã®åº§æ¨™</param>
 	void RemoveTile(_Point<> pos);
 
 	/// <summary>
-	/// w’èÀ•W‚ªƒtƒB[ƒ‹ƒh‚Ì’†‚Å‚ ‚é‚©”»’è‚·‚é
+	/// æŒ‡å®šåº§æ¨™ãŒãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã®ä¸­ã§ã‚ã‚‹ã‹åˆ¤å®šã™ã‚‹
 	/// </summary>
-	/// <param name="pos">ƒtƒB[ƒ‹ƒh“à‚©”»’è‚·‚éÀ•W</param>
-	/// <returns>À•W‚ªƒtƒB[ƒ‹ƒh“à‚Å‚ ‚é‚©</returns>
+	/// <param name="pos">ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰å†…ã‹åˆ¤å®šã™ã‚‹åº§æ¨™</param>
+	/// <returns>åº§æ¨™ãŒãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰å†…ã§ã‚ã‚‹ã‹</returns>
 	bool IsInField(_Point<> pos) const;
 
 	/// <summary>
-	/// À•W‚Æ•ûŒüAƒtƒB[ƒ‹ƒhó‘Ô‚©‚ç•K—v‚Ès“®‚ğŒˆ‚ß‚é
+	/// åº§æ¨™ã¨æ–¹å‘ã€ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰çŠ¶æ…‹ã‹ã‚‰å¿…è¦ãªè¡Œå‹•ã‚’æ±ºã‚ã‚‹
 	/// </summary>
-	/// <param name="pos">w’è•ûŒü‚É“®‚­‘O‚ÌÀ•W</param>
-	/// <param name="dir">s“®‚·‚é•ûŒü</param>
-	/// <returns>•K—v‚Ès“®</returns>
+	/// <param name="pos">æŒ‡å®šæ–¹å‘ã«å‹•ãå‰ã®åº§æ¨™</param>
+	/// <param name="dir">è¡Œå‹•ã™ã‚‹æ–¹å‘</param>
+	/// <returns>å¿…è¦ãªè¡Œå‹•</returns>
 	Step DecideStepByDirection(_Point<> pos, Direction dir) const;
+
+	Field MakeFieldFromStep(TeamType team, Agent agent, Step step);
+
+	bool CanMove(_Point<> pos, TeamType team);
+	bool CanRemoveTile(_Point<> pos, TeamType team);
 
 public:
 	static Field makeFieldFromJson(std::string json);
 	static Field makeFieldRandom(_Size size = { 6,6 });
+
+	bool IsSameStateField(const Field& other) const;
 };

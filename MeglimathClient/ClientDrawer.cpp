@@ -1,23 +1,23 @@
-#include "ClientDrawer.h"
-#include "Transform.h"
+﻿#include "ClientDrawer.h"
+#include "../MeglimathCore/GameLogic/Transform.h"
 
-void ClientDrawer::DrawInputState(ManualClient& client)
+void ClientDrawer::DrawInputState(Client& client)
 {
-	auto steps = client.GetSteps();
-	for (auto client_step : steps)
+	auto steps = client.GetNextThink().steps;
+	auto drawPos = statOrigin;
+
+	for (int i = 0; i < 2; i++)
 	{
-		if (!client_step.has_value())
-		{
-			continue;
-		}
-
 		FontAsset(U"Msg")(
-			Transform::ToString(client_step.value().action))
-			.draw(statOrigin);
-		FontAsset(U"Msg")(
-			Transform::ToString(client_step.value().direction))
-			.draw(statOrigin + Point(0, 32));
+			Transform::ToString(steps[i].action))
+			.draw(drawPos);
 
+		drawPos += Point(0, 32);
+		FontAsset(U"Msg")(
+			Transform::ToString(steps[i].direction))
+			.draw(drawPos);
+
+		drawPos += Point(0, 32);
 	}
 }
 
