@@ -68,6 +68,8 @@ namespace Scenes
 	public:
 		Connection(const InitData& init) : IScene(init)
 		{
+			// 初期化
+			getData().team_table.clear();
 			// 二つのクライアントと接続する
 			getData().server.startAcceptMulti(31400);
 		}
@@ -111,7 +113,7 @@ namespace Scenes
 				auto ids = server.getSessionIDs();
 
 				String json_dat;
-				while (!server.readUntil(U'\n', json_dat, ids[i]));
+				server.readUntil(U'\n', json_dat, ids[i]);
 				json_dat.remove(U'\n');
 
 				if (json_dat.isEmpty())

@@ -32,5 +32,5 @@ Client::Client()
 
 Client::Client(TeamType type)
 {
-	_type = type;
+	type = type;
 }

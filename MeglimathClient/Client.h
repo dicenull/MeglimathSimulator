@@ -4,8 +4,9 @@
 
 class Client
 {
+public:
+	TeamType type;
 protected:
-	TeamType _type;
 	Think _think;
 
 public:

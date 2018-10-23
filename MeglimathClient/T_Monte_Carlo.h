@@ -51,7 +51,7 @@ public:
  		agenttemp1.second = 0;
 
 		Field tem = info.GetField();
-		Array<Agent> agents = info.GetAgents(_type);
+		Array<Agent> agents = info.GetAgents(type);
 		int temppoint;
 		Point preP;
 

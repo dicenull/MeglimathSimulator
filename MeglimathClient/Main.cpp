@@ -190,6 +190,7 @@ namespace Scenes
 
 			Window::SetTitle(getData().user_client->Name(), U"Client ", Transform::ToString(type));
 
+			getData().user_client->type = type;
 			getData().user_client->Initialize();
 		}
 

@@ -4,7 +4,7 @@
 
 void UIClient::turn_init(const GameInfo & info)
 {
-	auto agents = info.GetAgents(_type);
+	auto agents = info.GetAgents(type);
 	for (auto i : step(2))
 	{
 		agent_points[i] = { agents[i].position.x, agents[i].position.y };
@@ -35,5 +35,5 @@ void UIClient::turn_init(const GameInfo & info)
 
 UIClient::UIClient(TeamType type)
 {
-	_type = type;
+	type = type;
 }

@@ -17,9 +17,9 @@ public:
 
 	void Update(const GameInfo& info) override
 	{
-		auto agents = info.GetAgents(_type);		
+		auto agents = info.GetAgents(type);		
 		auto field = info.GetField();
-		auto other_team = Transform::GetInverseTeam(_type);
+		auto other_team = Transform::GetInverseTeam(type);
 		
 		int best_point = -1000;
 		Reseed(info.GetTurn());
@@ -32,15 +32,15 @@ public:
 		auto all_step = Utility::AllStep();
 		for(int i = 0;i < all_step.size();i++)
 		{
-			auto next_field1 = field.MakeFieldFromStep(_type, agents[0], all_step[i]);
+			auto next_field1 = field.MakeFieldFromStep(type, agents[0], all_step[i]);
 
 			for(int k = 0;k < all_step.size();k++)
 			{
-				auto next_field2 = next_field1.MakeFieldFromStep(_type, agents[1], all_step[k]);
+				auto next_field2 = next_field1.MakeFieldFromStep(type, agents[1], all_step[k]);
 
 				auto next_points = next_field2.GetTotalPoints();
 
-				auto point_diff = next_points[_type] - next_points[other_team];
+				auto point_diff = next_points[type] - next_points[other_team];
 
 				if (best_point < point_diff)
 				{
