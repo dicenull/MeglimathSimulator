@@ -130,5 +130,5 @@ public:
 	static Field makeFieldFromJson(std::string json);
 	static Field makeFieldRandom(_Size size = { 6,6 });
 
-	bool IsSameStateField(const Field& other);
+	bool IsSameStateField(const Field& other) const;
 };

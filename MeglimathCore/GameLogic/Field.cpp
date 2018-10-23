@@ -253,7 +253,7 @@ Field Field::makeFieldRandom(_Size size)
 	return { cells };
 }
 
-bool Field::IsSameStateField(const Field & other)
+bool Field::IsSameStateField(const Field & other) const
 {
 	auto s1 = this->cells.size();
 	auto s2 = other.cells.size();
