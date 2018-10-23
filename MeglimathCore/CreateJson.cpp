@@ -1,4 +1,4 @@
-#include "CreateJson.h"
+﻿#include "CreateJson.h"
 
 const std::string Transform::CreateJson(const GameInfo& info)
 {
@@ -7,7 +7,7 @@ const std::string Transform::CreateJson(const GameInfo& info)
 	int turn = info.GetTurn();
 
 	const auto &cells = field.cells;
-	Size size = { (cells.size().x + 1) / 2, (cells.size().y + 1) / 2 };
+	Size size = { cells.size().x, cells.size().y };
 
 	rapidjson::StringBuffer buffer;
 	rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
@@ -47,7 +47,7 @@ const std::string Transform::CreateJson(const GameInfo& info)
 	writer.StartArray();
 	for (int i : step(2))
 	{
-		Point pos{ agents[TeamType::A][i].position.x, agents[TeamType::A][i].position.y };
+		Point pos{ agents[TeamType::Blue][i].position.x, agents[TeamType::Blue][i].position.y };
 		writer.String(Format(pos).narrow().data());
 	}
 	writer.EndArray();
@@ -56,7 +56,7 @@ const std::string Transform::CreateJson(const GameInfo& info)
 	writer.StartArray();
 	for (int i : step(2))
 	{
-		Point pos{ agents[TeamType::B][i].position.x, agents[TeamType::B][i].position.y };
+		Point pos{ agents[TeamType::Red][i].position.x, agents[TeamType::Red][i].position.y };
 		writer.String(Format(pos).narrow().data());
 	}
 	writer.EndArray();
@@ -107,10 +107,10 @@ const std::string Transform::CreateJson(const TeamType & type)
 	std::string type_obj;
 	switch (type)
 	{
-	case TeamType::A:
+	case TeamType::Blue:
 		type_obj = "A";
 		break;
-	case TeamType::B:
+	case TeamType::Red:
 		type_obj = "B";
 		break;
 	}

@@ -1,4 +1,4 @@
-#include "Game.h"
+﻿#include "Game.h"
 #include"LogicUtil.h"
 GameInfo Game::GetGameInfo() const
 {
@@ -36,7 +36,7 @@ int Game::GetTurn() const
 {
 	return _gamelogic.GetTurn();
 }
-void Game::NextTurn(Think team_a, Think team_b)
+void Game::NextTurn(Think team_blue, Think team_red)
 {
 	if (_gamelogic.GetTurn() <= 0)
 	{
@@ -47,8 +47,8 @@ void Game::NextTurn(Think team_a, Think team_b)
 	auto agents_map = GetAgentMap();
 	auto agents = GetAgents();
 	
-	_think_table[TeamType::A] = team_a;
-	_think_table[TeamType::B] = team_b;
+	_think_table[TeamType::Blue] = team_blue;
+	_think_table[TeamType::Red] = team_red;
 
 	_gamelogic.NextTurn(LogicUtil::fromS3dHashTable(_think_table));
 

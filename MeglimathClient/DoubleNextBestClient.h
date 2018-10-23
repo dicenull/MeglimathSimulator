@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Client.h"
 #include "../MeglimathCore/Utility.h"
 #include "../MeglimathCore/GameLogic/Think.h"
@@ -28,27 +28,124 @@ public:
 		return U"DoubleNextBest";
 	}
 
-	void Initialize() override
+	/// <summary>
+	/// 指定した方向に進んだときの座標の変化分を返す
+	/// </summary>
+	_Point<int> DirectionToDeltaPos(Direction dir)
 	{
-		_is_ready = false;
+		switch (dir)
+		{
+		case Direction::Right:
+			return _Point<int>(1, 0);
+		case Direction::RightUp:
+			return _Point<int>(1, -1);
+		case Direction::Up:
+			return _Point<int>(0, -1);
+		case Direction::LeftUp:
+			return _Point<int>(-1, -1);
+		case Direction::Left:
+			return _Point<int>(-1, 0);
+		case Direction::LeftDown:
+			return _Point<int>(-1, 1);
+		case Direction::Down:
+			return _Point<int>(0, 1);
+		case Direction::RightDown:
+			return _Point<int>(1, 1);
+		default:
+			return _Point<int>(0, 0);
+		}
 	}
 
-	void Explore(GameInfo info, Field field, int depth, int s1, int s2)
+	/// <summary>
+	/// 指定したフィールド内の指定したマスからみて指定した方向にあるタイルの色
+	/// </summary>
+	TileType GetTeamFromNext(Field field, _Point<int> pos, Step step)
 	{
-		auto agents = info.GetAgents(_type);
+		Direction dir = step.direction;
+		_Point<int> pos_next = pos + DirectionToDeltaPos(dir);
+		if (field.IsInField(pos_next))
+			return field.cells[pos_next].tile;
+		else
+			return TileType::None;		//ダミー
+	}
+
+	/// <summary>
+	/// 指定したフィールド内の指定したマスからみて指定した方向にあるタイルの得点が負数かどうか
+	/// </summary>
+	bool GetIsNegativeFromNext(Field field, _Point<int> pos, Step step)
+	{
+		Direction dir = step.direction;
+		_Point<int> pos_next = pos + DirectionToDeltaPos(dir);
+		if (field.IsInField(pos_next))
+			return field.cells[pos_next].point >= 0;
+		else
+			return true;	//ダミー
+	}
+
+	/// <summary>
+	/// フィールドの状態とエージェントの位置を見て、探索に有効と思われる Step を選択する。
+	/// </summary>
+	Array<Step> GetEssentialStep(Field field, TeamType team, _Point<int> pos)
+	{
+		Array<Step> essential_step = {};
+		TileType thiss_tile = static_cast<TileType>(team);
+		TileType others_tile = Transform::GetInverseTile(thiss_tile);
+
+		for (auto act : { Action::Move, Action::RemoveTile })
+		{
+			for (auto i = 0; i < 8; i++)
+			{
+				auto dir = static_cast<Direction>(i);
+				Step step = { act, dir };		// stepの生成を省く実装をすることでより高速化できるかもしれない
+				TileType tile = GetTeamFromNext(field, pos, step);
+				bool is_negative = GetIsNegativeFromNext(field, pos, step);
+
+				if (tile == TileType::None && act == Action::RemoveTile)
+					continue;
+				if (tile == thiss_tile && !is_negative && act == Action::RemoveTile)
+					continue;
+				if (tile == others_tile && act == Action::Move)
+					continue;
+
+				essential_step.push_back({ act, dir });
+			}
+		}
+
+		return essential_step;
+	}
+
+	Array<_Point<int>> GetNewPositionsFromSteps(Array<_Point<int>> positions, Array<Step> steps)
+	{
+		return { 
+			positions[0] + DirectionToDeltaPos(steps[0].direction),
+			positions[1] + DirectionToDeltaPos(steps[1].direction),
+		};
+	}
+
+	/// <summary>
+	/// depth手後に相手との得点差が最大になるように探索する再帰関数。
+	/// </summary>
+	/// <param name="info">現在のフィールドやエージェントの状態、チーム情報。再帰による値の変動なし</param>
+	/// <param name="field">探索中のフィールドの状態。再帰による値の変動あり</param>
+	/// <param name="depth">現在の状態から探索する残り手数。再帰による値の変動あり</param>
+	/// <param name="positions">探索中の２人のエージェントの位置。再帰による値の変動あり</param>
+	/// <param name="s1">探索１手目のエージェントの動き。再帰の最初の呼び出しでのみ値の変動あり</param>
+	void Explore(GameInfo info, Field field, int depth, Array<_Point<int>> positions, Array<Step> s1)
+	{
+		auto agents = info.GetAgents(type);
 		auto original = info.GetField();
-		auto this_team = _type;
+		auto this_team = type;
 		auto other_team = Transform::GetInverseTeam(this_team);
 
 		auto all_step = Utility::AllStep();
 
-		if (depth == 0)
+		if (depth == 0)		// n手の探索の後処理
 		{
 			auto eval_point_total = 0;		// eval_point_total は eval_points_next の総和, 次の一手の評価基準
 			for (int e : eval_points_next)
 				eval_point_total += e;
 
-			if (!field.IsSameStateField(original))		//自分のエージェント同士の衝突を検出
+			if (!field.IsSameStateField(original))		// 自分のエージェント同士の衝突が検出されなければ最善手のリストを更新
 			{
 				for (int it = 0; it < 2; it++)
 				{
@@ -58,38 +155,39 @@ public:
 							candidates[it].clear();
 
 						eval_points[it] = eval_point_total;
-						candidates[it].push_back({ all_step[s1], all_step[s2] });
+						candidates[it].push_back({ s1[0],s1[1] });
 						break;
 					}
 				}
 			}
 		}
 		else
-		{
-			for (int i = 0; i < all_step.size(); i++)
+		{	
+			// n手の探索
+			for (auto step1 : GetEssentialStep(field, this_team, positions[0]))
 			{
-				auto next_field_a = field.MakeFieldFromStep(this_team, agents[0], all_step[i]);
+				auto next_field_a = field.MakeFieldFromStep(this_team, agents[0], step1);
 
-				for (int k = 0; k < all_step.size(); k++)
+				for (auto step2 : GetEssentialStep(field, this_team, positions[1]))
 				{
-					auto next_field_b = next_field_a.MakeFieldFromStep(this_team, agents[1], all_step[k]);
+					auto next_field_b = next_field_a.MakeFieldFromStep(this_team, agents[1], step2);
 
 					eval_points_next[depth - 1] = next_field_b.GetTotalPoints()[this_team] - next_field_b.GetTotalPoints()[other_team];
 
 					if (depth == EXPLORE_DEPTH)
-						Explore(info, next_field_b, depth - 1, i, k);		// 最初のみ 仮引数 s1, s2 を更新
+						Explore(info, next_field_b, depth - 1, GetNewPositionsFromSteps(positions, { step1,step2 }), { step1,step2 });		// 最初のみ 仮引数 s1, s2 を更新
 					else
-						Explore(info, next_field_b, depth - 1, s1, s2);
+						Explore(info, next_field_b, depth - 1, GetNewPositionsFromSteps(positions, { step1,step2 }), s1);
 				}
 			}
 		}
 	}
 
-	void Update(GameInfo info) override
+	void Update(const GameInfo& info) override
 	{
-		auto agents = info.GetAgents(_type);		
+		auto agents = info.GetAgents(type);		
 		auto field = info.GetField();
-		auto this_team = _type;
+		auto this_team = type;
 		auto other_team = Transform::GetInverseTeam(this_team);
 
 		// 自分のチームのエージェント両方の行動が連続で失敗した数を数える
@@ -120,7 +218,13 @@ public:
 		for (auto c : candidates)
 			c.clear();
 
-		Explore(info, field, EXPLORE_DEPTH, 0, 0);
+		Explore(
+			info,
+			field,
+			EXPLORE_DEPTH,
+			{ agents[0].position,agents[1].position },
+			{ {Action::Stop,Direction::Stop},{Action::Stop,Direction::Stop} }
+		);		// 探索本体に現在地とダミーのStepを2つ渡す
 
 		for (int it = 0; it < 2; it++)
 			if (candidates[it].count() != (size_t)0)

@@ -1,4 +1,4 @@
-#include "GameInfo.h"
+ï»¿#include "GameInfo.h"
 #include "LogicUtil.h"
 
 const Field& GameInfo::GetField() const
@@ -9,8 +9,8 @@ const Field& GameInfo::GetField() const
 HashTable<TeamType, Array<Agent>> GameInfo::GetAllAgent() const
 {
 	HashTable<TeamType, Array<Agent>> agent_hash;
-	agent_hash[TeamType::A].append(GetAgents(TeamType::A));
-	agent_hash[TeamType::B].append(GetAgents(TeamType::B));
+	agent_hash[TeamType::Blue].append(GetAgents(TeamType::Blue));
+	agent_hash[TeamType::Red].append(GetAgents(TeamType::Red));
 	
 	return agent_hash;
 }
@@ -28,8 +28,8 @@ int GameInfo::GetTurn() const
 GameLogic GameInfo::GetGameLogic() const
 {
 	GameLogic ret;
-	auto& ATeam = _agents.find(TeamType::A)->second;
-	auto& BTeam = _agents.find(TeamType::B)->second;
+	auto& ATeam = _agents.find(TeamType::Blue)->second;
+	auto& BTeam = _agents.find(TeamType::Red)->second;
 	ret.InitializeVariable(_turn, _field,
 	{
 		TeamLogic{{ATeam[0],ATeam[1]}},
@@ -51,16 +51,16 @@ GameInfo::GameInfo(std::string json)
 
 	_turn = document["RemainingTurn"].GetInt();
 
-	// À•W‚Ìstringƒf[ƒ^‚ğ_Point‚É•ÏŠ·‚·‚é
+	// åº§æ¨™ã®stringãƒ‡ãƒ¼ã‚¿ã‚’_Pointã«å¤‰æ›ã™ã‚‹
 	auto point_to_agent = [&](std::string str) {return Agent{ LogicUtil::toLogicPoint((Parse<Point>(Unicode::Widen(str)))) }; };
 
 	auto agent_pos = document["AgentPosA"].GetArray();
-	_agents[TeamType::A].push_back(point_to_agent(agent_pos[0].GetString()));
-	_agents[TeamType::A].push_back(point_to_agent(agent_pos[1].GetString()));
+	_agents[TeamType::Blue].push_back(point_to_agent(agent_pos[0].GetString()));
+	_agents[TeamType::Blue].push_back(point_to_agent(agent_pos[1].GetString()));
 
 	agent_pos = document["AgentPosB"].GetArray();
-	_agents[TeamType::B].push_back(point_to_agent(agent_pos[0].GetString()));
-	_agents[TeamType::B].push_back(point_to_agent(agent_pos[1].GetString()));
+	_agents[TeamType::Red].push_back(point_to_agent(agent_pos[0].GetString()));
+	_agents[TeamType::Red].push_back(point_to_agent(agent_pos[1].GetString()));
 
 }
 

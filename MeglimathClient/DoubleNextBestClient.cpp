@@ -8,5 +8,5 @@ DoubleNextBestClient::DoubleNextBestClient()
 
 DoubleNextBestClient::DoubleNextBestClient(TeamType type)
 {
-	_type = type;
+	type = type;
 }

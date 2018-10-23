@@ -1,10 +1,10 @@
-#pragma once
+ï»¿#pragma once
 #include<array>
 #include <rapidjson\document.h>
 #include <string>
 
 /// <summary>
-/// ƒG[ƒWƒFƒ“ƒg‚Ì“®ì
+/// ã‚¨ãƒ¼ã‚¸ã‚§ãƒ³ãƒˆã®å‹•ä½œ
 /// </summary>
 enum class Action
 {
@@ -12,7 +12,7 @@ enum class Action
 };
 
 /// <summary>
-/// “®ì‚Ì•ûŒü
+/// å‹•ä½œã®æ–¹å‘
 /// </summary>
 enum class Direction
 {
@@ -34,7 +34,7 @@ struct Step
 };
 
 /// <summary>
-/// ƒG[ƒWƒFƒ“ƒg“ñl•ª‚Ìs“®
+/// ã‚¨ãƒ¼ã‚¸ã‚§ãƒ³ãƒˆäºŒäººåˆ†ã®è¡Œå‹•
 /// </summary>
 struct Think
 {

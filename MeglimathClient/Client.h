@@ -1,11 +1,12 @@
-#pragma once
+ï»¿#pragma once
 #include "../MeglimathCore/GameLogic/Think.h"
 #include "../MeglimathCore/GameInfo.h"
 
 class Client
 {
+public:
+	TeamType type;
 protected:
-	TeamType _type;
 	Think _think;
 
 public:
@@ -13,19 +14,23 @@ public:
 
 public:
 	/// <summary>
-	/// Ÿ‚Ìs“®‚ğŒˆ’è‚·‚é
+	/// æ¬¡ã®è¡Œå‹•ã‚’æ±ºå®šã™ã‚‹
 	/// </summary>
-	/// <param name="info">ƒQ[ƒ€î•ñ</param>
-	virtual void Update(GameInfo info) = 0;
+	/// <param name="info">ã‚²ãƒ¼ãƒ æƒ…å ±</param>
+	virtual void Update(const GameInfo& info) = 0;
 
 	/// <summary>
-	/// Ÿ‚Ìƒ^[ƒ“‚É“ü‚é‘O‚Ì‰Šú‰»ˆ—
+	/// æ¬¡ã®ã‚¿ãƒ¼ãƒ³ã«å…¥ã‚‹å‰ã®åˆæœŸåŒ–å‡¦ç†
 	/// </summary>
-	virtual void Initialize() = 0;
+	virtual void Initialize();
+
+	virtual void Draw();
 
 	virtual String Name() = 0; 
 
 	bool IsReady();
+
+	virtual bool IsDraw();
 
 protected:
 	bool _is_ready = false;
@@ -33,6 +38,5 @@ protected:
 public:
 	Client();
 	Client(TeamType type);
-	~Client();
 };
 

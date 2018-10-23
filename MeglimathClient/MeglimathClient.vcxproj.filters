@@ -78,7 +78,10 @@
     <ClCompile Include="DoubleNextBestClient.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DoubleNextBestClient2.cpp">
+    <ClCompile Include="UIClient.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RatioClient.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -218,6 +221,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DoubleNextBestClient.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UIClient.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RatioClient.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DoubleNextBestClient2.h">

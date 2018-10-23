@@ -131,17 +131,17 @@ int Field::aggregateTotalPoint(TileType tile)const
 
 std::array<int, 2> Field::GetAreaPoints() const
 {
-	return { aggregateAreaPoint(TileType::A),aggregateAreaPoint(TileType::B) };
+	return { aggregateAreaPoint(TileType::Blue),aggregateAreaPoint(TileType::Red) };
 }
 
 std::array<int, 2> Field::GetTilePoints() const
 {
-	return { aggregateTilePoint(TileType::A),aggregateTilePoint(TileType::B) };
+	return { aggregateTilePoint(TileType::Blue),aggregateTilePoint(TileType::Red) };
 }
 
 std::array<int, 2> Field::GetTotalPoints() const
 {
-	return { aggregateTotalPoint(TileType::A),aggregateTotalPoint(TileType::B) };
+	return { aggregateTotalPoint(TileType::Blue),aggregateTotalPoint(TileType::Red) };
 }
 
 void Field::PaintCell(_Point<> pos, TeamType team)
@@ -232,23 +232,16 @@ Field Field::makeFieldFromJson(std::string json)
 	_Size size = _Size{ document["Size"].GetString() };
 	auto points = document["Points"].GetArray();
 
-	// 入力されるタイルポイントの数
-	_Size data_size = _Size((size.x + 1) / 2, (size.y + 1) / 2);
-
 	auto cells = _Grid<Cell>(size);
 
 	// タイルポイントをグリッド状に成型して入力
 	int idx = 0;
-	for (size_t i : step(data_size.y))
+	for (size_t i : step(size.y))
 	{
-		for (size_t k : step(data_size.x))
+		for (size_t k : step(size.x))
 		{
-			cells[{k,i}] = { points[idx].GetInt() };
-			// データをコピー
-			cells[{size.x - 1 - k, size.y - 1 - i}] = cells[{k, i}];
-			cells[{k,size.y - 1 - i}] = cells[{k, i}];
-			cells[{size.x - 1 - k,i}] = cells[{k, i}];
-
+			cells[{k, i}] = { points[idx].GetInt() };
+			
 			idx++;
 		}
 	}
@@ -263,10 +256,10 @@ Field Field::makeFieldFromJson(std::string json)
 			switch (tiles[i].GetString()[k])
 			{
 			case 'a':
-				cells[{k,i}].PaintedBy(TeamType::A);
+				cells[{k, i}].PaintedBy(TeamType::Blue);
 				break;
 			case 'b':
-				cells[{k, i}].PaintedBy(TeamType::B);
+				cells[{k, i}].PaintedBy(TeamType::Red);
 				break;
 			default:
 				break;

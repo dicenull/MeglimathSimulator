@@ -13,6 +13,8 @@
 #include "T_Monte_Carlo.h"
 #include "NextBestClient.h"
 #include "DoubleNextBestClient.h"
+#include "UIClient.h"
+#include "RatioClient.h"
 #include "DoubleNextBestClient2.h"
 
 struct GameData
@@ -33,20 +35,20 @@ namespace Scenes
 	public:
 		SelectTeamType(const InitData& init) : IScene(init)
 		{
-			Print << U"左 : 赤(B),右 : 青(A)";
+			Print << U"左 : 赤,右 : 青";
 		}
 
 		void update() override
 		{
 			if (KeyLeft.down())
 			{
-				getData().teamType = TeamType::B;
+				getData().teamType = TeamType::Red;
 				changeScene(U"SetClient", 0);
 			}
 
 			if (KeyRight.down())
 			{
-				getData().teamType = TeamType::A;
+				getData().teamType = TeamType::Blue;
 				changeScene(U"SetClient", 0);
 			}
 		}
@@ -67,7 +69,19 @@ namespace Scenes
 			clients.push_back(std::unique_ptr<Client>(new KeyboardClient(type, { KeyD, KeyE, KeyW, KeyQ, KeyA, KeyZ, KeyX, KeyC, KeyS }, KeyShift)));
 			clients.push_back(std::make_unique<NextBestClient>(type));
 			clients.push_back(std::make_unique<DoubleNextBestClient>(type));
+			clients.push_back(std::make_unique<UIClient>(type));
+			clients.push_back(std::make_unique<RatioClient>(type));
 			clients.push_back(std::make_unique<DoubleNextBestClient2>(type));
+
+			for (int i = 0; i < clients.size(); i++)
+			{
+				if (clients[i] == nullptr)
+				{
+					continue;
+				}
+
+				Print << i << U" : " << clients[i]->Name();
+			}
 		}
 
 		void update() override
@@ -80,24 +94,13 @@ namespace Scenes
 				{
 					getData().user_client = std::move(clients[i]);
 					ClearPrint();
-					changeScene(U"Game", 0);
+					changeScene(U"Connection", 0);
 				}
 			}
 		}
 
 		void draw() const override
 		{
-			ClearPrint();
-			for (int i = 0; i < clients.size(); i++)
-			{
-				if (clients[i] == nullptr)
-				{
-					ClearPrint();
-					continue;
-				}
-
-				Print << i << U" : " << clients[i]->Name();
-			}
 		}
 	};
 
@@ -127,7 +130,12 @@ namespace Scenes
 	{
 	public:
 		HandShake(const InitData& init) : IScene(init)
-		{ }
+		{
+			// チーム情報を送信
+			String send_team = Transform::ToString(getData().teamType);
+			send_team += U"\n";
+			getData().tcp_client.sendString(send_team);
+		}
 
 		void update() override
 		{
@@ -141,41 +149,28 @@ namespace Scenes
 				return;
 			}
 
-			String json_dat;
-			tcp_client.readLine(json_dat);
+			String string_dat;
+			tcp_client.readLine(string_dat);
 
-			if (json_dat.isEmpty())
-			{
-				tcp_client.sendString(U"Type\n");
-				return;
-			}
-
-			rapidjson::Document document;
-			document.Parse(json_dat.narrow().data());
-
-			if (!document.HasMember("TeamType"))
+			if (string_dat.isEmpty())
 			{
 				return;
 			}
 
-			std::string type = document["TeamType"].GetString();
-			Optional<TeamType> team_type = none;
+			auto res = string_dat;
+			res.remove(U"\n");
 
-			if (type == "A")
+			if (res == U"OK")
 			{
-				team_type = TeamType::A;
+				changeScene(U"Game", 0);
+				return;
 			}
 
-			if (type == "B")
+			if (res == U"Type")
 			{
-				team_type = TeamType::B;
-			}
-
-			if (team_type.has_value())
-			{
-				getData().teamType = team_type.value();
-				tcp_client.sendString(U"OK\n");
-				changeScene(U"SetClient", 0);
+				// チームを反転
+				getData().teamType = Transform::GetInverseTeam(getData().teamType);
+				changeScene(U"HandShake", 0);
 				return;
 			}
 		}
@@ -198,6 +193,9 @@ namespace Scenes
 			auto type = getData().teamType;
 
 			Window::SetTitle(getData().user_client->Name(), U"Client ", Transform::ToString(type));
+
+			getData().user_client->type = type;
+			getData().user_client->Initialize();
 		}
 
 		void update() override
@@ -262,10 +260,18 @@ namespace Scenes
 				return;
 			}
 
+
+			if (getData().user_client->IsDraw())
+			{
+				getData().user_client->Draw();
+				return;
+			}
+
 			getData().drawer.DrawField(getData().info.GetField());
 			getData().drawer.DrawAgents(getData().info.GetAllAgent());
 
 			getData().drawer.DrawInputState(*(getData().user_client));
+
 		}
 	};
 }
@@ -274,6 +280,7 @@ void Main()
 {
 	MyApp manager;
 	manager
+		.add<Scenes::SelectTeamType>(U"SelectTeamType")
 		.add<Scenes::Connection>(U"Connection")
 		.add<Scenes::Game>(U"Game")
 		.add<Scenes::HandShake>(U"HandShake")

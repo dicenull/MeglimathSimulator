@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include "Client.h"
 #include "../MeglimathCore/Utility.h"
@@ -11,17 +11,17 @@ public:
 	DoubleNextBestClient2() {}
 	DoubleNextBestClient2(TeamType type):Client(type) {}
 
-	int double_stop_cnt = 0;		// ©•ª‚ÌƒG[ƒWƒFƒ“ƒg—¼•û‚Ìs“®‚ª˜A‘±‚µ‚Ä‰½‰ñ¸”s‚µ‚½‚©‚ğƒJƒEƒ“ƒg‚·‚é
-	const int DOUBLE_STOP_LIMIT = 2;		// ©•ª‚ÌƒG[ƒWƒFƒ“ƒg—¼•û‚Ìs“®‚Ì¸”s‚ª˜A‘±‚µ‚Ä DOUBLE_STOP_LIMIT ‰ñ‚ğ’´‚¦‚½ê‡‚©‚Â—ò¨‚É‘Ã‹¦‚µ‚½è‚ğ‘Å‚Â
-	// DOUBLE_STOP_LIMIT_FORCE ‚Í ¡ŒãÁ‹‚·‚é(–³ŒÀ‚É‚·‚é)—\’è
-	const int DOUBLE_STOP_LIMIT_FORCE = 5;		// ©•ª‚ÌƒG[ƒWƒFƒ“ƒg—¼•û‚Ìs“®‚Ì¸”s‚ª˜A‘±‚µ‚Ä DOUBLE_STOP_LIMIT_FORCE ‰ñ‚ğ’´‚¦‚½ê‡ƒ‰ƒ“ƒ_ƒ€‚Èè‚ğ‘Å‚Â
-	static const int EXPLORE_DEPTH = 2;		// ’Tõ‚Ì[‚³ = ‰½èæ‚Ü‚Å“Ç‚Ş‚©
+	int double_stop_cnt = 0;		// è‡ªåˆ†ã®ã‚¨ãƒ¼ã‚¸ã‚§ãƒ³ãƒˆä¸¡æ–¹ã®è¡Œå‹•ãŒé€£ç¶šã—ã¦ä½•å›å¤±æ•—ã—ãŸã‹ã‚’ã‚«ã‚¦ãƒ³ãƒˆã™ã‚‹
+	const int DOUBLE_STOP_LIMIT = 2;		// è‡ªåˆ†ã®ã‚¨ãƒ¼ã‚¸ã‚§ãƒ³ãƒˆä¸¡æ–¹ã®è¡Œå‹•ã®å¤±æ•—ãŒé€£ç¶šã—ã¦ DOUBLE_STOP_LIMIT å›ã‚’è¶…ãˆãŸå ´åˆã‹ã¤åŠ£å‹¢æ™‚ã«å¦¥å”ã—ãŸæ‰‹ã‚’æ‰“ã¤
+	// DOUBLE_STOP_LIMIT_FORCE ã¯ ä»Šå¾Œæ¶ˆå»ã™ã‚‹(ç„¡é™ã«ã™ã‚‹)äºˆå®š
+	const int DOUBLE_STOP_LIMIT_FORCE = 5;		// è‡ªåˆ†ã®ã‚¨ãƒ¼ã‚¸ã‚§ãƒ³ãƒˆä¸¡æ–¹ã®è¡Œå‹•ã®å¤±æ•—ãŒé€£ç¶šã—ã¦ DOUBLE_STOP_LIMIT_FORCE å›ã‚’è¶…ãˆãŸå ´åˆãƒ©ãƒ³ãƒ€ãƒ ãªæ‰‹ã‚’æ‰“ã¤
+	static const int EXPLORE_DEPTH = 2;		// æ¢ç´¢ã®æ·±ã• = ä½•æ‰‹å…ˆã¾ã§èª­ã‚€ã‹
 
-	_Point<> pos_history[2] = { _Point<>(), _Point<>() };		// ‘O‚Ìƒ^[ƒ“©•ª‚ÌƒG[ƒWƒFƒ“ƒg‚ª‚Ç‚±‚É‚¢‚½‚©
-	Array<Think> candidates[2];		// candidates[n] ‚Í (n+1)”Ô–Ú‚É—Dæ‚³‚ê‚és“®‚ÌŒó•âƒŠƒXƒg
+	_Point<> pos_history[2] = { _Point<>(), _Point<>() };		// å‰ã®ã‚¿ãƒ¼ãƒ³è‡ªåˆ†ã®ã‚¨ãƒ¼ã‚¸ã‚§ãƒ³ãƒˆãŒã©ã“ã«ã„ãŸã‹
+	Array<Think> candidates[2];		// candidates[n] ã¯ (n+1)ç•ªç›®ã«å„ªå…ˆã•ã‚Œã‚‹è¡Œå‹•ã®å€™è£œãƒªã‚¹ãƒˆ
 
-	int eval_points[2] = { -100000, -100000 };		// eval_points[n] ‚Í (n+1)”Ô–Ú‚É—Dæ‚³‚ê‚é 1èŒã‚Ìs“® ‚Ì•]‰¿’l
-	int eval_points_next[EXPLORE_DEPTH];		// eval_points_next[n] ‚Í (n+1)èŒã‚Ìs“® ‚Ì•]‰¿’l
+	int eval_points[2] = { -100000, -100000 };		// eval_points[n] ã¯ (n+1)ç•ªç›®ã«å„ªå…ˆã•ã‚Œã‚‹ 1æ‰‹å¾Œã®è¡Œå‹• ã®è©•ä¾¡å€¤
+	int eval_points_next[EXPLORE_DEPTH];		// eval_points_next[n] ã¯ (n+1)æ‰‹å¾Œã®è¡Œå‹• ã®è©•ä¾¡å€¤
 
 
 	String Name() override
@@ -34,7 +34,7 @@ public:
 		_is_ready = false;
 	}
 
-	void Update(GameInfo info) override;
+	void Update(const GameInfo& info) override {}
 private:
 	void Explore(const GameInfo& info, const GameLogic& game, int depth, int s1, int s2);
 };

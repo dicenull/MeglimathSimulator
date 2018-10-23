@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include"GameLogic/GameLogic.h"
 #include<Siv3D.hpp>
 namespace LogicUtil {
@@ -11,7 +11,7 @@ namespace LogicUtil {
 	}
 	inline HashTable<TeamType, Array<Agent>> toS3dHashTable(const std::array<TeamLogic,2> &_map) {
 		HashTable<TeamType, Array<Agent>> ret;
-		for (auto k : { TeamType::A,TeamType::B })ret[k] = { _map[k].agents[0],_map[k].agents[1] };
+		for (auto k : { TeamType::Blue,TeamType::Red })ret[k] = { _map[k].agents[0],_map[k].agents[1] };
 		return ret;
 	}
 	template<class C>
