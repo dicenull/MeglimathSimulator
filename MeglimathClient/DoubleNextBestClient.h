@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Client.h"
 #include "../MeglimathCore/Utility.h"
 #include "../MeglimathCore/GameLogic/Think.h"
@@ -15,16 +15,11 @@ public:
 		return U"DoubleNextBest";
 	}
 
-	void Initialize() override
+	void Update(const GameInfo& info) override
 	{
-		_is_ready = false;
-	}
-
-	void Update(GameInfo info) override
-	{
-		auto agents = info.GetAgents(_type);		
+		auto agents = info.GetAgents(type);		
 		auto field = info.GetField();
-		auto this_team = _type;
+		auto this_team = type;
 		auto other_team = Transform::GetInverseTeam(this_team);
 
 		int best_eval_point = -100000;       //次の行動の最大の評価値

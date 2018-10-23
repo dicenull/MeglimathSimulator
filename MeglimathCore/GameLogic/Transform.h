@@ -78,11 +78,11 @@ namespace Transform
 	{
 		switch (team)
 		{
-		case TeamType::A:
-			return TileType::A;
+		case TeamType::Blue:
+			return TileType::Blue;
 
-		case TeamType::B:
-			return TileType::B;
+		case TeamType::Red:
+			return TileType::Red;
 		}
 
 		return TileType::None;
@@ -92,10 +92,10 @@ namespace Transform
 	{
 		switch (tile)
 		{
-		case TileType::A:
-			return TileType::B;
-		case TileType::B:
-			return TileType::A;
+		case TileType::Blue:
+			return TileType::Red;
+		case TileType::Red:
+			return TileType::Blue;
 		}
 
 		return TileType::None;
@@ -105,10 +105,10 @@ namespace Transform
 	{
 		switch (team)
 		{
-		case TeamType::A:
-			return TeamType::B;
-		case TeamType::B:
-			return TeamType::A;
+		case TeamType::Blue:
+			return TeamType::Red;
+		case TeamType::Red:
+			return TeamType::Blue;
 		}
 	}
 

@@ -6,13 +6,13 @@
 #include<boost/multi_array.hpp>
 
 enum TeamType {
-	A=0, 
-	B=1
+	Blue=0, 
+	Red=1
 };
 
 enum class TileType {
-	A = TeamType::A, 
-	B = TeamType::B, 
+	Blue = TeamType::Blue, 
+	Red = TeamType::Red, 
 	None
 };
 template <class Component = int>

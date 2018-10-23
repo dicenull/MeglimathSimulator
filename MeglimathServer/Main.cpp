@@ -14,7 +14,8 @@ struct GameData
 {
 	Game game;
 	Drawer drawer;
-	std::map<SessionID, Optional<Think>> thinks;
+	std::map<SessionID, TeamType> team_table;
+	std::map<TeamType, Optional<Think>> thinks;
 	asc::TCPStringServer server;
 };
 
@@ -40,6 +41,7 @@ namespace Scenes
 				// フィールド情報を受信
 				String field_json;
 				server.readLine(field_json);
+				field_json.remove(U"\n");
 
 				if (field_json != U"")
 				{
@@ -66,6 +68,8 @@ namespace Scenes
 	public:
 		Connection(const InitData& init) : IScene(init)
 		{
+			// 初期化
+			getData().team_table.clear();
 			// 二つのクライアントと接続する
 			getData().server.startAcceptMulti(31400);
 		}
@@ -87,29 +91,9 @@ namespace Scenes
 
 	class HandShake : public MyApp::Scene
 	{
-	private:
-		bool _has_connection[2] = { false, false };
-
-	private:
-		void sendTeamTypes()
-		{
-			auto ids = getData().server.getSessionIDs();
-			
-			sendTeamType(ids[0], TeamType::A);
-			sendTeamType(ids[1], TeamType::B);
-		}
-
-		void sendTeamType(size_t id, TeamType type)
-		{
-			auto to_wide_json = [](TeamType type) {return Unicode::Widen(Transform::CreateJson(type)) + U"\n"; };
-
-			getData().server.sendString(to_wide_json(type), id);
-		}
-
 	public:
 		HandShake(const InitData& init) : IScene(init)
 		{
-			sendTeamTypes();
 		}
 
 		void update() override
@@ -137,30 +121,26 @@ namespace Scenes
 					continue;
 				}
 
-				if (json_dat == U"Type")
-				{
-					// もう片方が設定完了している場合
-					TeamType type;
-					if (_has_connection[1 - i])
-					{
-						type = TeamType::B;
-					}
-					else
-					{
-						type = TeamType::A;
-					}
+				TeamType type;
+				if (json_dat == U"Red") type = TeamType::Red;
+				else if (json_dat == U"Blue") type = TeamType::Blue;
+				else return;
 
-					sendTeamType(ids[i], type);
-					continue;
+				if (getData().team_table.empty()
+					|| getData().team_table[ids[1 - i]] != type)
+				{
+					getData().team_table[ids[i]] = type;
+
+					server.sendString(U"OK\n", ids[i]);
 				}
-
-				if (json_dat == U"OK")
+				else
 				{
-					_has_connection[i] = true;
+					// チーム種類が重複している
+					server.sendString(U"Type\n", ids[i]);
 				}
 			}
 
-			if (_has_connection[0] && _has_connection[1])
+			if (getData().team_table.size() == 2)
 			{
 				changeScene(U"Game", 0);
 				return;
@@ -169,7 +149,7 @@ namespace Scenes
 
 		void draw() const override
 		{
-			FontAsset(U"Msg")(U"パラメータ設定中...").draw(Point(0,0));
+			FontAsset(U"Msg")(U"パラメータ設定中...").draw(Point(0, 0));
 		}
 	};
 
@@ -192,11 +172,8 @@ namespace Scenes
 		{
 			sendGameInfo();
 
-			// ClientのThinkをidで管理
-			for (auto id : getData().server.getSessionIDs())
-			{
-				getData().thinks[id] = none;
-			}
+			getData().thinks[TeamType::Red] = none;
+			getData().thinks[TeamType::Blue] = none;
 		}
 
 		void update() override
@@ -225,25 +202,26 @@ namespace Scenes
 				rapidjson::Document doc;
 				doc.Parse(json_dat.narrow().data());
 
-				data.thinks[id] = Think::makeThink( json_dat.narrow() );
+				data.thinks[data.team_table[id]] = Think::makeThink(json_dat.narrow());
 			}
-			
+
 			// Client二つ分のThinkが更新されたら次のターンへ
 			auto ids = data.server.getSessionIDs();
-			
+			auto table = data.team_table;
+
 			if (ids.size() != 2)
 			{
 				return;
 			}
 
 			auto &thinks = data.thinks;
-			if (thinks[ids[0]].has_value() && thinks[ids[1]].has_value())
+			if (thinks[TeamType::Red].has_value() && thinks[TeamType::Blue].has_value())
 			{
-				getData().game.NextTurn(thinks[ids[0]].value(), thinks[ids[1]].value());
+				getData().game.NextTurn(thinks[TeamType::Blue].value(), thinks[TeamType::Red].value());
 
 				// Think情報を初期化
-				thinks[ids[0]] = none;
-				thinks[ids[1]] = none;
+				thinks[TeamType::Red] = none;
+				thinks[TeamType::Blue] = none;
 
 				sendGameInfo();
 			}

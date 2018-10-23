@@ -9,7 +9,7 @@ public:
 		return U"Random";
 	}
 
-	void Update(GameInfo info) override
+	void Update(const GameInfo& info) override
 	{
 		if (IsReady())
 		{
@@ -20,11 +20,6 @@ public:
 		_think.steps[1] = { Action(Random(0,1)),Direction(Random(0,7)) };
 
 		_is_ready = true;
-	}
-
-	void Initialize() override
-	{
-		_is_ready = false;
 	}
 
 public:

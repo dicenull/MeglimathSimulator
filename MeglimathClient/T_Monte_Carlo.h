@@ -34,7 +34,7 @@ public:
 		return U"T MonteCarlo";
 	}
 
-	void Update(GameInfo info) override {
+	void Update(const GameInfo& info) override {
 
 		if (IsReady())
 		{
@@ -51,7 +51,7 @@ public:
  		agenttemp1.second = 0;
 
 		Field tem = info.GetField();
-		Array<Agent> agents = info.GetAgents(_type);
+		Array<Agent> agents = info.GetAgents(type);
 		int temppoint;
 		Point preP;
 
@@ -103,10 +103,6 @@ public:
 		_is_ready = true;
 	}
 
-	void Initialize() override
-	{
-		_is_ready = false;
-	}
 
 public:
 	T_Monte_Carlo(TeamType type);

@@ -213,6 +213,7 @@
     <ClCompile Include="NextBestClient.cpp" />
     <ClCompile Include="RandomClient.cpp" />
     <ClCompile Include="T_Monte_Carlo.cpp" />
+    <ClCompile Include="UIClient.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\engine\texture\box-shadow\128.png" />
@@ -266,6 +267,7 @@
     <ClInclude Include="NextBestClient.h" />
     <ClInclude Include="RandomClient.h" />
     <ClInclude Include="T_Monte_Carlo.h" />
+    <ClInclude Include="UIClient.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MeglimathCore\MeglimathCore.vcxproj">

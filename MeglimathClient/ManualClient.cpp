@@ -1,10 +1,10 @@
-#include "ManualClient.h"
+﻿#include "ManualClient.h"
 
 
 
 void ManualClient::SetTeamType(TeamType type)
 {
-	_type = type;
+	type = type;
 }
 
 Array<Optional<Step>> ManualClient::GetSteps()

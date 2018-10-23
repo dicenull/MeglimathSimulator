@@ -28,12 +28,12 @@ struct Cell
 	{
 		switch (team)
 		{
-		case TeamType::A:
-			tile = TileType::A;
+		case TeamType::Red:
+			tile = TileType::Red;
 			break;
 
-		case TeamType::B:
-			tile = TileType::B;
+		case TeamType::Blue:
+			tile = TileType::Blue;
 			break;
 		}
 	}
