@@ -44,13 +44,15 @@ public:
 		for (int i = 0; i < 2; i++) {
 			preP[i] = agents[i].position;
 			for (int j = 0; j < 8; j++) {
-				if (tem.IsInField(preP[i] + Transform::DirToDelta(Direction(j)))) {//選んだマスがフィールド内か
-					if (tem.cells[(preP[i] + Transform::DirToDelta(Direction(j))).y][(preP[i] + Transform::DirToDelta(Direction(j))).x].point > temppoint//現在保存している最大ポイントより参照しているポイントの方が高いかどうか
-						|| (tem.cells[(preP[i] + Transform::DirToDelta(Direction(j))).y][(preP[i] + Transform::DirToDelta(Direction(j))).x].point == temppoint && Random(0,100) % 2 == 0)) {//同じだったらランダム
-						if ((lastMovedBy[i] == 8 || j != lastMovedBy[i]) && tem.cells[(preP[i] + Transform::DirToDelta(Direction(j))).y][(preP[i] + Transform::DirToDelta(Direction(j))).x].tile != Transform::ToTile(type)) {//最後に来た方向にもう一度行かないように、自分のマスは除外
-							if (i == 0 || (i == 1 && !(agents[0].position + Transform::DirToDelta(Direction(max[0])) == preP[i] + Transform::DirToDelta(Direction(j))))) {//エージェント同士が拮抗しないように、一人目のエージェントが進もうとしているマスには二人目は行かないようにする
+				auto select_p = preP[i] + Transform::DirToDelta(Direction(j));
+
+				if (tem.IsInField(select_p)) {//選んだマスがフィールド内か
+					if (tem.cells[select_p].point > temppoint//現在保存している最大ポイントより参照しているポイントの方が高いかどうか
+						|| (tem.cells[select_p].point == temppoint && Random(0,100) % 2 == 0)) {//同じだったらランダム
+						if ((lastMovedBy[i] == 8 || j != lastMovedBy[i]) && tem.cells[select_p].tile != Transform::ToTile(type)) {//最後に来た方向にもう一度行かないように、自分のマスは除外
+							if (i == 0 || (i == 1 && !(agents[0].position + Transform::DirToDelta(Direction(max[0])) == select_p))) {//エージェント同士が拮抗しないように、一人目のエージェントが進もうとしているマスには二人目は行かないようにする
 								max[i] = j;
-								temppoint = tem.cells[(preP[i] + Transform::DirToDelta(Direction(j))).y][(preP[i] + Transform::DirToDelta(Direction(j))).x].point;
+								temppoint = tem.cells[select_p].point;
 								didnewway = true;
 							}
 	

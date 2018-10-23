@@ -25,6 +25,19 @@ int GameInfo::GetTurn() const
 	return _turn;
 }
 
+GameLogic GameInfo::GetGameLogic() const
+{
+	GameLogic ret;
+	auto& ATeam = _agents.find(TeamType::Blue)->second;
+	auto& BTeam = _agents.find(TeamType::Red)->second;
+	ret.InitializeVariable(_turn, _field,
+	{
+		TeamLogic{{ATeam[0],ATeam[1]}},
+		TeamLogic{{BTeam[0],BTeam[1]}}
+	});
+	return ret;
+}
+
 GameInfo::GameInfo()
 {
 }

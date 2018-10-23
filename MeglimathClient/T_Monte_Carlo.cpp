@@ -21,8 +21,9 @@ int T_Monte_Carlo::decideMove(Array<int> *movelist, _Point<> preP, Field field) 
 		else {
 			temp = candinate.count() - 1;
 			preMove = candinate[Random(0, temp)];
-			if (field.IsInField(preP + Transform::DirToDelta(Direction(preMove)))) {
-				if (field.cells[(preP + Transform::DirToDelta(Direction(preMove))).y][(preP + Transform::DirToDelta(Direction(preMove))).x].tile != Transform::ToTile(type)) {
+			auto select_pos = preP + Transform::DirToDelta(Direction(preMove));
+			if (field.IsInField(select_pos)) {
+				if (field.cells[select_pos].tile != Transform::ToTile(type)) {
 					okflag = true;
 				}
 			}
@@ -34,7 +35,7 @@ int T_Monte_Carlo::decideMove(Array<int> *movelist, _Point<> preP, Field field) 
 		if (okflag == true) {
 			(*movelist).push_back(preMove);
 			preP += Transform::DirToDelta(Direction(preMove));
-			return (field.cells[preP.y][preP.x]).point;
+			return (field.cells[preP]).point;
 		}
 
 		candinate.remove(preMove);
@@ -76,7 +77,7 @@ void T_Monte_Carlo::sort(Array<std::pair<Array<int>, int>> *target, int left, in
 
 			i++;
 		}
-	
+
 		while (pivot < (*target)[j].second) {
 
 			j--;

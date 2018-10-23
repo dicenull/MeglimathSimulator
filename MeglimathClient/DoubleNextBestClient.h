@@ -64,7 +64,7 @@ public:
 		Direction dir = step.direction;
 		_Point<int> pos_next = pos + DirectionToDeltaPos(dir);
 		if (field.IsInField(pos_next))
-			return field.cells[pos_next.y][pos_next.x].tile;
+			return field.cells[pos_next].tile;
 		else
 			return TileType::None;		//ダミー
 	}
@@ -77,7 +77,7 @@ public:
 		Direction dir = step.direction;
 		_Point<int> pos_next = pos + DirectionToDeltaPos(dir);
 		if (field.IsInField(pos_next))
-			return field.cells[pos_next.y][pos_next.x].point >= 0;
+			return field.cells[pos_next].point >= 0;
 		else
 			return true;	//ダミー
 	}

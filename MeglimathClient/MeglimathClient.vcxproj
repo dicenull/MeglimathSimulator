@@ -263,6 +263,7 @@
     <ClInclude Include="Client.h" />
     <ClInclude Include="ClientDrawer.h" />
     <ClInclude Include="DoubleNextBestClient.h" />
+    <ClInclude Include="DoubleNextBestClient2.h" />
     <ClInclude Include="KeyboardClient.h" />
     <ClInclude Include="ManualClient.h" />
     <ClInclude Include="NextBestClient.h" />

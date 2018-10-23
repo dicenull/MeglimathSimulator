@@ -55,7 +55,7 @@ public:
 
 		std::pair<Array<int>, int> agenttemp1;
 
- 		agenttemp1.second = 0;
+		agenttemp1.second = 0;
 
 		Field tem = info.GetField();
 		Array<Agent> agents = info.GetAgents(type);
@@ -93,7 +93,7 @@ public:
 			if (agent1.size() > 2) {
 				sort(&agent1, 0, agent1.size() - 1);
 				//タイルポイントが一番高いルートと、2番目に高いルートの一番最初の移動先が同じか1マスだけズレていたら、一番タイルポイントが高いルートの最初の移動先を最終的な移動先とする
-				if (agent1[agent1.size() - 1].first[0] == agent1[agent1.size() - 2].first[0] || agent1[agent1.size() - 1].first[0] == (agent1[agent1.size() - 2].first[0]) + 1 || agent1[agent1.size() - 1].first[0] ==( agent1[agent1.size() - 2].first[0])- 1
+				if (agent1[agent1.size() - 1].first[0] == agent1[agent1.size() - 2].first[0] || agent1[agent1.size() - 1].first[0] == (agent1[agent1.size() - 2].first[0]) + 1 || agent1[agent1.size() - 1].first[0] == (agent1[agent1.size() - 2].first[0]) - 1
 					|| agent1.size() > 100) {
 					break;
 				}
@@ -126,7 +126,7 @@ public:
 
 			if (agent2.size() > 2) {
 				sort(&agent2, 0, agent2.size() - 1);
-				if (agent2[agent2.size() - 1].first[0] == agent2[agent2.size() - 2].first[0] || agent2[agent2.size() - 1].first[0] == (agent2[agent2.size() - 2].first[0]) + 1 || agent2[agent2.size() - 1].first[0] ==( agent2[agent2.size() - 2].first[0]) - 1
+				if (agent2[agent2.size() - 1].first[0] == agent2[agent2.size() - 2].first[0] || agent2[agent2.size() - 1].first[0] == (agent2[agent2.size() - 2].first[0]) + 1 || agent2[agent2.size() - 1].first[0] == (agent2[agent2.size() - 2].first[0]) - 1
 					|| agent2.size() > 100) {
 					break;
 				}
@@ -134,7 +134,7 @@ public:
 
 		}
 
-		_think = Think{ tem.DecideStepByDirection(agents[0].position, Direction(agent1[agent1.size() - 1].first[0])), tem.DecideStepByDirection(agents[1].position, Direction(agent2[agent2.size() - 1].first[0])) } ;
+		_think = Think{ tem.DecideStepByDirection(agents[0].position, Direction(agent1[agent1.size() - 1].first[0])), tem.DecideStepByDirection(agents[1].position, Direction(agent2[agent2.size() - 1].first[0])) };
 		_is_ready = true;
 	}
 
