@@ -6,7 +6,7 @@ long long DoubleNextBestClient2::Explore(const GameInfo& info, const GameLogic& 
 
 	const auto all_step = Utility::AllStep();
 
-	long long sump = 0;
+	long long maxp = -1000000;
 	for (int i = 0; i < all_step.size(); i++)
 	{
 		int p = 0;
@@ -17,17 +17,17 @@ long long DoubleNextBestClient2::Explore(const GameInfo& info, const GameLogic& 
 			thinks[this_team] = Think{ all_step[i],all_step[k] };
 			thinks[other_team] = Think{ Step{Action::Stop,Direction::Stop},Step{Action::Stop,Direction::Stop} };
 			next_game.NextTurn(thinks);
-			if (depth == 0) {
+			if (depth == 1) {
 				auto points = game.GetField().GetTotalPoints();
-				return points[this_team] - points[other_team];
+				p = points[this_team] - points[other_team];
 			}
 			else {
 				p = Explore(info, next_game, depth - 1);
 			}
-			sump += p;
+			if (p > maxp)maxp = p;
 		}
-		return sump;
 	}
+	return maxp;
 }
 
 void DoubleNextBestClient2::Update(GameInfo info)
