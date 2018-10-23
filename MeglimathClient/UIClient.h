@@ -17,6 +17,9 @@ private:
 	bool is_left = false;
 	int idx = 0;
 
+private:
+	void turn_init(const GameInfo& info);
+	
 public:
 	String Name() override { return U"UI"; }
 
@@ -26,6 +29,7 @@ public:
 		{
 			return;
 		}
+		turn_init(info);
 
 		// 司令入力
 		for (auto i : step(2))
@@ -42,12 +46,13 @@ public:
 		{
 			for (int y = -1;y + 1 < 3;y++)
 			{
-				if (x <= 0 || y <= 0 || x >= w || y >= h) continue;
-
 				Point dp(x, y);
 				for (auto i : step(2))
 				{
 					Point p = agent_points[i] + dp;
+
+					if (p.x < 0 || p.y < 0 || p.x >= w || p.y >= h) continue;
+
 					if (field_ui[p.y][p.x].leftPressed())
 					{
 						_think.steps[idx].action =
@@ -66,37 +71,7 @@ public:
 		}
 	}
 
-	void Initialize(const GameInfo& info) override
-	{
-		auto agents = info.GetAgents(Transform::GetInverseTeam(_type));
-		for (auto i : step(2))
-		{
-			agent_points[i] = { agents[i].position.x, agents[i].position.y };
-		}
-
-		auto field = info.GetField();
-		Size size = { field.cells.width(), field.cells.height() };
-
-		if (field_ui.size() == size)
-		{
-			return;
-		}
-
-		// UI初期化
-		field_ui = Grid<Rect>(size);
-		Size draw_size(30, 30);
-		for (auto y = 0; y < size.y; y++)
-		{
-			for (auto x = 0; x < size.x; x++)
-			{
-				Point pos(x, y);
-				Point draw_pos = Point(pos * draw_size);
-
-				field_ui[y][x] = Rect(draw_pos, draw_size);
-			}
-		}
-	}
-
+	
 	bool IsDraw() override { return true; }
 
 	void Draw() override
@@ -118,7 +93,7 @@ public:
 
 				for (auto i : step(2))
 				{
-					if (agent_points[0] == Point(x, y))
+					if (agent_points[i] == Point(x, y))
 					{
 						Circle(r.center(), 10).draw();
 					}

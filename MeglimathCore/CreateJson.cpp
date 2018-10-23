@@ -7,7 +7,7 @@ const std::string Transform::CreateJson(const GameInfo& info)
 	int turn = info.GetTurn();
 
 	const auto &cells = field.cells;
-	Size size = { (cells.size().x + 1) / 2, (cells.size().y + 1) / 2 };
+	Size size = { cells.size().x, cells.size().y };
 
 	rapidjson::StringBuffer buffer;
 	rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
