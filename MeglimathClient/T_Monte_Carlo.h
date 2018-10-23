@@ -103,10 +103,6 @@ public:
 		_is_ready = true;
 	}
 
-	void Initialize(const GameInfo& info) override
-	{
-		_is_ready = false;
-	}
 
 public:
 	T_Monte_Carlo(TeamType type);

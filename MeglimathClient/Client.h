@@ -21,7 +21,7 @@ public:
 	/// <summary>
 	/// 次のターンに入る前の初期化処理
 	/// </summary>
-	virtual void Initialize(const GameInfo& info) = 0;
+	virtual void Initialize();
 
 	virtual void Draw();
 
@@ -37,6 +37,5 @@ protected:
 public:
 	Client();
 	Client(TeamType type);
-	~Client();
 };
 

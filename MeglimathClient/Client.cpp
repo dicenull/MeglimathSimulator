@@ -6,6 +6,11 @@ Think Client::GetNextThink()
 	return _think;
 }
 
+void Client::Initialize()
+{
+	_is_ready = false;
+}
+
 void Client::Draw()
 {
 }
@@ -28,8 +33,4 @@ Client::Client()
 Client::Client(TeamType type)
 {
 	_type = type;
-}
-
-Client::~Client()
-{
 }

@@ -35,10 +35,6 @@ public:
 		}
 	}
 
-	void Initialize(const GameInfo& info) override
-	{
-		_is_ready = false;
-	}
 
 public:
 	void SetTeamType(TeamType type);

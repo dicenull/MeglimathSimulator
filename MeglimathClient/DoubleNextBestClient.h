@@ -15,11 +15,6 @@ public:
 		return U"DoubleNextBest";
 	}
 
-	void Initialize(const GameInfo& info) override
-	{
-		_is_ready = false;
-	}
-
 	void Update(const GameInfo& info) override
 	{
 		auto agents = info.GetAgents(_type);		

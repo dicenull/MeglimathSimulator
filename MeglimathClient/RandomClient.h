@@ -22,11 +22,6 @@ public:
 		_is_ready = true;
 	}
 
-	void Initialize(const GameInfo& info) override
-	{
-		_is_ready = false;
-	}
-
 public:
 	RandomClient(TeamType type);
 	~RandomClient();
