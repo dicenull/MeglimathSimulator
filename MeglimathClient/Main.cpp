@@ -14,6 +14,7 @@
 #include "NextBestClient.h"
 #include "DoubleNextBestClient.h"
 #include "UIClient.h"
+#include "RatioClient.h"
 
 struct GameData
 {
@@ -68,6 +69,7 @@ namespace Scenes
 			clients.push_back(std::make_unique<NextBestClient>(type));
 			clients.push_back(std::make_unique<DoubleNextBestClient>(type));
 			clients.push_back(std::make_unique<UIClient>(type));
+			clients.push_back(std::make_unique<RatioClient>(type));
 
 			for (int i = 0; i < clients.size(); i++)
 			{

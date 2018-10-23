@@ -80,7 +80,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SIV3D_0_3_0)\include;$(SIV3D_0_3_0)\include\ThirdParty;$(IncludePath);</IncludePath>
+    <IncludePath>C:\boost_1_67_0;C:\git\rapidjson\include;$(SIV3D_0_3_0)\include;$(SIV3D_0_3_0)\include\ThirdParty;$(IncludePath)</IncludePath>
     <LibraryPath>$(UniversalCRT_IncludePath);$(SIV3D_0_3_0)\lib\Windows(x64);$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)Intermediate\$(ProjectName)\Debug-x64\</OutDir>
     <IntDir>$(SolutionDir)Intermediate\$(ProjectName)\Debug-x64\Intermediate\</IntDir>
@@ -212,6 +212,7 @@
     <ClCompile Include="ManualClient.cpp" />
     <ClCompile Include="NextBestClient.cpp" />
     <ClCompile Include="RandomClient.cpp" />
+    <ClCompile Include="RatioClient.cpp" />
     <ClCompile Include="T_Monte_Carlo.cpp" />
     <ClCompile Include="UIClient.cpp" />
   </ItemGroup>
@@ -266,6 +267,7 @@
     <ClInclude Include="ManualClient.h" />
     <ClInclude Include="NextBestClient.h" />
     <ClInclude Include="RandomClient.h" />
+    <ClInclude Include="RatioClient.h" />
     <ClInclude Include="T_Monte_Carlo.h" />
     <ClInclude Include="UIClient.h" />
   </ItemGroup>
