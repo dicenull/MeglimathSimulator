@@ -4,7 +4,7 @@
 
 void UIClient::turn_init(const GameInfo & info)
 {
-	auto agents = info.GetAgents(Transform::GetInverseTeam(_type));
+	auto agents = info.GetAgents(_type);
 	for (auto i : step(2))
 	{
 		agent_points[i] = { agents[i].position.x, agents[i].position.y };
@@ -20,13 +20,13 @@ void UIClient::turn_init(const GameInfo & info)
 
 	// UI初期化
 	field_ui = Grid<Rect>(size);
-	Size draw_size(30, 30);
+	const Point origin = Window::Center() - draw_size * (size / 2);
 	for (auto y = 0; y < size.y; y++)
 	{
 		for (auto x = 0; x < size.x; x++)
 		{
 			Point pos(x, y);
-			Point draw_pos = Point(pos * draw_size);
+			Point draw_pos = origin + Point(pos * draw_size);
 
 			field_ui[y][x] = Rect(draw_pos, draw_size);
 		}
@@ -36,7 +36,4 @@ void UIClient::turn_init(const GameInfo & info)
 UIClient::UIClient(TeamType type)
 {
 	_type = type;
-
-	coms[0].setCenter({ 50, Window::Size().y / 2 });
-	coms[1].setCenter({ Window::Size().x - 50, Window::Size().y / 2 });
 }

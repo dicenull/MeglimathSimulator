@@ -6,16 +6,11 @@ class UIClient :
 	public Client
 {
 private:
-	const Texture const com_imgs[2] =
-	{
-		Texture(U"image/com_right.PNG"),
-		Texture(U"image/com_left.PNG")
-	};
-	Rect coms[2] = { Rect(com_imgs[0].size()), Rect(com_imgs[1].size()) };
 	Grid<Rect> field_ui;
+	const Size draw_size{ 30, 30 };
 	Point agent_points[2];
-	bool is_left = false;
 	int idx = 0;
+	Font font{ 20 };
 
 private:
 	void turn_init(const GameInfo& info);
@@ -31,15 +26,6 @@ public:
 		}
 		turn_init(info);
 
-		// 司令入力
-		for (auto i : step(2))
-		{
-			if (coms[i].leftClicked())
-			{
-				is_left = (i == 0);
-			}
-		}
-
 		auto w = field_ui.width();
 		auto h = field_ui.height();
 		for (int x = -1; x + 1 < 3;x++)
@@ -53,15 +39,19 @@ public:
 
 					if (p.x < 0 || p.y < 0 || p.x >= w || p.y >= h) continue;
 
-					if (field_ui[p.y][p.x].leftPressed())
+					if (field_ui[p.y][p.x].leftReleased())
 					{
 						_think.steps[idx].action =
-							KeyControl.down() ? Action::RemoveTile : Action::Move;
+							KeyControl.pressed() ? Action::RemoveTile : Action::Move;
 
 						_think.steps[idx].direction =
 							Transform::DeltaToDir(_Point(x, y));
 
-						if (idx == 1) _is_ready = true;
+						if (idx == 1)
+						{
+							_is_ready = true;
+							idx = 0;
+						}
 						else idx++;
 
 						return;
@@ -95,14 +85,13 @@ public:
 				{
 					if (agent_points[i] == Point(x, y))
 					{
-						Circle(r.center(), 10).draw();
+						Circle(r.center(), 15).draw();
+						font(i + 1).drawAt(r.center(), Palette::Black);
 					}
 				}
 
 			}
 		}
-
-		for (auto i : step(2)) coms[i](com_imgs[i]).draw();
 	}
 public:
 	UIClient(TeamType type);
