@@ -30,32 +30,29 @@ public:
 		auto h = field_ui.height();
 		for (int x = -1; x + 1 < 3;x++)
 		{
-			for (int y = -1;y + 1 < 3;y++)
+			for (int y = -1; y + 1 < 3; y++)
 			{
 				Point dp(x, y);
-				for (auto i : step(2))
+				Point p = agent_points[idx] + dp;
+
+				if (p.x < 0 || p.y < 0 || p.x >= w || p.y >= h) continue;
+
+				if (field_ui[p.y][p.x].leftReleased())
 				{
-					Point p = agent_points[i] + dp;
+					_think.steps[idx].action =
+						KeyControl.pressed() ? Action::RemoveTile : Action::Move;
 
-					if (p.x < 0 || p.y < 0 || p.x >= w || p.y >= h) continue;
+					_think.steps[idx].direction =
+						Transform::DeltaToDir(_Point(x, y));
 
-					if (field_ui[p.y][p.x].leftReleased())
+					if (idx == 1)
 					{
-						_think.steps[idx].action =
-							KeyControl.pressed() ? Action::RemoveTile : Action::Move;
-
-						_think.steps[idx].direction =
-							Transform::DeltaToDir(_Point(x, y));
-
-						if (idx == 1)
-						{
-							_is_ready = true;
-							idx = 0;
-						}
-						else idx++;
-
-						return;
+						_is_ready = true;
+						idx = 0;
 					}
+					else idx++;
+
+					return;
 				}
 			}
 		}
