@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "../MeglimathCore/Drawer.h"
 #include "../MeglimathClient/Client.h"
 
@@ -7,6 +7,7 @@ class ClientDrawer
 {
 public:
 	void DrawInputState(Client& client);
+	void DrawInstraction(Client& client);
 public:
 	ClientDrawer();
 	~ClientDrawer();

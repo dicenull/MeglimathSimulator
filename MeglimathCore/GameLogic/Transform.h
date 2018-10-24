@@ -88,6 +88,20 @@ namespace Transform
 		return TileType::None;
 	}
 
+	constexpr int ToNumPad(TeamType team, Direction dir)
+	{
+		int table[2][9] = { { 8,7,4,1,2,3,6,9,5 }, {2,3,6,9,8,7,4,1,5} };
+
+		if (team == TeamType::Red) 
+		{
+			return table[0][(int)dir];
+		}
+		else
+		{
+			return table[1][(int)dir];
+		}
+	}
+
 	constexpr TileType GetInverseTile(TileType tile)
 	{
 		switch (tile)

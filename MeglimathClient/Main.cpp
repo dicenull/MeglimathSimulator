@@ -270,8 +270,7 @@ namespace Scenes
 			getData().drawer.DrawField(getData().info.GetField());
 			getData().drawer.DrawAgents(getData().info.GetAllAgent());
 
-			getData().drawer.DrawInputState(*(getData().user_client));
-
+			getData().drawer.DrawInstraction(*(getData().user_client));
 		}
 	};
 }
