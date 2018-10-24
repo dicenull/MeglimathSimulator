@@ -6,20 +6,46 @@ long long DoubleNextBestClient2::Explore(const GameInfo& info, const GameLogic& 
 
 	const auto all_step = Utility::AllStep();
 
-	long long maxp = -1000000;
-	for (int i = 0; i < all_step.size(); i++)
+	if (depth == 0)
 	{
-		int p = 0;
-		for (int k = 0; k < all_step.size(); k++)
+		auto eval_point_total = 0;		// eval_point_total は eval_points_next の総和, 次の一手の評価基準
+		for (int e : eval_points_next)
+			eval_point_total += e;
+
+		if (!game.GetField().IsSameStateField(info.GetField()))		//自分のエージェント同士の衝突を検出
 		{
-			auto next_game = game;
-			std::unordered_map<TeamType, Think> thinks;
-			thinks[this_team] = Think{ all_step[i],all_step[k] };
-			thinks[other_team] = Think{ Step{Action::Stop,Direction::Stop},Step{Action::Stop,Direction::Stop} };
-			next_game.NextTurn(thinks);
-			if (depth == 1) {
+			for (int it = 0; it < 2; it++)
+			{
+				if (eval_points[it] <= eval_point_total)
+				{
+					if (eval_points[it] != eval_point_total)
+						candidates[it].clear();
+
+					eval_points[it] = eval_point_total;
+					candidates[it].push_back({ all_step[s1], all_step[s2] });
+					break;
+				}
+			}
+		}
+	}
+	else
+	{
+		for (int i = 0; i < all_step.size(); i++)
+		{
+			for (int k = 0; k < all_step.size(); k++)
+			{
+				auto next_game = game;
+				std::unordered_map<TeamType, Think> thinks;
+				thinks[this_team] = Think{ all_step[i],all_step[k] };
+				thinks[other_team] = Think{ Step{Action::Stop,Direction::Stop},Step{Action::Stop,Direction::Stop} };
+				next_game.NextTurn(thinks);
 				auto points = next_game.GetField().GetTotalPoints();
-				p = points[this_team] - points[other_team];
+				eval_points_next[depth - 1] = points[this_team] - points[other_team];
+
+				if (depth == EXPLORE_DEPTH)
+					Explore(info, next_game, depth - 1, i, k);		// 最初のみ 仮引数 s1, s2 を更新
+				else
+					Explore(info, next_game, depth - 1, s1, s2);
 			}
 			else {
 				p = Explore(info, next_game, depth - 1);
