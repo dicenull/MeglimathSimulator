@@ -18,7 +18,7 @@ long long DoubleNextBestClient2::Explore(const GameInfo& info, const GameLogic& 
 			thinks[other_team] = Think{ Step{Action::Stop,Direction::Stop},Step{Action::Stop,Direction::Stop} };
 			next_game.NextTurn(thinks);
 			if (depth == 1) {
-				auto points = game.GetField().GetTotalPoints();
+				auto points = next_game.GetField().GetTotalPoints();
 				p = points[this_team] - points[other_team];
 			}
 			else {
