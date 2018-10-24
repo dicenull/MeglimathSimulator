@@ -21,7 +21,7 @@ public:
 		_is_ready = false;
 	}
 
-	void Update(GameInfo info) override;
+	void Update(const GameInfo& info) override;
 private:
 	long long  Explore(const GameInfo& info, const GameLogic& game, int depth);
 	

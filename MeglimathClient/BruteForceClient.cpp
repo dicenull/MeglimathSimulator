@@ -1,7 +1,7 @@
 #include"BruteForceClient.h"
 long long BruteForceClient::Explore(const GameInfo& info, const GameLogic& game, int depth)
 {
-	auto this_team = _type;
+	auto this_team = type;
 	auto other_team = Transform::GetInverseTeam(this_team);
 
 	const auto all_step = Utility::AllStep();
@@ -38,12 +38,12 @@ long long BruteForceClient::Explore(const GameInfo& info, const GameLogic& game,
 	return maxp;
 }
 
-void BruteForceClient::Update(GameInfo info)
+void BruteForceClient::Update(const GameInfo& info)
 {
-	auto agents = info.GetAgents(_type);
+	auto agents = info.GetAgents(type);
 	auto game = info.GetGameLogic();
 	auto point = game.GetField().GetTotalPoints();
-	auto this_team = _type;
+	auto this_team = type;
 	auto other_team = Transform::GetInverseTeam(this_team);
 
 	const auto all_step = Utility::AllStep();
