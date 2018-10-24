@@ -16,6 +16,7 @@
 #include "UIClient.h"
 #include "RatioClient.h"
 #include "DoubleNextBestClient2.h"
+#include "BruteForceClient.h"
 
 struct GameData
 {

@@ -204,6 +204,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BruteForceClient.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="ClientDrawer.cpp" />
     <ClCompile Include="DoubleNextBestClient.cpp" />
@@ -260,6 +261,7 @@
     <Text Include="App\engine\font\noto\LICENSE_OFL.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BruteForceClient.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="ClientDrawer.h" />
     <ClInclude Include="DoubleNextBestClient.h" />
