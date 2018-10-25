@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include"Think.h"
 #include "Field.h"
 #include"TeamLogic.h"
@@ -16,23 +16,21 @@ private:
 public:
 
 	/// <summary>
-	/// ƒG[ƒWƒFƒ“ƒg‚ğƒ‰ƒ“ƒ_ƒ€‚É‰Šú‰»‚·‚é
+	/// ã‚¨ãƒ¼ã‚¸ã‚§ãƒ³ãƒˆã‚’ãƒ©ãƒ³ãƒ€ãƒ ã«åˆæœŸåŒ–ã™ã‚‹
 	/// </summary>
 	void initAgentsPos();
 
 	/// <summary>
-	/// ƒG[ƒWƒFƒ“ƒg‚Ì‰Šú‰»ˆ—‚ğs‚¤
+	/// ã‚¨ãƒ¼ã‚¸ã‚§ãƒ³ãƒˆã®åˆæœŸåŒ–å‡¦ç†ã‚’è¡Œã†
 	/// </summary>
-	/// <param name="init_pos">ƒG[ƒWƒFƒ“ƒg‚Ì‰ŠúÀ•W‚Ì‚à‚Æ‚É‚È‚é¶ã‚ÌÀ•W</param>
+	/// <param name="init_pos">ã‚¨ãƒ¼ã‚¸ã‚§ãƒ³ãƒˆã®åˆæœŸåº§æ¨™ã®ã‚‚ã¨ã«ãªã‚‹å·¦ä¸Šã®åº§æ¨™</param>
 	void initAgentsPos(_Point<> init_pos);
-
-	void initAgentsPos(_Point<> init_pos1, _Point<> init_pos2);
 
 	void initAgentPos(std::array<_Point<>,4> init_pos);
 
 public:
 	/// <summary>
-	/// json‚©‚çƒQ[ƒ€‚ğ‰Šú‰»‚·‚é
+	/// jsonã‹ã‚‰ã‚²ãƒ¼ãƒ ã‚’åˆæœŸåŒ–ã™ã‚‹
 	/// </summary>
 	/// <param name="path">json</param>
 	void InitalizeFromJson(const std::string json);
@@ -44,19 +42,19 @@ public:
 	const Field& GetField() const;
 
 	/// <summary>
-	/// ƒQ[ƒ€‚Ìó‘Ô‚ğXV‚·‚é
-	/// ‚·‚×‚Ä‚ÌƒG[ƒWƒFƒ“ƒgî•ñ‚ğæ“¾‚·‚é
+	/// ã‚²ãƒ¼ãƒ ã®çŠ¶æ…‹ã‚’æ›´æ–°ã™ã‚‹
+	/// ã™ã¹ã¦ã®ã‚¨ãƒ¼ã‚¸ã‚§ãƒ³ãƒˆæƒ…å ±ã‚’å–å¾—ã™ã‚‹
 	/// </summary>
-	/// <returns>‚·‚×‚Ä‚ÌƒG[ƒWƒFƒ“ƒgî•ñƒŠƒXƒg</returns>
+	/// <returns>ã™ã¹ã¦ã®ã‚¨ãƒ¼ã‚¸ã‚§ãƒ³ãƒˆæƒ…å ±ãƒªã‚¹ãƒˆ</returns>
 	std::vector<Agent> GetAgents() const;
 
 	/// <summary>
-	/// ƒQ[ƒ€‚ğŸ‚Ìƒ^[ƒ“‚Éi‚ß‚é
+	/// ã‚²ãƒ¼ãƒ ã‚’æ¬¡ã®ã‚¿ãƒ¼ãƒ³ã«é€²ã‚ã‚‹
 	/// </summary>
 	void NextTurn(const std::unordered_map<TeamType, Think> &_thinks);
 
 	///<summary>
-	///‰Â”\‚Ès“®‚©
+	///å¯èƒ½ãªè¡Œå‹•ã‹
 	///</summary>
 	bool IsThinkAble(TeamType team, Think think)const;
 

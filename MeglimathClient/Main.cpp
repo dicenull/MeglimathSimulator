@@ -107,10 +107,13 @@ namespace Scenes
 
 	class Connection : public MyApp::Scene
 	{
+	private:
+		int count;
 	public:
 		Connection(const InitData& init) : IScene(init)
 		{
 			getData().tcp_client.connect(IPv4::localhost(), 31400);
+			count = 60;
 		}
 
 		void update() override
@@ -119,6 +122,12 @@ namespace Scenes
 			{
 				changeScene(U"HandShake", 0);
 			}
+
+			if (count < 0)
+			{
+				changeScene(U"Connection", 0.5);
+			}
+			count--;
 		}
 
 		void draw() const override

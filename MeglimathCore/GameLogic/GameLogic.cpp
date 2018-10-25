@@ -33,56 +33,6 @@ void GameLogic::initAgentsPos(_Point<> init_pos)
 		});
 }
 
-void GameLogic::initAgentsPos(_Point<> init_pos1, _Point<> init_pos2)
-{
-	_Size size = _field.cells.size();
-	_Point<> top_left;
-	if (init_pos1.x > size.x / 2)
-	{
-		top_left.x = init_pos1.x / 2;
-	}
-	else
-	{
-		top_left.x = init_pos1.x;
-	}
-
-	if (init_pos1.y > size.y / 2)
-	{
-		top_left.y = init_pos1.y / 2;
-	}
-	else
-	{
-		top_left.y = init_pos1.y;
-	}
-
-	bool init_map[][2] = { {false, false}, {false, false} };
-	init_map[init_pos1.x / (size.x / 2)][init_pos1.y / (size.y / 2)] = true;
-	init_map[init_pos2.x / (size.x / 2)][init_pos2.y / (size.y / 2)] = true;
-
-	std::vector<_Point<>> other_init_pos;
-	for (int i = 0; i < 2; i++)
-	{
-		for (int k = 0; k < 2; k++)
-		{
-			if (init_map[i][k] == false)
-			{
-				_Point<> pos;
-				pos.x = i
-					? (int)(size.x - 1) - top_left.x
-					: top_left.x;
-
-				pos.y = k
-					? (int)(size.y - 1) - top_left.y
-					: top_left.y;
-
-				other_init_pos.push_back(pos);
-			}
-		}
-	}
-
-	initAgentPos({ init_pos1, init_pos2, other_init_pos[0], other_init_pos[1] });
-}
-
 void GameLogic::initAgentPos(std::array<_Point<>, 4> init_pos)
 {
 	_field.PaintCell(init_pos[0], TeamType::Blue);
@@ -104,7 +54,13 @@ void GameLogic::InitalizeFromJson(const std::string json)
 	// 二人分の初期位置を取得
 	if (document.HasMember("InitPos")) {
 		auto init_pos = document["InitPos"].GetArray();
-		initAgentsPos(_Point<int>{ init_pos[0].GetString()}, _Point<int>{init_pos[1].GetString()});
+
+		std::array<_Point<>, 4> pos_list;
+		for (int i = 0; i < 4; i++)
+		{
+			pos_list[i] = _Point<int>{ init_pos[i].GetString() };
+		}
+		initAgentPos(pos_list);
 	}
 	else {
 		initAgentsPos();
