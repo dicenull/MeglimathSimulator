@@ -66,16 +66,16 @@ namespace Scenes
 
 	class Connection : public MyApp::Scene
 	{
-	private:
-		int count;
 	public:
 		Connection(const InitData& init) : IScene(init)
 		{
 			// 初期化
 			getData().team_table.clear();
+			getData().server.cancelAccept();
+			getData().server.disconnect();
+
 			// 二つのクライアントと接続する
 			getData().server.startAcceptMulti(31400);
-			count = 120;
 		}
 
 		void update() override
@@ -85,11 +85,6 @@ namespace Scenes
 				changeScene(U"HandShake", 0);
 			}
 
-			if (count < 0)
-			{
-				changeScene(U"Connection", 0);
-			}
-			count--;
 		}
 
 		void draw() const override
