@@ -234,6 +234,16 @@ namespace Scenes
 
 				sendGameInfo();
 			}
+
+			if (KeyLeft.down())
+			{
+				data.game.Undo();
+			}
+
+			if (KeyRight.down())
+			{
+				data.game.Redo();
+			}
 		}
 
 		void draw() const override
