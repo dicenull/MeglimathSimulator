@@ -49,7 +49,8 @@ namespace Scenes
 					getData().game = { field_json };
 
 					// クライアントとの接続へ移行
-					server.disconnect();
+					server.sendString(U"ok\n", server.getSessionIDs()[0]);
+
 					changeScene(U"Connection", 0);
 					return;
 				}
@@ -74,7 +75,7 @@ namespace Scenes
 			getData().team_table.clear();
 			// 二つのクライアントと接続する
 			getData().server.startAcceptMulti(31400);
-			count = 60;
+			count = 120;
 		}
 
 		void update() override
@@ -238,11 +239,13 @@ namespace Scenes
 			if (KeyLeft.down())
 			{
 				data.game.Undo();
+				sendGameInfo();
 			}
 
 			if (KeyRight.down())
 			{
 				data.game.Redo();
+				sendGameInfo();
 			}
 		}
 

@@ -195,8 +195,7 @@ namespace Scenes
 	{
 	private:
 		bool _is_init = false;
-		bool _is_update = false;
-
+		
 	public:
 		Game(const InitData& init) : IScene(init)
 		{
@@ -220,47 +219,39 @@ namespace Scenes
 				changeScene(U"Connection", 0);
 			}
 
+			if (_is_init)
+			{
+				// Clientを更新
+				user_client->Update(data.info);
+
+				// ServerにThinkを送信
+				if (user_client->IsReady())
+				{
+					auto think = user_client->GetNextThink();
+					auto str = Unicode::Widen(Transform::CreateJson(think));
+					str.push_back('\n');
+
+					getData().tcp_client.sendString(str);
+
+					user_client->Initialize();
+				}
+			}
+
 			// ゲームの更新
-			if (!_is_update)
+			String json_dat;
+			getData().tcp_client.readLine(json_dat);
+
+			if (json_dat.isEmpty())
 			{
-				String json_dat;
-				getData().tcp_client.readLine(json_dat);
-
-				if (json_dat.isEmpty())
-				{
-					return;
-				}
-
-				rapidjson::Document document;
-				document.Parse(json_dat.narrow().data());
-
-				if (document.HasMember("TeamType"))
-				{
-					return;
-				}
-
-				// フィールド情報を更新
-				getData().info = { json_dat.narrow() };
-				_is_init = true;
-
-				_is_update = true;
+				return;
 			}
 
-			// Clientを更新
-			user_client->Update(data.info);
+			rapidjson::Document document;
+			document.Parse(json_dat.narrow().data());
 
-			// ServerにThinkを送信
-			if (user_client->IsReady())
-			{
-				auto think = user_client->GetNextThink();
-				auto str = Unicode::Widen(Transform::CreateJson(think));
-				str.push_back('\n');
-
-				getData().tcp_client.sendString(str);
-				_is_update = false;
-
-				user_client->Initialize();
-			}
+			// フィールド情報を更新
+			getData().info = { json_dat.narrow() };
+			_is_init = true;
 		}
 
 		void draw() const override
@@ -280,7 +271,10 @@ namespace Scenes
 			getData().drawer.DrawField(getData().info.GetField());
 			getData().drawer.DrawAgents(getData().info.GetAllAgent());
 
-			getData().drawer.DrawInstraction(*(getData().user_client));
+			if (getData().user_client->IsReady())
+			{
+				getData().drawer.DrawInstraction(*(getData().user_client));
+			}
 		}
 	};
 }
