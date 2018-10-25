@@ -14,22 +14,19 @@ void Game::Redo()
 {
 	if (_redo.empty())return;
 
-	auto re_game = _redo.top();
-	_redo.pop();
-	_undo.push(re_game);
+	_undo.push(_gamelogic);
 
-	_gamelogic = re_game;
+	_gamelogic = _redo.top();
+	_redo.pop();
 }
 
 void Game::Undo()
 {
 	if (_undo.empty()) return;
 
-	auto pre_game = _undo.top();
+	_redo.push(_gamelogic);
+	_gamelogic = _undo.top();
 	_undo.pop();
-	_redo.push(pre_game);
-
-	_gamelogic = pre_game;
 }
 
 Array<Agent> Game::GetAgents() const
@@ -52,9 +49,6 @@ void Game::initAgentsPos(Point init_pos)
 Game::Game(const String field_json)
 {
 	_gamelogic.InitalizeFromJson(field_json.narrow());
-	
-	while (!_undo.empty()) _undo.pop();
-	_undo.push(_gamelogic);
 }
 
 int Game::GetTurn() const
@@ -67,6 +61,9 @@ void Game::NextTurn(Think team_blue, Think team_red)
 	{
 		return;
 	}
+
+	_undo.push(_gamelogic);
+	while (!_redo.empty()) _redo.pop();
 	
 	GameInfo info = GetGameInfo();
 	auto agents_map = GetAgentMap();
@@ -76,9 +73,6 @@ void Game::NextTurn(Think team_blue, Think team_red)
 	_think_table[TeamType::Red] = team_red;
 
 	_gamelogic.NextTurn(LogicUtil::fromS3dHashTable(_think_table));
-
-	_undo.push(_gamelogic);
-	while (!_redo.empty()) _redo.pop();
 }
 
 Field Game::GetField() const
