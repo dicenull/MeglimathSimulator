@@ -29,7 +29,7 @@ namespace Scenes
 		ReadFieldJson(const InitData& init) : IScene(init)
 		{
 			// フィールド情報を受け取るための通信
-			getData().server.startAccept(31400);
+			getData().server.startAccept(31401);
 		}
 
 		void update() override
@@ -49,7 +49,8 @@ namespace Scenes
 					getData().game = { field_json };
 
 					// クライアントとの接続へ移行
-					server.disconnect();
+					server.sendString(U"ok\n", server.getSessionIDs()[0]);
+
 					changeScene(U"Connection", 0);
 					return;
 				}
@@ -65,6 +66,8 @@ namespace Scenes
 
 	class Connection : public MyApp::Scene
 	{
+	private:
+		int count;
 	public:
 		Connection(const InitData& init) : IScene(init)
 		{
@@ -72,6 +75,7 @@ namespace Scenes
 			getData().team_table.clear();
 			// 二つのクライアントと接続する
 			getData().server.startAcceptMulti(31400);
+			count = 120;
 		}
 
 		void update() override
@@ -80,6 +84,12 @@ namespace Scenes
 			{
 				changeScene(U"HandShake", 0);
 			}
+
+			if (count < 0)
+			{
+				changeScene(U"Connection", 0);
+			}
+			count--;
 		}
 
 		void draw() const override
@@ -116,7 +126,7 @@ namespace Scenes
 				server.readUntil(U'\n', json_dat, ids[i]);
 				json_dat.remove(U'\n');
 
-				if (json_dat.isEmpty())
+				if (json_dat.isEmpty())	
 				{
 					continue;
 				}
@@ -223,6 +233,18 @@ namespace Scenes
 				thinks[TeamType::Red] = none;
 				thinks[TeamType::Blue] = none;
 
+				sendGameInfo();
+			}
+
+			if (KeyLeft.down())
+			{
+				data.game.Undo();
+				sendGameInfo();
+			}
+
+			if (KeyRight.down())
+			{
+				data.game.Redo();
 				sendGameInfo();
 			}
 		}

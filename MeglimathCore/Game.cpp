@@ -10,6 +10,25 @@ HashTable<TeamType, Array<Agent>> Game::GetAgentMap() const
 	return LogicUtil::toS3dHashTable(_gamelogic.GetTeams());
 }
 
+void Game::Redo()
+{
+	if (_redo.empty())return;
+
+	_undo.push(_gamelogic);
+
+	_gamelogic = _redo.top();
+	_redo.pop();
+}
+
+void Game::Undo()
+{
+	if (_undo.empty()) return;
+
+	_redo.push(_gamelogic);
+	_gamelogic = _undo.top();
+	_undo.pop();
+}
+
 Array<Agent> Game::GetAgents() const
 {
 	return LogicUtil::toS3dArray<Agent>(_gamelogic.GetAgents());
@@ -42,6 +61,9 @@ void Game::NextTurn(Think team_blue, Think team_red)
 	{
 		return;
 	}
+
+	_undo.push(_gamelogic);
+	while (!_redo.empty()) _redo.pop();
 	
 	GameInfo info = GetGameInfo();
 	auto agents_map = GetAgentMap();
@@ -51,7 +73,6 @@ void Game::NextTurn(Think team_blue, Think team_red)
 	_think_table[TeamType::Red] = team_red;
 
 	_gamelogic.NextTurn(LogicUtil::fromS3dHashTable(_think_table));
-
 }
 
 Field Game::GetField() const
