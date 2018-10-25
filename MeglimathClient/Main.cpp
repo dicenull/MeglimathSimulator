@@ -195,6 +195,7 @@ namespace Scenes
 	{
 	private:
 		bool _is_init = false;
+		bool _first = false;
 		
 	public:
 		Game(const InitData& init) : IScene(init)
@@ -234,6 +235,7 @@ namespace Scenes
 					getData().tcp_client.sendString(str);
 
 					user_client->Initialize();
+					_first = true;
 				}
 			}
 
@@ -271,7 +273,7 @@ namespace Scenes
 			getData().drawer.DrawField(getData().info.GetField());
 			getData().drawer.DrawAgents(getData().info.GetAllAgent());
 
-			if (getData().user_client->IsReady())
+			if (_first)
 			{
 				getData().drawer.DrawInstraction(*(getData().user_client));
 			}
