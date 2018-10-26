@@ -2,6 +2,7 @@
 # include <Siv3D.hpp> // OpenSiv3D v0.2.5
 #include <HamFramework.hpp>
 #include <rapidjson\document.h>
+#include <Windows.h> //コマンドライン引数用
 
 #include "../MeglimathCore/TCPString.hpp"
 #include "../MeglimathCore/GameInfo.h"
@@ -26,6 +27,8 @@ struct GameData
 	ClientDrawer drawer;
 	GameInfo info;
 	TeamType teamType;
+	int commander_id;
+	int client_id;
 };
 
 using MyApp = SceneManager<String, GameData>;
@@ -42,13 +45,17 @@ namespace Scenes
 
 		void update() override
 		{
-			if (KeyLeft.down())
+			int commander_id = getData().commander_id;
+
+			//if (KeyLeft.down())
+			if (commander_id == 0)
 			{
 				getData().teamType = TeamType::Red;
 				changeScene(U"SetClient", 0);
 			}
 
-			if (KeyRight.down())
+			//if (KeyRight.down())
+			if (commander_id == 1)
 			{
 				getData().teamType = TeamType::Blue;
 				changeScene(U"SetClient", 0);
@@ -90,6 +97,7 @@ namespace Scenes
 
 		void update() override
 		{
+			/*
 			for (int i = 0; i < clients.size(); i++)
 			{
 				Key key = { InputDevice::Keyboard, (uint8)(Key0.code() + i) };
@@ -101,6 +109,12 @@ namespace Scenes
 					changeScene(U"Connection", 0);
 				}
 			}
+			*/
+			int client_id = getData().client_id;
+
+			getData().user_client = std::move(clients[client_id]);
+			ClearPrint();
+			changeScene(U"Connection", 0);
 		}
 
 		void draw() const override
@@ -283,6 +297,12 @@ namespace Scenes
 
 void Main()
 {
+	int argc;
+	LPWSTR *argv = ::CommandLineToArgvW(::GetCommandLineW(), &argc);
+
+	int commander_id = Parse<int>(Unicode::FromWString(argv[1]));
+	int client_id = Parse<int>(Unicode::FromWString(argv[2]));
+
 	MyApp manager;
 	manager
 		.add<Scenes::SelectTeamType>(U"SelectTeamType")
@@ -291,6 +311,10 @@ void Main()
 		.add<Scenes::HandShake>(U"HandShake")
 		.add<Scenes::SetClient>(U"SetClient");
 	
+	const auto p = manager.get();
+	p->commander_id = commander_id;
+	p->client_id = client_id;
+
 	FontAsset::Register(U"Msg", 64);
 	FontAsset::Register(U"Cell", 16, Typeface::Black);
 

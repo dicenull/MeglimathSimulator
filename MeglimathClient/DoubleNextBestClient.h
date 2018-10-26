@@ -106,6 +106,11 @@ public:
 
 	void Update(const GameInfo& info) override
 	{
+		if (IsReady())
+		{
+			return;
+		}
+
 		auto agents = info.GetAgents(type);		
 		auto field = info.GetField();
 		auto this_team = type;
