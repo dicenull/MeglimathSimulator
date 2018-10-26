@@ -87,6 +87,9 @@
     <ClCompile Include="BruteForceClient.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DoubleBruteForceClient.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\icon.ico">
@@ -236,6 +239,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="BruteForceClient.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DoubleBruteForceClient.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GetEssentialStep.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

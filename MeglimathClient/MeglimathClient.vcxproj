@@ -214,6 +214,7 @@
     <ClCompile Include="NextBestClient.cpp" />
     <ClCompile Include="RandomClient.cpp" />
     <ClCompile Include="RatioClient.cpp" />
+    <ClCompile Include="DoubleBruteForceClient.cpp" />
     <ClCompile Include="T_Monte_Carlo.cpp" />
     <ClCompile Include="UIClient.cpp" />
   </ItemGroup>
@@ -264,8 +265,10 @@
     <ClInclude Include="BruteForceClient.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="ClientDrawer.h" />
+    <ClInclude Include="DoubleBruteForceClient.h" />
     <ClInclude Include="DoubleNextBestClient.h" />
     <ClInclude Include="DoubleNextBestClient2.h" />
+    <ClInclude Include="GetEssentialStep.h" />
     <ClInclude Include="KeyboardClient.h" />
     <ClInclude Include="ManualClient.h" />
     <ClInclude Include="NextBestClient.h" />
