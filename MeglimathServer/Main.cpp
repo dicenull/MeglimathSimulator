@@ -272,6 +272,8 @@ namespace Scenes
 
 void Main()
 {
+	Window::SetPos(850, 0);
+
 	MyApp manager;
 	manager
 		.add<Scenes::ReadFieldJson>(U"ReadFieldJson")

@@ -113,6 +113,15 @@ namespace Scenes
 			int client_id = getData().client_id;
 
 			getData().user_client = std::move(clients[client_id]);
+
+			if (client_id == 5)
+			{
+				Window::SetPos(0, 0);
+			}
+			else
+			{
+				Window::SetPos(0, Window::Height());
+			}
 			ClearPrint();
 			changeScene(U"Connection", 0);
 		}
