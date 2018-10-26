@@ -90,7 +90,7 @@ namespace Transform
 
 	constexpr int ToNumPad(TeamType team, Direction dir)
 	{
-		int table[2][9] = { { 8,7,4,1,2,3,6,9,5 }, {2,3,6,9,8,7,4,1,5} };
+		int table[2][9] = { { 4,1,2,3,6,9,8,7,5 }, { 4,1,2,3,6,9,8,7,5 } };
 
 		if (team == TeamType::Red) 
 		{
