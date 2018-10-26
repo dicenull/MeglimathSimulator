@@ -225,6 +225,34 @@ bool Field::CanRemoveTile(_Point<> pos, TeamType team)
 	return IsInField(pos) && cells[pos].tile != TileType::None;
 }
 
+void Field::SpinRight90()
+{
+	auto temp = _Grid<Cell>({ cells.height(), cells.width() });
+	for (int x = 0; x < cells.width(); x++)
+	{
+		for (int y = 0; y < cells.height(); y++)
+		{
+			temp[_Point<>(temp.width() - 1 - y, x)] = cells[_Point<>(x, y)];
+		}
+	}
+
+	cells = temp;
+}
+
+void Field::SpinLeft90()
+{
+	auto temp = _Grid<Cell>({ cells.height(), cells.width() });
+	for (int x = 0; x < cells.width(); x++)
+	{
+		for (int y = 0; y < cells.height(); y++)
+		{
+			temp[_Point<>(y, x)] = cells[_Point<>(x, y)];
+		}
+	}
+
+	cells = temp;
+}
+
 Field Field::makeFieldFromJson(std::string json)
 {
 	rapidjson::Document document;
