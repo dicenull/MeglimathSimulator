@@ -20,13 +20,13 @@ void UIClient::turn_init(const GameInfo & info)
 
 	// UI初期化
 	field_ui = Grid<Rect>(size);
-	const Point origin = Window::Center() - draw_size * (size / 2);
+	Point draw_size = Window::Size() / size;
 	for (auto y = 0; y < size.y; y++)
 	{
 		for (auto x = 0; x < size.x; x++)
 		{
 			Point pos(x, y);
-			Point draw_pos = origin + Point(pos * draw_size);
+			Point draw_pos = Point(pos * draw_size);
 
 			field_ui[y][x] = Rect(draw_pos, draw_size);
 		}

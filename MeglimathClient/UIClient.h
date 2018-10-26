@@ -7,7 +7,6 @@ class UIClient :
 {
 private:
 	Grid<Rect> field_ui;
-	const Size draw_size{ 30, 30 };
 	Point agent_points[2];
 	int idx = 0;
 	Font font{ 20 };
