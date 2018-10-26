@@ -236,7 +236,7 @@ namespace Scenes
 			if (thinks[TeamType::Red].has_value() && thinks[TeamType::Blue].has_value())
 			{
 				getData().game.NextTurn(thinks[TeamType::Blue].value(), thinks[TeamType::Red].value());
-				Print << U"NEXT : " << data.game.GetTurn();
+
 				// Think情報を初期化
 				thinks[TeamType::Red] = none;
 				thinks[TeamType::Blue] = none;
@@ -272,7 +272,14 @@ namespace Scenes
 
 void Main()
 {
-	const auto p = MakeShared<GameData>();
+	MyApp manager;
+	manager
+		.add<Scenes::ReadFieldJson>(U"ReadFieldJson")
+		.add<Scenes::Connection>(U"Connection")
+		.add<Scenes::Game>(U"Game")
+		.add<Scenes::HandShake>(U"HandShake");
+	
+	const auto p = manager.get();
 
 	// コマンドライン引数
 	int nArgs = 0;
@@ -285,13 +292,6 @@ void Main()
 
 		p->command_id = command_id;
 	}
-
-	MyApp manager;
-	manager
-		.add<Scenes::ReadFieldJson>(U"ReadFieldJson")
-		.add<Scenes::Connection>(U"Connection")
-		.add<Scenes::Game>(U"Game")
-		.add<Scenes::HandShake>(U"HandShake");
 
 	FontAsset::Register(U"Msg", 32);
 	FontAsset::Register(U"Cell", 16, Typeface::Black);
