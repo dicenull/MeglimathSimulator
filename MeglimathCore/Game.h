@@ -64,6 +64,9 @@ public:
 	void Redo();
 	void Undo();
 
+	void SpinRight90();
+	void SpinLeft90();
+
 public:
 	/// <summary>
 	/// コンストラクタ

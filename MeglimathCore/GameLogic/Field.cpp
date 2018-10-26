@@ -232,6 +232,7 @@ void Field::SpinRight90()
 	{
 		for (int y = 0; y < cells.height(); y++)
 		{
+			cells[_Point<>(x, y)].tile = TileType::None;
 			temp[_Point<>(temp.width() - 1 - y, x)] = cells[_Point<>(x, y)];
 		}
 	}
@@ -246,6 +247,7 @@ void Field::SpinLeft90()
 	{
 		for (int y = 0; y < cells.height(); y++)
 		{
+			cells[_Point<>(x, y)].tile = TileType::None;
 			temp[_Point<>(y, x)] = cells[_Point<>(x, y)];
 		}
 	}

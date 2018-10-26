@@ -60,4 +60,7 @@ public:
 
 	bool GetGameEnd();
 	int GetWinner();
+
+	void SpinRight90();
+	void SpinLeft90();
 };

@@ -51,20 +51,22 @@ void Drawer::DrawAgents(HashTable<TeamType, Array<Agent>> agents) const
 
 void Drawer::DrawStatus(const HashTable<TeamType, Think> & thinks, const Field & field, int turn) const
 {
-	if (thinks.size() == 0)
-	{
-		return;
-	}
-
 	Array<Array<String>> messages{ 3 };
 
 	// 2チームの情報
 	for (int i : step(2))
 	{
+		if (thinks.size() >= i + 1)
+		{
+			messages[i].append
+			({
+				String(U"Agent 1 : ") + Transform::ToString(thinks.at((TeamType)i).steps[0]),
+				String(U"Agent 2 : ") + Transform::ToString(thinks.at((TeamType)i).steps[1])
+			});
+		}
+
 		messages[i].append
 		({
-			String(U"Agent 1 : ") + Transform::ToString(thinks.at((TeamType)i).steps[0]),
-			String(U"Agent 2 : ") + Transform::ToString(thinks.at((TeamType)i).steps[1]),
 			String(U"Area Point : ") + ToString(field.GetAreaPoints()[i]),
 			String(U"Tile Point : ") + ToString(field.GetTilePoints()[i]),
 			String(U"Total Point : ") + ToString(field.GetTotalPoints()[i])
