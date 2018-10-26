@@ -250,8 +250,6 @@ namespace Scenes
 					str.push_back('\n');
 
 					getData().tcp_client.sendString(str);
-
-					user_client->Initialize();
 					_first = true;
 				}
 			}
@@ -270,6 +268,8 @@ namespace Scenes
 
 			// フィールド情報を更新
 			getData().info = { json_dat.narrow() };
+
+			user_client->Initialize();
 			_is_init = true;
 		}
 
