@@ -10,6 +10,8 @@
 #include "../MeglimathCore/TCPString.hpp"
 #include "../MeglimathCore/CreateJson.h"
 
+#include <Windows.h>
+
 struct GameData
 {
 	Game game;
@@ -17,6 +19,8 @@ struct GameData
 	std::map<SessionID, TeamType> team_table;
 	std::map<TeamType, Optional<Think>> thinks;
 	asc::TCPStringServer server;
+
+	int command_id = -1;
 };
 
 using MyApp = SceneManager<String, GameData>;
@@ -47,6 +51,15 @@ namespace Scenes
 				{
 					// ゲームの初期化
 					getData().game = { field_json };
+
+					if (getData().command_id == 0)
+					{
+						getData().game.SpinLeft90();
+					}
+					else if(getData().command_id == 1)
+					{
+						getData().game.SpinRight90();
+					}
 
 					// クライアントとの接続へ移行
 					server.sendString(U"ok\n", server.getSessionIDs()[0]);
@@ -265,6 +278,20 @@ void Main()
 		.add<Scenes::Connection>(U"Connection")
 		.add<Scenes::Game>(U"Game")
 		.add<Scenes::HandShake>(U"HandShake");
+	
+	const auto p = manager.get();
+
+	// コマンドライン引数
+	int nArgs = 0;
+	LPWSTR* szArglist = ::CommandLineToArgvW(::GetCommandLineW(), &nArgs);
+
+	if (nArgs >= 2)
+	{
+		String arg = Unicode::FromWString(szArglist[1]);
+		int command_id = Parse<int>(arg);
+
+		p->command_id = command_id;
+	}
 
 	FontAsset::Register(U"Msg", 32);
 	FontAsset::Register(U"Cell", 16, Typeface::Black);

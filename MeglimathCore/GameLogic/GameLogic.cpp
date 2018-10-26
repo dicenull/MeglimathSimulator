@@ -51,6 +51,7 @@ void GameLogic::InitalizeFromJson(const std::string json)
 	document.Parse(json.data());
 
 	_field = Field::makeFieldFromJson(json);
+
 	// 二人分の初期位置を取得
 	if (document.HasMember("InitPos")) {
 		auto init_pos = document["InitPos"].GetArray();
@@ -214,6 +215,36 @@ int GameLogic::GetWinner()
 	else {
 		return -1;
 	}
+}
+
+void GameLogic::SpinRight90()
+{
+	_field.SpinRight90();
+
+	std::array<_Point<>, 4> inits;
+	auto agents = GetAgents();
+	for(int i = 0;i < 4;i++)
+	{
+		auto & p = agents[i].position;
+		inits[i] = _Point<>(_field.cells.width() - 1 - p.y, p.x);
+	}
+
+	initAgentPos(inits);
+}
+
+void GameLogic::SpinLeft90()
+{
+	_field.SpinLeft90();
+
+	std::array<_Point<>, 4> inits;
+	auto agents = GetAgents();
+	for (int i = 0; i < 4; i++)
+	{
+		auto & p = agents[i].position;
+		inits[i] = _Point<>(_field.cells.width() - 1 - p.y, p.x);
+	}
+
+	initAgentPos(inits);
 }
 
 const Field& GameLogic::GetField() const

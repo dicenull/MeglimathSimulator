@@ -270,9 +270,6 @@ namespace Scenes
 				return;
 			}
 
-			getData().drawer.DrawField(getData().info.GetField());
-			getData().drawer.DrawAgents(getData().info.GetAllAgent());
-
 			if (_first)
 			{
 				getData().drawer.DrawInstraction(*(getData().user_client));
@@ -290,12 +287,12 @@ void Main()
 		.add<Scenes::Game>(U"Game")
 		.add<Scenes::HandShake>(U"HandShake")
 		.add<Scenes::SetClient>(U"SetClient");
-
-	FontAsset::Register(U"Msg", 32);
+	
+	FontAsset::Register(U"Msg", 64);
 	FontAsset::Register(U"Cell", 16, Typeface::Black);
 
 	Window::SetTitle(U"TCP Client");
-
+	
 	while (System::Update())
 	{
 		if (!manager.update())

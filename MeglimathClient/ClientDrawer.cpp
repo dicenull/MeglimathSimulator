@@ -24,7 +24,7 @@ void ClientDrawer::DrawInputState(Client& client)
 void ClientDrawer::DrawInstraction(Client & client)
 {
 	auto steps = client.GetNextThink().steps;
-	auto drawPos = statOrigin;
+	auto drawPos = Point(0, 0);
 
 	for (auto step : steps)
 	{
@@ -37,7 +37,7 @@ void ClientDrawer::DrawInstraction(Client & client)
 		instraction += Format(Transform::ToNumPad(client.type, step.direction));
 		
 		FontAsset(U"Msg")(instraction).draw(drawPos);
-		drawPos += Point(0, 32);
+		drawPos += Point(Window::Size().x / 2, 0);
 	}
 }
 

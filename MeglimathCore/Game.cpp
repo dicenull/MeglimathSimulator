@@ -29,6 +29,17 @@ void Game::Undo()
 	_undo.pop();
 }
 
+void Game::SpinRight90()
+{
+	_gamelogic.SpinRight90();
+}
+
+void Game::SpinLeft90()
+{
+	_gamelogic.SpinLeft90();
+}
+
+
 Array<Agent> Game::GetAgents() const
 {
 	return LogicUtil::toS3dArray<Agent>(_gamelogic.GetAgents());
