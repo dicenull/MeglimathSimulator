@@ -7,6 +7,7 @@ class UIClient :
 {
 private:
 	Grid<Rect> field_ui;
+	Grid<Color> field_color;
 	Point agent_points[2];
 	int idx = 0;
 	Font font{ 20 };
@@ -69,6 +70,7 @@ public:
 				auto &r = field_ui[y][x];
 
 				r.drawFrame();
+				r.draw(field_color[y][x]);
 
 				// 移動、削除入力
 				if (r.leftPressed())
