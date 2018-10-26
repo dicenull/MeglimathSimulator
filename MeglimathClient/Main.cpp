@@ -213,6 +213,7 @@ namespace Scenes
 	private:
 		bool _is_init = false;
 		bool _first = false;
+		bool _is_send = false;
 		
 	public:
 		Game(const InitData& init) : IScene(init)
@@ -243,13 +244,14 @@ namespace Scenes
 				user_client->Update(data.info);
 
 				// ServerにThinkを送信
-				if (user_client->IsReady())
+				if (user_client->IsReady() && !_is_send)
 				{
 					auto think = user_client->GetNextThink();
 					auto str = Unicode::Widen(Transform::CreateJson(think));
 					str.push_back('\n');
 
 					getData().tcp_client.sendString(str);
+					_is_send = true;
 					_first = true;
 				}
 			}
@@ -270,6 +272,7 @@ namespace Scenes
 			getData().info = { json_dat.narrow() };
 
 			user_client->Initialize();
+			_is_send = false;
 			_is_init = true;
 		}
 

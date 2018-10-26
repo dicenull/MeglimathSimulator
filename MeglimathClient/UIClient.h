@@ -37,7 +37,7 @@ public:
 
 				if (p.x < 0 || p.y < 0 || p.x >= w || p.y >= h) continue;
 
-				if (field_ui[p.y][p.x].leftClicked())
+				if (field_ui[p.y][p.x].leftReleased())
 				{
 					_think.steps[idx].action =
 						KeyControl.pressed() ? Action::RemoveTile : Action::Move;
