@@ -10,6 +10,8 @@
 #include "../MeglimathCore/TCPString.hpp"
 #include "../MeglimathCore/CreateJson.h"
 
+#include <Windows.h>
+
 struct GameData
 {
 	Game game;
@@ -17,6 +19,8 @@ struct GameData
 	std::map<SessionID, TeamType> team_table;
 	std::map<TeamType, Optional<Think>> thinks;
 	asc::TCPStringServer server;
+
+	int command_id = -1;
 };
 
 using MyApp = SceneManager<String, GameData>;
@@ -47,6 +51,15 @@ namespace Scenes
 				{
 					// ゲームの初期化
 					getData().game = { field_json };
+
+					if (getData().command_id == 0)
+					{
+						getData().game.SpinLeft90();
+					}
+					else if(getData().command_id == 1)
+					{
+						getData().game.SpinRight90();
+					}
 
 					// クライアントとの接続へ移行
 					server.sendString(U"ok\n", server.getSessionIDs()[0]);
@@ -223,7 +236,7 @@ namespace Scenes
 			if (thinks[TeamType::Red].has_value() && thinks[TeamType::Blue].has_value())
 			{
 				getData().game.NextTurn(thinks[TeamType::Blue].value(), thinks[TeamType::Red].value());
-
+				Print << U"NEXT : " << data.game.GetTurn();
 				// Think情報を初期化
 				thinks[TeamType::Red] = none;
 				thinks[TeamType::Blue] = none;
@@ -259,6 +272,20 @@ namespace Scenes
 
 void Main()
 {
+	const auto p = MakeShared<GameData>();
+
+	// コマンドライン引数
+	int nArgs = 0;
+	LPWSTR* szArglist = ::CommandLineToArgvW(::GetCommandLineW(), &nArgs);
+
+	if (nArgs >= 2)
+	{
+		String arg = Unicode::FromWString(szArglist[1]);
+		int command_id = Parse<int>(arg);
+
+		p->command_id = command_id;
+	}
+
 	MyApp manager;
 	manager
 		.add<Scenes::ReadFieldJson>(U"ReadFieldJson")
