@@ -37,10 +37,14 @@ public:
 
 				if (p.x < 0 || p.y < 0 || p.x >= w || p.y >= h) continue;
 
-				if (field_ui[p.y][p.x].leftReleased())
+				auto & f = field_ui[p.y][p.x];
+				auto l = f.leftReleased();
+				auto r = f.rightReleased();
+				if(l || r)
 				{
-					_think.steps[idx].action =
-						KeyControl.pressed() ? Action::RemoveTile : Action::Move;
+					if (r) _think.steps[idx].action = Action::RemoveTile;
+
+					if (l) _think.steps[idx].action = Action::Move;
 
 					_think.steps[idx].direction =
 						Transform::DeltaToDir(_Point(x, y));
@@ -75,8 +79,12 @@ public:
 				// 移動、削除入力
 				if (r.leftPressed())
 				{
-					if (KeyControl.pressed()) r.draw(Palette::Red);
-					else r.draw(Palette::Blue);
+					r.draw(Palette::Blue);
+				}
+				
+				if (r.rightPressed())
+				{
+					r.draw(Palette::Red);
 				}
 
 				for (auto i : step(2))
