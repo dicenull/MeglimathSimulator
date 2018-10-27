@@ -9,6 +9,7 @@ private:
 	Grid<Rect> field_ui;
 	Grid<Color> field_color;
 	Point agent_points[2];
+	Point other[2];
 	int idx = 0;
 	Font font{ 20 };
 
@@ -25,6 +26,25 @@ public:
 			return;
 		}
 		turn_init(info);
+
+		ClearPrint();
+		for (auto i : step(2))
+		{
+			if (field_ui[other[i]].leftReleased())
+			{
+				Print << i;
+				_think.steps[idx] = { Action::Collision, (Direction)i };
+
+				if (idx == 1)
+				{
+					_is_ready = true;
+					idx = 0;
+				}
+				else idx++;
+
+				return;
+			}
+		}
 
 		auto w = field_ui.width();
 		auto h = field_ui.height();
@@ -72,9 +92,18 @@ public:
 			for (int x = 0; x < field_ui.width(); x++)
 			{
 				auto &r = field_ui[y][x];
-
+				
 				r.drawFrame();
-				r.draw(field_color[y][x]);
+
+				auto color = field_color[y][x];
+				for (auto i : step(2))
+				{
+					if (other[i] == Point(x, y))
+					{
+						color = Color(color, 200U);
+					}
+				}
+				r.draw(color);
 
 				// 移動、削除入力
 				if (r.leftPressed())
@@ -96,6 +125,14 @@ public:
 					}
 				}
 
+			}
+		}
+
+		for (auto i : step(2))
+		{
+			if (field_ui[other[i]].leftPressed())
+			{
+				field_ui[other[i]].draw(Palette::Yellow);
 			}
 		}
 	}

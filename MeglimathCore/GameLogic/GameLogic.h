@@ -63,4 +63,6 @@ public:
 
 	void SpinRight90();
 	void SpinLeft90();
+
+	std::unordered_map<TeamType, Think> CollisionProccess(const std::unordered_map<TeamType, Think> &_thinks);
 };

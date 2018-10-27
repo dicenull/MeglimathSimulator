@@ -10,6 +10,8 @@ const std::u32string Transform::ToString(Action action)
 		return U"Remove";
 	case Action::Stop:
 		return U"Stop";
+	case Action::Collision:
+		return U"Collision";
 	}
 
 	return U"";

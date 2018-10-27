@@ -1,4 +1,4 @@
-#include "Format.h"
+﻿#include "Format.h"
 
 const Action Format::ToAction(std::string action_str)
 {
@@ -15,6 +15,11 @@ const Action Format::ToAction(std::string action_str)
 	if (action_str == "Stop")
 	{
 		return Action::Stop;
+	}
+
+	if (action_str == "Collision")
+	{
+		return Action::Collision;
 	}
 
 	return Action::Stop;

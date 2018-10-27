@@ -4,10 +4,18 @@
 
 void UIClient::turn_init(const GameInfo & info)
 {
+	// my
 	auto agents = info.GetAgents(type);
 	for (auto i : step(2))
 	{
 		agent_points[i] = { agents[i].position.x, agents[i].position.y };
+	}
+
+	// other
+	agents = info.GetAgents(TeamType(1 - type));
+	for (auto i : step(2))
+	{
+		other[i] = { agents[i].position.x, agents[i].position.y };
 	}
 
 	auto& field = info.GetField();

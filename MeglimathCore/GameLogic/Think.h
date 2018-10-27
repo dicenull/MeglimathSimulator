@@ -8,7 +8,7 @@
 /// </summary>
 enum class Action
 {
-	Move, RemoveTile, Stop
+	Move, RemoveTile, Stop, Collision
 };
 
 /// <summary>

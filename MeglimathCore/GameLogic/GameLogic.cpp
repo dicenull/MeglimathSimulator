@@ -101,6 +101,8 @@ void GameLogic::NextTurn(const std::unordered_map<TeamType, Think> &_thinks)
 		return;
 	}
 
+	auto p_thinks = CollisionProccess(_thinks);
+
 	struct Move {
 		_Point<> target;
 		_Point<> old_point;
@@ -112,7 +114,7 @@ void GameLogic::NextTurn(const std::unordered_map<TeamType, Think> &_thinks)
 	std::vector<Move> point_map;
 	for (auto team : { TeamType::Blue,TeamType::Red })
 		for (int i : {0, 1}) {
-			auto& step = _thinks.at(team).steps[i];
+			auto& step = p_thinks.at(team).steps[i];
 			auto& agent = teams[team].agents[i];
 			// 対象の座標
 			_Point<int> old_pos = agent.position;
@@ -245,6 +247,28 @@ void GameLogic::SpinLeft90()
 	}
 
 	initAgentPos(inits);
+}
+
+std::unordered_map<TeamType, Think> GameLogic::CollisionProccess(const std::unordered_map<TeamType, Think>& _thinks)
+{
+	auto p_thinks = _thinks;
+
+	for (auto team : { TeamType::Blue,TeamType::Red })
+	{
+		for (auto i : { 0,1 })
+		{
+			if (_thinks.at(team).steps[i].action == Action::Collision)
+			{
+				int idx = (int)_thinks.at(team).steps[i].direction;
+
+				p_thinks[(TeamType)(1 - team)].steps[idx].action = Action::Stop;
+				
+				p_thinks[team].steps[i].action = Action::Stop;
+			}
+		}
+	}
+
+	return p_thinks;
 }
 
 const Field& GameLogic::GetField() const
