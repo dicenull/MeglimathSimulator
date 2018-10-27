@@ -241,7 +241,7 @@ void GameLogic::SpinLeft90()
 	for (int i = 0; i < 4; i++)
 	{
 		auto & p = agents[i].position;
-		inits[i] = _Point<>(_field.cells.width() - 1 - p.y, p.x);
+		inits[i] = _Point<>(p.y, p.x);
 	}
 
 	initAgentPos(inits);
