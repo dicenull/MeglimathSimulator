@@ -21,10 +21,10 @@ void UIClient::turn_init(const GameInfo & info)
 			switch (field.cells[_Point<>(x, y)].tile)
 			{
 			case TileType::Red:
-				field_color[y][x] = Color(Palette::Red, 50U);
+				field_color[y][x] = Color(Palette::Blue, 50U);
 				break;
 			case TileType::Blue:
-				field_color[y][x] = Color(Palette::Blue, 50U);
+				field_color[y][x] = Color(Palette::Red, 50U);
 				break;
 			case TileType::None:
 				field_color[y][x] = Color(Palette::White, 50U);
