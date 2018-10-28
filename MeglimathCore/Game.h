@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include<Siv3D.hpp>
 #include "Drawer.h"
 #include "GameInfo.h"
@@ -10,30 +10,33 @@ private:
 	GameLogic _gamelogic;
 	HashTable<TeamType, Think> _think_table;
 
+	std::stack<GameLogic> _undo;
+	std::stack<GameLogic> _redo;
+	
 private:
 	/// <summary>
-	/// ƒG[ƒWƒFƒ“ƒg‚ğƒ‰ƒ“ƒ_ƒ€‚É‰Šú‰»‚·‚é
+	/// ã‚¨ãƒ¼ã‚¸ã‚§ãƒ³ãƒˆã‚’ãƒ©ãƒ³ãƒ€ãƒ ã«åˆæœŸåŒ–ã™ã‚‹
 	/// </summary>
 	void initAgentsPos();
 
 	/// <summary>
-	/// ƒG[ƒWƒFƒ“ƒg‚Ì‰Šú‰»ˆ—‚ğs‚¤
+	/// ã‚¨ãƒ¼ã‚¸ã‚§ãƒ³ãƒˆã®åˆæœŸåŒ–å‡¦ç†ã‚’è¡Œã†
 	/// </summary>
-	/// <param name="init_pos">ƒG[ƒWƒFƒ“ƒg‚Ì‰ŠúÀ•W‚Ì‚à‚Æ‚É‚È‚é¶ã‚ÌÀ•W</param>
+	/// <param name="init_pos">ã‚¨ãƒ¼ã‚¸ã‚§ãƒ³ãƒˆã®åˆæœŸåº§æ¨™ã®ã‚‚ã¨ã«ãªã‚‹å·¦ä¸Šã®åº§æ¨™</param>
 	void initAgentsPos(Point init_pos);
 
 public:
 	//Array<TeamLogic> getTeamLogics();
 	/// <summary>
-	/// ƒQ[ƒ€î•ñ‚ğæ“¾‚·‚é
+	/// ã‚²ãƒ¼ãƒ æƒ…å ±ã‚’å–å¾—ã™ã‚‹
 	/// </summary>
-	/// <returns>ƒtƒB[ƒ‹ƒh‚ÆƒG[ƒWƒFƒ“ƒg‚Ìî•ñ</returns>
+	/// <returns>ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã¨ã‚¨ãƒ¼ã‚¸ã‚§ãƒ³ãƒˆã®æƒ…å ±</returns>
 	GameInfo GetGameInfo() const;
 
 	/// <summary>
-	/// ƒ^[ƒ“”‚ğæ“¾‚·‚é
+	/// ã‚¿ãƒ¼ãƒ³æ•°ã‚’å–å¾—ã™ã‚‹
 	/// </summary>
-	/// <returns>Œ»İ‚Ìƒ^[ƒ“</returns>
+	/// <returns>ç¾åœ¨ã®ã‚¿ãƒ¼ãƒ³</returns>
 	int GetTurn() const;
 
 	Field GetField() const;
@@ -41,36 +44,42 @@ public:
 	HashTable<TeamType, Think> GetThinks() const;
 
 	/// <summary>
-	/// ƒQ[ƒ€‚ğŸ‚Ìƒ^[ƒ“‚Éi‚ß‚é
+	/// ã‚²ãƒ¼ãƒ ã‚’æ¬¡ã®ã‚¿ãƒ¼ãƒ³ã«é€²ã‚ã‚‹
 	/// </summary>
 	void NextTurn(Think team_a, Think team_b);
 
 	/// <summary>
-	/// ƒQ[ƒ€‚Ìó‘Ô‚ğXV‚·‚é
-	/// ‚·‚×‚Ä‚ÌƒG[ƒWƒFƒ“ƒgî•ñ‚ğæ“¾‚·‚é
+	/// ã‚²ãƒ¼ãƒ ã®çŠ¶æ…‹ã‚’æ›´æ–°ã™ã‚‹
+	/// ã™ã¹ã¦ã®ã‚¨ãƒ¼ã‚¸ã‚§ãƒ³ãƒˆæƒ…å ±ã‚’å–å¾—ã™ã‚‹
 	/// </summary>
-	/// <returns>‚·‚×‚Ä‚ÌƒG[ƒWƒFƒ“ƒgî•ñƒŠƒXƒg</returns>
+	/// <returns>ã™ã¹ã¦ã®ã‚¨ãƒ¼ã‚¸ã‚§ãƒ³ãƒˆæƒ…å ±ãƒªã‚¹ãƒˆ</returns>
 	Array<Agent> GetAgents() const;
 
 	/// <summary>
-	/// ƒ`[ƒ€‚²‚Æ‚ÌƒG[ƒWƒFƒ“ƒg‚Ìî•ñ‚ğæ“¾‚·‚é
+	/// ãƒãƒ¼ãƒ ã”ã¨ã®ã‚¨ãƒ¼ã‚¸ã‚§ãƒ³ãƒˆã®æƒ…å ±ã‚’å–å¾—ã™ã‚‹
 	/// </summary>
-	/// <returns>ƒ`[ƒ€‚²‚Æ‚ÌƒG[ƒWƒFƒ“ƒgî•ñ</returns>
+	/// <returns>ãƒãƒ¼ãƒ ã”ã¨ã®ã‚¨ãƒ¼ã‚¸ã‚§ãƒ³ãƒˆæƒ…å ±</returns>
 	HashTable<TeamType, Array<Agent>> GetAgentMap() const;
+
+	void Redo();
+	void Undo();
+
+	void SpinRight90();
+	void SpinLeft90();
 
 public:
 	/// <summary>
-	/// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	/// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	/// </summary>
-	/// <param name="team_a">ƒ`[ƒ€A‚Ìî•ñ</param>
-	/// <param name="team_b">ƒ`[ƒ€B‚Ìî•ñ</param>
+	/// <param name="team_a">ãƒãƒ¼ãƒ Aã®æƒ…å ±</param>
+	/// <param name="team_b">ãƒãƒ¼ãƒ Bã®æƒ…å ±</param>
 	Game();
 
 
 	/// <summary>
-	/// json‚©‚çƒQ[ƒ€‚ğ‰Šú‰»‚·‚é
+	/// jsonã‹ã‚‰ã‚²ãƒ¼ãƒ ã‚’åˆæœŸåŒ–ã™ã‚‹
 	/// </summary>
-	/// <param name="path">jsonƒf[ƒ^</param>
+	/// <param name="path">jsonãƒ‡ãƒ¼ã‚¿</param>
 	Game(const String field_json);
 
 	virtual ~Game();

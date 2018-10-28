@@ -3,8 +3,8 @@
 #include"GameLogic/GameLogic.h"
 namespace TeamColor
 {
-	constexpr Color A = Palette::Blue;
-	constexpr Color B = Palette::Red;
+	constexpr Color A = Palette::Red;
+	constexpr Color B = Palette::Blue;
 
 	/// <summary>
 	/// タイルの種類から色を取得する

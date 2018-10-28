@@ -10,6 +10,8 @@
 #include "../MeglimathCore/TCPString.hpp"
 #include "../MeglimathCore/CreateJson.h"
 
+#include <Windows.h>
+
 struct GameData
 {
 	Game game;
@@ -17,6 +19,8 @@ struct GameData
 	std::map<SessionID, TeamType> team_table;
 	std::map<TeamType, Optional<Think>> thinks;
 	asc::TCPStringServer server;
+
+	int command_id = -1;
 };
 
 using MyApp = SceneManager<String, GameData>;
@@ -29,7 +33,7 @@ namespace Scenes
 		ReadFieldJson(const InitData& init) : IScene(init)
 		{
 			// フィールド情報を受け取るための通信
-			getData().server.startAccept(31400);
+			getData().server.startAccept(31401);
 		}
 
 		void update() override
@@ -48,8 +52,18 @@ namespace Scenes
 					// ゲームの初期化
 					getData().game = { field_json };
 
+					if (getData().command_id == 0)
+					{
+						getData().game.SpinLeft90();
+					}
+					else if(getData().command_id == 1)
+					{
+						getData().game.SpinRight90();
+					}
+
 					// クライアントとの接続へ移行
-					server.disconnect();
+					server.sendString(U"ok\n", server.getSessionIDs()[0]);
+
 					changeScene(U"Connection", 0);
 					return;
 				}
@@ -70,6 +84,9 @@ namespace Scenes
 		{
 			// 初期化
 			getData().team_table.clear();
+			getData().server.cancelAccept();
+			getData().server.disconnect();
+
 			// 二つのクライアントと接続する
 			getData().server.startAcceptMulti(31400);
 		}
@@ -80,6 +97,7 @@ namespace Scenes
 			{
 				changeScene(U"HandShake", 0);
 			}
+
 		}
 
 		void draw() const override
@@ -116,7 +134,7 @@ namespace Scenes
 				server.readUntil(U'\n', json_dat, ids[i]);
 				json_dat.remove(U'\n');
 
-				if (json_dat.isEmpty())
+				if (json_dat.isEmpty())	
 				{
 					continue;
 				}
@@ -225,6 +243,18 @@ namespace Scenes
 
 				sendGameInfo();
 			}
+
+			if (KeyLeft.down())
+			{
+				data.game.Undo();
+				sendGameInfo();
+			}
+
+			if (KeyRight.down())
+			{
+				data.game.Redo();
+				sendGameInfo();
+			}
 		}
 
 		void draw() const override
@@ -242,12 +272,28 @@ namespace Scenes
 
 void Main()
 {
+	Window::SetPos(850, 0);
+
 	MyApp manager;
 	manager
 		.add<Scenes::ReadFieldJson>(U"ReadFieldJson")
 		.add<Scenes::Connection>(U"Connection")
 		.add<Scenes::Game>(U"Game")
 		.add<Scenes::HandShake>(U"HandShake");
+	
+	const auto p = manager.get();
+
+	// コマンドライン引数
+	int nArgs = 0;
+	LPWSTR* szArglist = ::CommandLineToArgvW(::GetCommandLineW(), &nArgs);
+
+	if (nArgs >= 2)
+	{
+		String arg = Unicode::FromWString(szArglist[1]);
+		int command_id = Parse<int>(arg);
+
+		p->command_id = command_id;
+	}
 
 	FontAsset::Register(U"Msg", 32);
 	FontAsset::Register(U"Cell", 16, Typeface::Black);

@@ -33,56 +33,6 @@ void GameLogic::initAgentsPos(_Point<> init_pos)
 		});
 }
 
-void GameLogic::initAgentsPos(_Point<> init_pos1, _Point<> init_pos2)
-{
-	_Size size = _field.cells.size();
-	_Point<> top_left;
-	if (init_pos1.x > size.x / 2)
-	{
-		top_left.x = init_pos1.x / 2;
-	}
-	else
-	{
-		top_left.x = init_pos1.x;
-	}
-
-	if (init_pos1.y > size.y / 2)
-	{
-		top_left.y = init_pos1.y / 2;
-	}
-	else
-	{
-		top_left.y = init_pos1.y;
-	}
-
-	bool init_map[][2] = { {false, false}, {false, false} };
-	init_map[init_pos1.x / (size.x / 2)][init_pos1.y / (size.y / 2)] = true;
-	init_map[init_pos2.x / (size.x / 2)][init_pos2.y / (size.y / 2)] = true;
-
-	std::vector<_Point<>> other_init_pos;
-	for (int i = 0; i < 2; i++)
-	{
-		for (int k = 0; k < 2; k++)
-		{
-			if (init_map[i][k] == false)
-			{
-				_Point<> pos;
-				pos.x = i
-					? (int)(size.x - 1) - top_left.x
-					: top_left.x;
-
-				pos.y = k
-					? (int)(size.y - 1) - top_left.y
-					: top_left.y;
-
-				other_init_pos.push_back(pos);
-			}
-		}
-	}
-
-	initAgentPos({ init_pos1, init_pos2, other_init_pos[0], other_init_pos[1] });
-}
-
 void GameLogic::initAgentPos(std::array<_Point<>, 4> init_pos)
 {
 	_field.PaintCell(init_pos[0], TeamType::Blue);
@@ -101,10 +51,17 @@ void GameLogic::InitalizeFromJson(const std::string json)
 	document.Parse(json.data());
 
 	_field = Field::makeFieldFromJson(json);
+
 	// 二人分の初期位置を取得
 	if (document.HasMember("InitPos")) {
 		auto init_pos = document["InitPos"].GetArray();
-		initAgentsPos(_Point<int>{ init_pos[0].GetString()}, _Point<int>{init_pos[1].GetString()});
+
+		std::array<_Point<>, 4> pos_list;
+		for (int i = 0; i < 4; i++)
+		{
+			pos_list[i] = _Point<int>{ init_pos[i].GetString() };
+		}
+		initAgentPos(pos_list);
 	}
 	else {
 		initAgentsPos();
@@ -144,6 +101,8 @@ void GameLogic::NextTurn(const std::unordered_map<TeamType, Think> &_thinks)
 		return;
 	}
 
+	auto p_thinks = CollisionProccess(_thinks);
+
 	struct Move {
 		_Point<> target;
 		_Point<> old_point;
@@ -155,7 +114,7 @@ void GameLogic::NextTurn(const std::unordered_map<TeamType, Think> &_thinks)
 	std::vector<Move> point_map;
 	for (auto team : { TeamType::Blue,TeamType::Red })
 		for (int i : {0, 1}) {
-			auto& step = _thinks.at(team).steps[i];
+			auto& step = p_thinks.at(team).steps[i];
 			auto& agent = teams[team].agents[i];
 			// 対象の座標
 			_Point<int> old_pos = agent.position;
@@ -258,6 +217,58 @@ int GameLogic::GetWinner()
 	else {
 		return -1;
 	}
+}
+
+void GameLogic::SpinRight90()
+{
+	_field.SpinRight90();
+
+	std::array<_Point<>, 4> inits;
+	auto agents = GetAgents();
+	for(int i = 0;i < 4;i++)
+	{
+		auto & p = agents[i].position;
+		inits[i] = _Point<>(_field.cells.width() - 1 - p.y, p.x);
+	}
+
+	initAgentPos(inits);
+}
+
+void GameLogic::SpinLeft90()
+{
+	_field.SpinLeft90();
+
+	std::array<_Point<>, 4> inits;
+	auto agents = GetAgents();
+	for (int i = 0; i < 4; i++)
+	{
+		auto & p = agents[i].position;
+		inits[i] = _Point<>(p.y, p.x);
+	}
+
+	initAgentPos(inits);
+}
+
+std::unordered_map<TeamType, Think> GameLogic::CollisionProccess(const std::unordered_map<TeamType, Think>& _thinks)
+{
+	auto p_thinks = _thinks;
+
+	for (auto team : { TeamType::Blue,TeamType::Red })
+	{
+		for (auto i : { 0,1 })
+		{
+			if (_thinks.at(team).steps[i].action == Action::Collision)
+			{
+				int idx = (int)_thinks.at(team).steps[i].direction;
+
+				p_thinks[(TeamType)(1 - team)].steps[idx].action = Action::Stop;
+				
+				p_thinks[team].steps[i].action = Action::Stop;
+			}
+		}
+	}
+
+	return p_thinks;
 }
 
 const Field& GameLogic::GetField() const

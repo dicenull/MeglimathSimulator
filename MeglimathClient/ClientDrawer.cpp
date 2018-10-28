@@ -21,6 +21,26 @@ void ClientDrawer::DrawInputState(Client& client)
 	}
 }
 
+void ClientDrawer::DrawInstraction(Client & client)
+{
+	auto steps = client.GetNextThink().steps;
+	auto drawPos = Point(0, 0);
+
+	for (auto step : steps)
+	{
+		String instraction = U"";
+		if (step.action == Action::RemoveTile)
+		{
+			instraction += U"横";
+		}
+
+		instraction += Format(Transform::ToNumPad(client.type, step.direction));
+		
+		FontAsset(U"Msg")(instraction).draw(drawPos);
+		drawPos += Point(Window::Size().x / 2, 0);
+	}
+}
+
 ClientDrawer::ClientDrawer()
 {
 }

@@ -108,10 +108,10 @@ const std::string Transform::CreateJson(const TeamType & type)
 	switch (type)
 	{
 	case TeamType::Blue:
-		type_obj = "A";
+		type_obj = "Blue";
 		break;
 	case TeamType::Red:
-		type_obj = "B";
+		type_obj = "Red";
 		break;
 	}
 	writer.String(type_obj.data());

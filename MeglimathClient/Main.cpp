@@ -2,6 +2,7 @@
 # include <Siv3D.hpp> // OpenSiv3D v0.2.5
 #include <HamFramework.hpp>
 #include <rapidjson\document.h>
+#include <Windows.h> //コマンドライン引数用
 
 #include "../MeglimathCore/TCPString.hpp"
 #include "../MeglimathCore/GameInfo.h"
@@ -16,6 +17,8 @@
 #include "UIClient.h"
 #include "RatioClient.h"
 #include "DoubleNextBestClient2.h"
+#include "BruteForceClient.h"
+#include "DoubleBruteForceClient.h"
 
 struct GameData
 {
@@ -24,6 +27,8 @@ struct GameData
 	ClientDrawer drawer;
 	GameInfo info;
 	TeamType teamType;
+	int commander_id;
+	int client_id;
 };
 
 using MyApp = SceneManager<String, GameData>;
@@ -40,13 +45,17 @@ namespace Scenes
 
 		void update() override
 		{
-			if (KeyLeft.down())
+			int commander_id = getData().commander_id;
+
+			//if (KeyLeft.down())
+			if (commander_id == 0)
 			{
 				getData().teamType = TeamType::Red;
 				changeScene(U"SetClient", 0);
 			}
 
-			if (KeyRight.down())
+			//if (KeyRight.down())
+			if (commander_id == 1)
 			{
 				getData().teamType = TeamType::Blue;
 				changeScene(U"SetClient", 0);
@@ -72,6 +81,8 @@ namespace Scenes
 			clients.push_back(std::make_unique<UIClient>(type));
 			clients.push_back(std::make_unique<RatioClient>(type));
 			clients.push_back(std::make_unique<DoubleNextBestClient2>(type));
+			clients.push_back(std::make_unique<BruteForceClient>(type));
+			clients.push_back(std::make_unique<DoubleBruteForceClient>(type));
 
 			for (int i = 0; i < clients.size(); i++)
 			{
@@ -86,6 +97,7 @@ namespace Scenes
 
 		void update() override
 		{
+			/*
 			for (int i = 0; i < clients.size(); i++)
 			{
 				Key key = { InputDevice::Keyboard, (uint8)(Key0.code() + i) };
@@ -97,6 +109,21 @@ namespace Scenes
 					changeScene(U"Connection", 0);
 				}
 			}
+			*/
+			int client_id = getData().client_id;
+
+			getData().user_client = std::move(clients[client_id]);
+
+			if (client_id == 5)
+			{
+				Window::SetPos(0, 0);
+			}
+			else
+			{
+				Window::SetPos(0, Window::Height());
+			}
+			ClearPrint();
+			changeScene(U"Connection", 0);
 		}
 
 		void draw() const override
@@ -106,10 +133,13 @@ namespace Scenes
 
 	class Connection : public MyApp::Scene
 	{
+	private:
+		int count;
 	public:
 		Connection(const InitData& init) : IScene(init)
 		{
 			getData().tcp_client.connect(IPv4::localhost(), 31400);
+			count = 60;
 		}
 
 		void update() override
@@ -118,6 +148,12 @@ namespace Scenes
 			{
 				changeScene(U"HandShake", 0);
 			}
+
+			if (count < 0)
+			{
+				changeScene(U"Connection", 0.5);
+			}
+			count--;
 		}
 
 		void draw() const override
@@ -185,8 +221,9 @@ namespace Scenes
 	{
 	private:
 		bool _is_init = false;
-		bool _is_update = false;
-
+		bool _first = false;
+		bool _is_send = false;
+		
 	public:
 		Game(const InitData& init) : IScene(init)
 		{
@@ -210,47 +247,42 @@ namespace Scenes
 				changeScene(U"Connection", 0);
 			}
 
+			if (_is_init)
+			{
+				// Clientを更新
+				user_client->Update(data.info);
+
+				// ServerにThinkを送信
+				if (user_client->IsReady() && !_is_send)
+				{
+					auto think = user_client->GetNextThink();
+					auto str = Unicode::Widen(Transform::CreateJson(think));
+					str.push_back('\n');
+
+					getData().tcp_client.sendString(str);
+					_is_send = true;
+					_first = true;
+				}
+			}
+
 			// ゲームの更新
-			if (!_is_update)
+			String json_dat;
+			getData().tcp_client.readLine(json_dat);
+
+			if (json_dat.isEmpty())
 			{
-				String json_dat;
-				getData().tcp_client.readLine(json_dat);
-
-				if (json_dat.isEmpty())
-				{
-					return;
-				}
-
-				rapidjson::Document document;
-				document.Parse(json_dat.narrow().data());
-
-				if (document.HasMember("TeamType"))
-				{
-					return;
-				}
-
-				// フィールド情報を更新
-				getData().info = { json_dat.narrow() };
-				_is_init = true;
-
-				_is_update = true;
+				return;
 			}
 
-			// Clientを更新
-			user_client->Update(data.info);
+			rapidjson::Document document;
+			document.Parse(json_dat.narrow().data());
 
-			// ServerにThinkを送信
-			if (user_client->IsReady())
-			{
-				auto think = user_client->GetNextThink();
-				auto str = Unicode::Widen(Transform::CreateJson(think));
-				str.push_back('\n');
+			// フィールド情報を更新
+			getData().info = { json_dat.narrow() };
 
-				getData().tcp_client.sendString(str);
-				_is_update = false;
-
-				user_client->Initialize();
-			}
+			user_client->Initialize();
+			_is_send = false;
+			_is_init = true;
 		}
 
 		void draw() const override
@@ -267,17 +299,22 @@ namespace Scenes
 				return;
 			}
 
-			getData().drawer.DrawField(getData().info.GetField());
-			getData().drawer.DrawAgents(getData().info.GetAllAgent());
-
-			getData().drawer.DrawInputState(*(getData().user_client));
-
+			if (_first)
+			{
+				getData().drawer.DrawInstraction(*(getData().user_client));
+			}
 		}
 	};
 }
 
 void Main()
 {
+	int argc;
+	LPWSTR *argv = ::CommandLineToArgvW(::GetCommandLineW(), &argc);
+
+	int commander_id = Parse<int>(Unicode::FromWString(argv[1]));
+	int client_id = Parse<int>(Unicode::FromWString(argv[2]));
+
 	MyApp manager;
 	manager
 		.add<Scenes::SelectTeamType>(U"SelectTeamType")
@@ -285,12 +322,16 @@ void Main()
 		.add<Scenes::Game>(U"Game")
 		.add<Scenes::HandShake>(U"HandShake")
 		.add<Scenes::SetClient>(U"SetClient");
+	
+	const auto p = manager.get();
+	p->commander_id = commander_id;
+	p->client_id = client_id;
 
-	FontAsset::Register(U"Msg", 32);
+	FontAsset::Register(U"Msg", 64);
 	FontAsset::Register(U"Cell", 16, Typeface::Black);
 
 	Window::SetTitle(U"TCP Client");
-
+	
 	while (System::Update())
 	{
 		if (!manager.update())

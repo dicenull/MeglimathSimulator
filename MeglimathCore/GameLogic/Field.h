@@ -126,6 +126,9 @@ public:
 	bool CanMove(_Point<> pos, TeamType team);
 	bool CanRemoveTile(_Point<> pos, TeamType team);
 
+	void SpinRight90();
+	void SpinLeft90();
+
 public:
 	static Field makeFieldFromJson(std::string json);
 	static Field makeFieldRandom(_Size size = { 6,6 });
