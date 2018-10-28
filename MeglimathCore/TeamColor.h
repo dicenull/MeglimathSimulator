@@ -1,23 +1,23 @@
-#pragma once
+ï»¿#pragma once
 #include <Siv3D.hpp>
 #include"GameLogic/GameLogic.h"
 namespace TeamColor
 {
-	constexpr Color A = Palette::Blue;
-	constexpr Color B = Palette::Red;
+	constexpr Color A = Palette::Red;
+	constexpr Color B = Palette::Blue;
 
 	/// <summary>
-	/// ƒ^ƒCƒ‹‚Ìí—Ş‚©‚çF‚ğæ“¾‚·‚é
+	/// ã‚¿ã‚¤ãƒ«ã®ç¨®é¡ã‹ã‚‰è‰²ã‚’å–å¾—ã™ã‚‹
 	/// </summary>
-	/// <param name="t_type">ƒ^ƒCƒ‹‚Ìí—Ş</param>
-	/// <returns>ƒ^ƒCƒ‹‚ÌF</returns>
+	/// <param name="t_type">ã‚¿ã‚¤ãƒ«ã®ç¨®é¡</param>
+	/// <returns>ã‚¿ã‚¤ãƒ«ã®è‰²</returns>
 	constexpr Color ColorOf(TileType t_type)
 	{
 		switch (t_type)
 		{
-		case TileType::A:
+		case TileType::Blue:
 			return TeamColor::A;
-		case TileType::B:
+		case TileType::Red:
 			return TeamColor::B;
 		case TileType::None:
 		default:
@@ -29,9 +29,9 @@ namespace TeamColor
 	{
 		switch (t_type)
 		{
-		case TeamType::A:
+		case TeamType::Blue:
 			return TeamColor::A;
-		case TeamType::B:
+		case TeamType::Red:
 			return TeamColor::B;
 		default:
 			return Palette::Darkgray;

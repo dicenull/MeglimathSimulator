@@ -1,52 +1,66 @@
-#include "T_Monte_Carlo.h"
+ï»¿#include "T_Monte_Carlo.h"
 
-TileType T_Monte_Carlo::TeamtoTile(TeamType t) {
-	switch (t) {
-	case TeamType::A:
-		return TileType::A;
-	case TeamType::B:
-		return TileType::B;
-	}
-}
-
-int T_Monte_Carlo::decideMove(Array<int> *movelist, Agent agent, Field field) {
+int T_Monte_Carlo::decideMove(Array<int> *movelist, _Point<> preP, Field field) {
 
 	int preMove;
-	_Point<> preP;
-	if ((*movelist).isEmpty()) {
-		while (1) {
-			//üˆÍ8ƒ}ƒX‚ğƒ‰ƒ“ƒ_ƒ€‚É‘I‚Ô
+	//_Point<> preP;
+
+	bool okflag = false;
+	int temp;
+
+	Array<int> candinate = { 0,1,2,3,4,5,6,7 };
+
+	while (1) {
+		//å‘¨å›²8ãƒã‚¹ã‚’ãƒ©ãƒ³ãƒ€ãƒ ã«é¸ã¶
+		if (candinate.isEmpty()) {
 			preMove = Random(0, 7);
-			preP = agent.GetPosition() + Transform::DirToDelta((Direction(preMove)));
-			//ƒ‰ƒ“ƒ_ƒ€‚É‘I‚ñ‚¾ƒ}ƒX‚ªƒtƒB[ƒ‹ƒh“à‚©Šm”F‚·‚éBƒtƒB[ƒ‹ƒhŠO‚¾‚Á‚½‚ç‚â‚è’¼‚µ
-			//©ƒ`[ƒ€‚Ìƒ^ƒCƒ‹‚ÍŒŸõ‚©‚çœŠO‚·‚é‚æ‚¤‚É‚µ‚½‚Ì‚ªƒRƒƒ“ƒgƒAƒEƒg‚³‚ê‚Ä‚¢‚é•”•ª‚¾‚ªA‚±‚ê‚ğ“K—p‚·‚é‚Æ‚Æ‚ñ‚Å‚à‚È‚­ˆ—‚ª’·‚­‚È‚é
-			if (field.IsInField(preP) //&& field.GetCells()[preP.y][preP.x].GetTile() != TeamtoTile(this->_type)
-				){
-				(*movelist).push_back(preMove);
-				return (field.GetCells()[preP.y][preP.x]).GetPoint();
+			if (field.IsInField(preP + Transform::DirToDelta(Direction(preMove)))) {
+				okflag = true;
 			}
 		}
-	}
-	else {
-		//‚±‚ê‚Ü‚Å“®‚¢‚½ƒ}ƒXƒŠƒXƒg(movelist)‚É‚ ‚é“®ì‹L˜^‚ğ”½‰f‚³‚¹A“®ìƒŠƒXƒg‚ğ“K—p‚·‚é‚Æ‚Ç‚±‚ÉƒG[ƒWƒFƒ“ƒg‚ª‚¢‚é‚±‚Æ‚É‚È‚é‚Ì‚©ŒvZ‚·‚é
-		preP = agent.GetPosition();
-		for (int i = 0; i < (*movelist).size(); i++) {
-			preP += Transform::DirToDelta(Direction((*movelist)[i]));
+		else {
+			temp = candinate.count() - 1;
+			preMove = candinate[Random(0, temp)];
+			auto select_pos = preP + Transform::DirToDelta(Direction(preMove));
+			if (field.IsInField(select_pos)) {
+				if (field.cells[select_pos].tile != Transform::ToTile(type)) {
+					okflag = true;
+				}
+			}
 		}
 
-		while (1) {
-			//üˆÍ8ƒ}ƒX‚ğƒ‰ƒ“ƒ_ƒ€‚É‘I‚Ô
-			preMove = Random(0, 7);
-			//‘I‚ñ‚¾ƒ}ƒX‚ªƒtƒB[ƒ‹ƒh“à‚©Šm”F‚·‚é
-			//ƒRƒƒ“ƒgƒAƒEƒg•”•ª‚Í©ƒ`[ƒ€‚Ìƒ^ƒCƒ‹‚ğŒŸõ‚©‚çœŠO‚·‚é‚à‚ÌB“K—p‚·‚é‚Æˆ—‚ª’·‚­‚È‚é
-			if (field.IsInField(preP + Transform::DirToDelta(Direction(preMove)))
-				//&& field.GetCells()[preP.y][preP.x].GetTile() != TeamtoTile(this->_type)
-				) {
-				(*movelist).push_back(preMove);
-				return field.GetCells()[preP.y][preP.x].GetPoint();
-			}
+		//preP = agent.position + Transform::DirToDelta((Direction(preMove)));
+		//ãƒ©ãƒ³ãƒ€ãƒ ã«é¸ã‚“ã ãƒã‚¹ãŒãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰å†…ã‹ç¢ºèªã™ã‚‹ã€‚ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰å¤–ã ã£ãŸã‚‰ã‚„ã‚Šç›´ã—
+		//è‡ªãƒãƒ¼ãƒ ã®ã‚¿ã‚¤ãƒ«ã¯æ¤œç´¢ã‹ã‚‰é™¤å¤–ã™ã‚‹ã‚ˆã†ã«ã—ãŸã®ãŒã‚³ãƒ¡ãƒ³ãƒˆã‚¢ã‚¦ãƒˆã•ã‚Œã¦ã„ã‚‹éƒ¨åˆ†ã ãŒã€ã“ã‚Œã‚’é©ç”¨ã™ã‚‹ã¨ã¨ã‚“ã§ã‚‚ãªãå‡¦ç†ãŒé•·ããªã‚‹
+		if (okflag == true) {
+			(*movelist).push_back(preMove);
+			preP += Transform::DirToDelta(Direction(preMove));
+			return (field.cells[preP]).point;
 		}
+
+		candinate.remove(preMove);
+
 	}
+	//else {
+	//	//ã“ã‚Œã¾ã§å‹•ã„ãŸãƒã‚¹ãƒªã‚¹ãƒˆ(movelist)ã«ã‚ã‚‹å‹•ä½œè¨˜éŒ²ã‚’åæ˜ ã•ã›ã€å‹•ä½œãƒªã‚¹ãƒˆã‚’é©ç”¨ã™ã‚‹ã¨ã©ã“ã«ã‚¨ãƒ¼ã‚¸ã‚§ãƒ³ãƒˆãŒã„ã‚‹ã“ã¨ã«ãªã‚‹ã®ã‹è¨ˆç®—ã™ã‚‹
+	//	preP = agent.position;
+	//	for (int i = 0; i < (*movelist).size(); i++) {
+	//		preP += Transform::DirToDelta(Direction((*movelist)[i]));
+	//	}
+
+	//	while (1) {
+	//		//å‘¨å›²8ãƒã‚¹ã‚’ãƒ©ãƒ³ãƒ€ãƒ ã«é¸ã¶
+	//		preMove = Random(0, 7);
+	//		//é¸ã‚“ã ãƒã‚¹ãŒãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰å†…ã‹ç¢ºèªã™ã‚‹
+	//		//ã‚³ãƒ¡ãƒ³ãƒˆã‚¢ã‚¦ãƒˆéƒ¨åˆ†ã¯è‡ªãƒãƒ¼ãƒ ã®ã‚¿ã‚¤ãƒ«ã‚’æ¤œç´¢ã‹ã‚‰é™¤å¤–ã™ã‚‹ã‚‚ã®ã€‚é©ç”¨ã™ã‚‹ã¨å‡¦ç†ãŒé•·ããªã‚‹
+	//		if (field.IsInField(preP + Transform::DirToDelta(Direction(preMove)))
+	//			//&& field.cells[preP.y][preP.x].GetTile() != TeamtoTile(this->_type)
+	//			) {
+	//			(*movelist).push_back(preMove);
+	//			return field.cells[preP.y][preP.x].point;
+	//		}
+	//	}
+	//}
 }
 
 void T_Monte_Carlo::sort(Array<std::pair<Array<int>, int>> *target, int left, int right) {
@@ -63,7 +77,7 @@ void T_Monte_Carlo::sort(Array<std::pair<Array<int>, int>> *target, int left, in
 
 			i++;
 		}
-	
+
 		while (pivot < (*target)[j].second) {
 
 			j--;

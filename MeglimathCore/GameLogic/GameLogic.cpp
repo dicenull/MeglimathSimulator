@@ -1,128 +1,86 @@
-#include "GameLogic.h"
+ï»¿#include "GameLogic.h"
 #include<random>
-
-std::unordered_map<TeamType, std::vector<Agent>> GameLogic::GetAgentMap() const
+#include<set>
+#include<map>
+std::vector<Agent>  GameLogic::GetAgents() const
 {
-	std::unordered_map<TeamType, std::vector<Agent>> agents;
-	agents[TeamType::A] = _teamlogics[0].GetAgents();
-	agents[TeamType::B] = _teamlogics[1].GetAgents();
-
-	return agents;
-}
-std::vector<Agent> GameLogic::GetAgents() const
-{
-	std::vector<Agent> ret{ _teamlogics[0].GetAgents() };
-	auto && other = _teamlogics[1].GetAgents();
-	ret.push_back(other[0]);
-	ret.push_back(other[1]);
+	std::vector<Agent>  ret{
+		teams[0].agents[0],
+		teams[0].agents[1],
+		teams[1].agents[0],
+		teams[1].agents[1]
+	};
 	return ret;
 }
-std::vector<TeamLogic>& GameLogic::getTeamLogics()
-{
-	return _teamlogics;
-}
+
 void GameLogic::initAgentsPos()
 {
-	_Size size = _field.GetCells().size();
+	_Size size = _field.cells.size();
 
-	initAgentsPos(_Point<int>(std::rand() / (double)INT_MAX*(size.x - 2) / 2, std::rand() / (double)INT_MAX*(size.x - 2) / 2));
+	initAgentsPos({ (std::rand() >> 8) % static_cast<int>(size.x / 2) , (std::rand() >> 8) % static_cast<int>(size.y / 2) });
 }
 
 void GameLogic::initAgentsPos(_Point<> init_pos)
 {
-	_Size size = _field.GetCells().size();
+	_Size size = _field.cells.size() - _Size{ 1, 1 };
 
-	size -= _Point<int>(1, 1);
-	_Point<> agent_pos[] =
-	{
+	// ã‚¨ãƒ¼ã‚¸ã‚§ãƒ³ãƒˆã®åˆæœŸä½ç½®ã®ã‚¿ã‚¤ãƒ«ã‚’å¡—ã‚‹
+	initAgentPos({
 		init_pos,
 		_Point<int>(size.x - init_pos.x, init_pos.y),
 		_Point<int>(init_pos.x, size.y - init_pos.y),
 		size - init_pos
-	};
-
-	// ƒG[ƒWƒFƒ“ƒg‚Ì‰ŠúˆÊ’u‚Ìƒ^ƒCƒ‹‚ğ“h‚é
-	initAgentPos({ agent_pos[0], agent_pos[1], agent_pos[2], agent_pos[3] });
+		});
 }
 
-void GameLogic::initAgentsPos(_Point<> init_pos1, _Point<> init_pos2)
+void GameLogic::initAgentPos(std::array<_Point<>, 4> init_pos)
 {
-	_Size size = _field.GetCells().size();
-	_Point<> top_left;
-	if (init_pos1.x > size.x / 2)
-	{
-		top_left.x = init_pos1.x / 2;
-	}
-	else
-	{
-		top_left.x = init_pos1.x;
-	}
+	_field.PaintCell(init_pos[0], TeamType::Blue);
+	_field.PaintCell(init_pos[1], TeamType::Blue);
 
-	if (init_pos1.y > size.y / 2)
-	{
-		top_left.y = init_pos1.y / 2;
-	}
-	else
-	{
-		top_left.y = init_pos1.y;
-	}
+	_field.PaintCell(init_pos[2], TeamType::Red);
+	_field.PaintCell(init_pos[3], TeamType::Red);
 
-	bool init_map[][2] = { {false, false}, {false, false} };
-	init_map[init_pos1.x / (size.x / 2)][init_pos1.y / (size.y / 2)] = true;
-	init_map[init_pos2.x / (size.x / 2)][init_pos2.y / (size.y / 2)] = true;
-
-	std::vector<_Point<>> other_init_pos;
-	for (int i = 0; i < 2; i++)
-	{
-		for (int k = 0; k < 2; k++)
-		{
-			if (init_map[i][k] == false)
-			{
-				_Point<> pos;
-				pos.x = i 
-					? (int)(size.x - 1) - top_left.x
-					: top_left.x;
-
-				pos.y = k
-					? (int)(size.y - 1) - top_left.y
-					: top_left.y;
-
-				other_init_pos.push_back(pos);
-			}
-		}
-	}
-
-	initAgentPos({ init_pos1, init_pos2, other_init_pos[0], other_init_pos[1] });
+	teams[0].InitAgentsPos(init_pos[0], init_pos[1]);
+	teams[1].InitAgentsPos(init_pos[2], init_pos[3]);
 }
-
-void GameLogic::initAgentPos(std::vector<_Point<>> init_pos)
-{
-	_field.PaintCell(init_pos[0], TeamType::A);
-	_field.PaintCell(init_pos[1], TeamType::A);
-
-	_field.PaintCell(init_pos[2], TeamType::B);
-	_field.PaintCell(init_pos[3], TeamType::B);
-
-	_teamlogics[0].InitAgentsPos(init_pos[0], init_pos[1]);
-	_teamlogics[1].InitAgentsPos(init_pos[2], init_pos[3]);
-}
-
 
 void GameLogic::InitalizeFromJson(const std::string json)
 {
 	rapidjson::Document document;
 	document.Parse(json.data());
 
-	_field = { json };
-	// TODO: •K—v‚Å‚ ‚ê‚Î“ñl•ª‚Ì‰ŠúˆÊ’u‚ğæ“¾
+	_field = Field::makeFieldFromJson(json);
+
+	// äºŒäººåˆ†ã®åˆæœŸä½ç½®ã‚’å–å¾—
 	if (document.HasMember("InitPos")) {
 		auto init_pos = document["InitPos"].GetArray();
-		initAgentsPos(_Point<int>{ init_pos[0].GetString()}, _Point<int>{init_pos[1].GetString()});
+
+		std::array<_Point<>, 4> pos_list;
+		for (int i = 0; i < 4; i++)
+		{
+			pos_list[i] = _Point<int>{ init_pos[i].GetString() };
+		}
+		initAgentPos(pos_list);
 	}
 	else {
 		initAgentsPos();
 	}
 	_turn = document["Turn"].GetInt();
+}
+
+void GameLogic::InitializeRandom(int turn, int height, int width)
+{
+	this->_turn = turn;
+	this->_field = Field::makeFieldRandom( _Size{static_cast<size_t>(height),static_cast<size_t>(width)} );
+	initAgentsPos();
+}
+
+void GameLogic::InitializeVariable(int turn, const Field & field, const std::array<TeamLogic, 2>& teams)
+{
+	this->_turn = turn;
+	this->_field = field;
+	this->teams = teams;
 }
 
 
@@ -131,152 +89,111 @@ int GameLogic::GetTurn() const
 	return _turn;
 }
 
+std::array<TeamLogic, 2> GameLogic::GetTeams() const
+{
+	return teams;
+}
+
 void GameLogic::NextTurn(const std::unordered_map<TeamType, Think> &_thinks)
 {
 	if (_turn <= 0)
 	{
 		return;
 	}
-	auto agents_map = GetAgentMap();
-	auto agents = GetAgents();
 
-	// ƒVƒ~ƒ…ƒŒ[ƒVƒ‡ƒ“
-	std::vector<std::pair<_Point<>, std::pair<Direction, TeamType>>> move_point_arr;
-	std::vector<_Point<>> remove_points;
-	std::vector<_Point<>> stop_points;
-	for (TeamType team : {TeamType::A, TeamType::B})
-	{
-		for (int i = 0; i < 2; i++)
-		{
-			Direction dir = _thinks.at(team).steps[i].direction;
-			// ƒG[ƒWƒFƒ“ƒg‚ğ“®‚©‚µ‚½‚¢•ûŒü‚É“®‚©‚µ‚½ê‡‚ÌÀ•W
-			_Point<int> pos = agents_map[team][i].GetPosition();
-			_Point<int> after_pos = pos+Transform::DirToDelta(dir);
+	auto p_thinks = CollisionProccess(_thinks);
 
-			// ƒG[ƒWƒFƒ“ƒg‚ª“®ì‚·‚éÀ•W‚ğ’Ç‰Á
-			switch (_thinks.at(team).steps[i].action)
-			{
-			case Action::Move:
-				move_point_arr.push_back(std::make_pair(after_pos, std::make_pair(dir, team)));
-				break;
-			case Action::RemoveTile:
-				stop_points.push_back(pos);
-				remove_points.push_back(after_pos);
-				break;
-			case Action::Stop:
-				stop_points.push_back(pos);
-				break;
-			}
+	struct Move {
+		_Point<> target;
+		_Point<> old_point;
+		Step step;
+		TeamType team;
+		int id;
+	};
+	// ã‚·ãƒŸãƒ¥ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³
+	std::vector<Move> point_map;
+	for (auto team : { TeamType::Blue,TeamType::Red })
+		for (int i : {0, 1}) {
+			auto& step = p_thinks.at(team).steps[i];
+			auto& agent = teams[team].agents[i];
+			// å¯¾è±¡ã®åº§æ¨™
+			_Point<int> old_pos = agent.position;
+			_Point<int> new_pos = old_pos + Transform::DirToDelta(step.direction);
+			point_map.push_back({ new_pos, old_pos, step, team, i });
 		}
-	}
 
-	// Õ“Ë‚µ‚Ä‚¢‚È‚¢ƒG[ƒWƒFƒ“ƒg‚Ìs“®‚Ì‚İÀs‚·‚é
-	for (auto i = 0;i < move_point_arr.size();i++)
-	{
-		auto & pos_map = move_point_arr[i];
-		auto pos = pos_map.first;
-		auto team = pos_map.second.second;
-		auto dir = pos_map.second.first;
-		TileType our_tile = Transform::ToTile(team);
-		TileType their_tile = Transform::GetInverseType(our_tile);
+	bool ok = false;
+	while (!ok) {
+		ok = true;
+		for (auto& p : point_map) {
+			_Point <> pos = p.target;
+			TileType our_tile = Transform::ToTile(p.team);
+			TileType their_tile = Transform::GetInverseTile(our_tile);
 
-		// ‚»‚ÌÀ•W‚Éi‚ŞƒG[ƒWƒFƒ“ƒg‚ªˆêl‚Å‚ ‚é‚±‚Æ
-		if (std::count_if(move_point_arr.cbegin(), move_point_arr.cend(), [pos](std::pair<_Point<>, std::pair<Direction, TeamType>> itr) {return itr.first == pos; }) != 1)
-		{
-			stop_points.push_back(pos - Transform::DirToDelta(dir));
-			move_point_arr.erase(move_point_arr.begin() + i);
-
-			for (int k = 0; k < move_point_arr.size(); k++)
+			// è¡Œå‹•å¯¾è±¡ã®é‡è¤‡ã—ã¦ãŠã‚‰ãšã€ç§»å‹•ã—ãªã„ã‚¨ãƒ¼ã‚¸ã‚§ãƒ³ãƒˆã®ç¾åœ¨ä½ç½®ã¨ã‚‚é‡ãªã‚‰ãªã„
+			if (std::count_if(point_map.cbegin(), point_map.cend(),
+				[p](Move itr){
+				return itr.target == p.target 
+					|| itr.step.action!=Action::Move && itr.old_point==p.target; })
+				!= 1)
 			{
-				auto other_pos = move_point_arr[k].first;
-				auto other_dir = move_point_arr[k].second.first;
-
-				if (pos == other_pos)
-				{
-					stop_points.push_back(other_pos - Transform::DirToDelta(other_dir));
-					move_point_arr.erase(move_point_arr.begin() + k);
+				auto duplicate = p.target;
+				// è¡Œå‹•å¯¾è±¡ã®é‡è¤‡ã—ãŸå…¨ã‚¨ãƒ¼ã‚¸ã‚§ãƒ³ãƒˆã‚’åœç•™ã«
+				for (auto& op : point_map) {
+					if (op.target == duplicate) {
+						op.step = { Action::Stop,Direction::Stop };
+						op.target = op.old_point;
+					}
 				}
+
+				// åˆã‚ã‹ã‚‰ã‚·ãƒŸãƒ¥ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ã‚’å†é–‹
+				ok = false; break;
 			}
 
-			i = -1;
-			continue;
-		}
+			// ãã®åº§æ¨™ãŒãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰å†…ã§ã‚ã‚‹ã“ã¨
+			// ç§»å‹•ãªã‚‰ã€ãã®åº§æ¨™ã«ç›¸æ‰‹ã®ã‚¿ã‚¤ãƒ«ãŒãªã„ã“ã¨
+			if (_field.IsInField(pos) == false
+				|| p.step.action == Action::Move && _field.cells[pos].tile == their_tile)
+			{
+				// åœç•™ã«å¤‰æ›´ã™ã‚‹
+				p.step = { Action::Stop,Direction::Stop };
+				p.target = p.old_point;
 
-		// ‚»‚ÌÀ•W‚Ìƒ^ƒCƒ‹‚ğœ‹‚·‚éƒG[ƒWƒFƒ“ƒg‚ª‚¢‚È‚¢‚±‚Æ
-		// ‚»‚ÌÀ•W‚É‚Æ‚Ç‚Ü‚éƒG[ƒWƒFƒ“ƒg‚ª‚¢‚È‚¢‚±‚Æ
-		// ‚»‚ÌÀ•W‚ªƒtƒB[ƒ‹ƒh“à‚Å‚ ‚é‚±‚Æ
-		// ‚»‚ÌÀ•W‚É‘Šè‚Ìƒ^ƒCƒ‹‚ª‚È‚¢‚±‚Æ
-		if (   std::count_if(remove_points.cbegin(), remove_points.cend(), [pos](auto p) {return p == pos; }) > 0
-			|| std::count_if(stop_points.cbegin(), stop_points.cend(), [pos](auto p) {return p == pos; }) > 0
-			|| _field.IsInField(pos) == false
-			|| _field.GetCells()[pos.y][pos.x].GetTile() == their_tile)
-		{
-			// ’â—¯‚É•ÏX‚·‚é
-			stop_points.push_back(pos - Transform::DirToDelta(dir));
-			move_point_arr.erase(move_point_arr.begin() + i);
-
-			// ‰‚ß‚©‚çƒVƒ~ƒ…ƒŒ[ƒVƒ‡ƒ“‚ğÄŠJ
-			i = -1;
-			continue;
+				// åˆã‚ã‹ã‚‰ã‚·ãƒŸãƒ¥ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ã‚’å†é–‹
+				ok = false; break;
+			}
 		}
 	}
-
-	for (auto pos_map : move_point_arr)
+	//è¡Œå‹•
+	for (auto& p : point_map)
 	{
-		auto pos = pos_map.first;
-		auto team = pos_map.second.second;
-		auto dir = pos_map.second.first;
-
-		// i‚ñ‚¾ƒZƒ‹‚ğ“h‚é
-		_field.PaintCell(pos, team);
-
-		// Œ³‚ÌÀ•W‚É–ß‚·
-		pos -= Transform::DirToDelta(dir);
-
-		// ƒG[ƒWƒFƒ“ƒg‚ğ“®‚©‚·
-		_teamlogics[static_cast<int>(team)].MoveAgent(pos, dir);
-	}
-
-	// ƒ^ƒCƒ‹‚ğæ‚és“®‚ğÀs
-	for (auto & remove_point : remove_points)
-	{
-		// ‚»‚Ìƒ^ƒCƒ‹‚ğœ‹‚·‚éƒG[ƒWƒFƒ“ƒg‚ªˆêl‚Å‚ ‚é‚±‚Æ
-		// ‚»‚ÌÀ•W‚ÉˆÚ“®‚·‚éƒG[ƒWƒFƒ“ƒg‚ª‚¢‚È‚¢‚±‚Æ
-		// œ‹‚·‚éƒ^ƒCƒ‹‚ªƒtƒB[ƒ‹ƒh“à‚É‚ ‚é‚±‚Æ
-		// œ‹‚·‚éƒ}ƒX‚É‚Æ‚Ç‚Ü‚éƒG[ƒWƒFƒ“ƒg‚ª‚¢‚È‚¢‚±‚Æ
-		if (std::count_if(remove_points.cbegin(), remove_points.cend(), [remove_point](auto p) {return p == remove_point; }) != 1
-			|| std::count_if(move_point_arr.cbegin(), move_point_arr.cend(), [remove_point](std::pair<_Point<>, std::pair<Direction, TeamType>> itr) {return itr.first == remove_point; }) > 0
-			|| !_field.IsInField(remove_point)
-			|| std::count_if(stop_points.cbegin(), stop_points.cend(), [remove_point](auto p) {return p == remove_point; }) > 0)
-		{
-			continue;
+		if (p.step.action == Action::Move) {
+			// é€²ã‚“ã ã‚»ãƒ«ã‚’å¡—ã‚‹
+			_field.PaintCell(p.target, p.team);
+			// ã‚¨ãƒ¼ã‚¸ã‚§ãƒ³ãƒˆã‚’å‹•ã‹ã™
+			teams[p.team].MoveAgent(p.id, p.step.direction);
 		}
-
-		_field.RemoveTile(remove_point);
+		else if (p.step.action == Action::RemoveTile) {
+			_field.RemoveTile(p.target);
+		}
 	}
 
-	// ƒ^[ƒ“‚ği‚ß‚é
+	// ã‚¿ãƒ¼ãƒ³ã‚’é€²ã‚ã‚‹
 	_turn--;
-
-	// ƒ`[ƒ€‚Ì“¾“_‚ğXV
-	_field.UpdatePoint();
 }
 
 bool GameLogic::IsThinkAble(TeamType team, Think think)const
 {
-	auto agents_map = GetAgentMap();
-	auto agents = GetAgents();
+	TileType our_tile = Transform::ToTile(team);
+	TileType their_tile = Transform::GetInverseTile(our_tile);
 	int i = 0;
 	for (auto step : think.steps) {
-		Direction dir = step.direction;
-		// ƒG[ƒWƒFƒ“ƒg‚ğ“®‚©‚µ‚½‚¢•ûŒü‚É“®‚©‚µ‚½ê‡‚ÌÀ•W
-		_Point pos = agents_map[team][i].GetPosition() + Transform::DirToDelta(dir);
-		if (_field.IsInField(pos)
-			&& _field.GetCells()[pos.y][pos.x].GetTile() == TileType::None) {
-		}
-		else {
-			return false;
-		}
+		_Point pos = teams[team].agents[i].position + Transform::DirToDelta(step.direction);
+		if (!_field.IsInField(pos))return false;
+		if (step.action == Action::Move)
+			if (_field.cells[pos].tile == their_tile)return false;
+		else if (step.action == Action::RemoveTile)
+			if (_field.cells[pos].tile == TileType::None)return false;
 		i++;
 	}
 	return true;
@@ -292,30 +209,69 @@ int GameLogic::GetWinner()
 	if (GetTurn() != 0)return -1;
 	auto total_points = _field.GetTotalPoints();
 	if (total_points[0] > total_points[1]) {
-		return (int)TeamType::A;
+		return TeamType::Blue;
 	}
 	else if (total_points[0] < total_points[1]) {
-		return (int)TeamType::B;
+		return TeamType::Red;
 	}
 	else {
 		return -1;
 	}
 }
 
-Field GameLogic::GetField() const
+void GameLogic::SpinRight90()
+{
+	_field.SpinRight90();
+
+	std::array<_Point<>, 4> inits;
+	auto agents = GetAgents();
+	for(int i = 0;i < 4;i++)
+	{
+		auto & p = agents[i].position;
+		inits[i] = _Point<>(_field.cells.width() - 1 - p.y, p.x);
+	}
+
+	initAgentPos(inits);
+}
+
+void GameLogic::SpinLeft90()
+{
+	_field.SpinLeft90();
+
+	std::array<_Point<>, 4> inits;
+	auto agents = GetAgents();
+	for (int i = 0; i < 4; i++)
+	{
+		auto & p = agents[i].position;
+		inits[i] = _Point<>(p.y, p.x);
+	}
+
+	initAgentPos(inits);
+}
+
+std::unordered_map<TeamType, Think> GameLogic::CollisionProccess(const std::unordered_map<TeamType, Think>& _thinks)
+{
+	auto p_thinks = _thinks;
+
+	for (auto team : { TeamType::Blue,TeamType::Red })
+	{
+		for (auto i : { 0,1 })
+		{
+			if (_thinks.at(team).steps[i].action == Action::Collision)
+			{
+				int idx = (int)_thinks.at(team).steps[i].direction;
+
+				p_thinks[(TeamType)(1 - team)].steps[idx].action = Action::Stop;
+				
+				p_thinks[team].steps[i].action = Action::Stop;
+			}
+		}
+	}
+
+	return p_thinks;
+}
+
+const Field& GameLogic::GetField() const
 {
 	return _field;
-}
-
-GameLogic::GameLogic() :_teamlogics({ TeamLogic(),TeamLogic() })
-{
-
-}
-
-GameLogic::GameLogic(int turn) : _turn(turn), _teamlogics({ TeamLogic(),TeamLogic() })
-{
-}
-
-GameLogic::~GameLogic()
-{
 }

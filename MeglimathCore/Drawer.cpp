@@ -1,16 +1,16 @@
-#include "Drawer.h"
+ï»¿#include "Drawer.h"
 #include "LogicUtil.h"
 #include "StatusDrawer.h"
 void Drawer::DrawField(const Field & field) const
 {
-	// ƒZƒ‹‚Æƒ^ƒCƒ‹ƒ|ƒCƒ“ƒg‚Ì•`‰æ
+	// ã‚»ãƒ«ã¨ã‚¿ã‚¤ãƒ«ãƒã‚¤ãƒ³ãƒˆã®æç”»
 	Rect r;
 	
-	auto cells = field.GetCells();
+	const auto &cells = field.cells;
 	
-	for (int i = 0; i < cells.size().x; i++)
+	for (size_t i = 0; i < cells.size().x; i++)
 	{
-		for (int k = 0; k < cells.size().y; k++)
+		for (size_t k = 0; k < cells.size().y; k++)
 		{
 			Point pos(i, k);
 			Point top_left_pos = fieldOrigin + pos * cellSize;
@@ -19,14 +19,14 @@ void Drawer::DrawField(const Field & field) const
 
 			r.draw(Palette::White);
 
-			if (cells[k][i].GetTile() != TileType::None)
+			if (cells[_Point<>{pos.x, pos.y}].tile != TileType::None)
 			{
-				r.draw(Color(TeamColor::ColorOf(cells[k][i].GetTile()), 50U));
+				r.draw(Color(TeamColor::ColorOf(cells[_Point<>{pos.x, pos.y}].tile), 50U));
 			}
 			
 			r.drawFrame(1.0, Palette::Gray);
 			
-			FontAsset(U"Cell")(cells[k][i].GetPoint())
+			FontAsset(U"Cell")(cells[_Point<>{pos.x, pos.y}].point)
 				.drawAt(r.center(), Palette::Black);
 		}
 	}
@@ -37,54 +37,56 @@ void Drawer::DrawAgents(HashTable<TeamType, Array<Agent>> agents) const
 	int32 edge_width = Sqrt(2) * cellSize.x / 2.0;
 
 	auto center = [=](Point pos) {return fieldOrigin + pos * cellSize + cellSize / 2; };
-	for(TeamType team : {TeamType::A, TeamType::B})
+	for(TeamType team : {TeamType::Blue, TeamType::Red})
 	{
-		// ˆêl–Ú‚ÌƒG[ƒWƒFƒ“ƒg‚ğ•`‰æ
-		Circle(center(LogicUtil::toS3dPoint(agents[team][0].GetPosition())), cellSize.x / 2)
+		// ä¸€äººç›®ã®ã‚¨ãƒ¼ã‚¸ã‚§ãƒ³ãƒˆã‚’æç”»
+		Circle(center(LogicUtil::toS3dPoint(agents[team][0].position)), cellSize.x / 2)
 			.drawFrame(2.0, TeamColor::ColorOf(team));
 
-		// “ñl–Ú‚ÌƒG[ƒWƒFƒ“ƒg‚ğ•`‰æ
-		Rect(Arg::center = center(LogicUtil::toS3dPoint(agents[team][1].GetPosition())), edge_width).rotated(45_deg)
+		// äºŒäººç›®ã®ã‚¨ãƒ¼ã‚¸ã‚§ãƒ³ãƒˆã‚’æç”»
+		Rect(Arg::center = center(LogicUtil::toS3dPoint(agents[team][1].position)), edge_width).rotated(45_deg)
 			.drawFrame(2.0, TeamColor::ColorOf(team));
 	}
 }
 
 void Drawer::DrawStatus(const HashTable<TeamType, Think> & thinks, const Field & field, int turn) const
 {
-	if (thinks.size() == 0)
-	{
-		return;
-	}
-
 	Array<Array<String>> messages{ 3 };
 
-	// 2ƒ`[ƒ€‚Ìî•ñ
+	// 2ãƒãƒ¼ãƒ ã®æƒ…å ±
 	for (int i : step(2))
 	{
+		if (thinks.size() >= i + 1)
+		{
+			messages[i].append
+			({
+				String(U"Agent 1 : ") + Transform::ToString(thinks.at((TeamType)i).steps[0]),
+				String(U"Agent 2 : ") + Transform::ToString(thinks.at((TeamType)i).steps[1])
+			});
+		}
+
 		messages[i].append
 		({
-			String(U"Agent 1 : ") + Transform::ToString(thinks.at((TeamType)i).steps[0]),
-			String(U"Agent 2 : ") + Transform::ToString(thinks.at((TeamType)i).steps[1]),
 			String(U"Area Point : ") + ToString(field.GetAreaPoints()[i]),
 			String(U"Tile Point : ") + ToString(field.GetTilePoints()[i]),
 			String(U"Total Point : ") + ToString(field.GetTotalPoints()[i])
 		});
 	}
 
-	// ‚»‚Ì‘¼‚ÌƒQ[ƒ€î•ñ
+	// ãã®ä»–ã®ã‚²ãƒ¼ãƒ æƒ…å ±
 	messages[2].push_back(String(U"Turn : ") + ToString(turn));
 
-	// ƒXƒe[ƒ^ƒX‚ğ•`‰æ
+	// ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚’æç”»
 	StatusDrawer status_drawer{ statOrigin };
-	// Šeƒ`[ƒ€‚Ìî•ñ‚ğ•`‰æ
+	// å„ãƒãƒ¼ãƒ ã®æƒ…å ±ã‚’æç”»
 	for (int i : step(2))
 	{
 		auto team_color = TeamColor::ColorOf((TeamType)i);
-		// ƒ`[ƒ€–¼‚ğ•`‰æ
+		// ãƒãƒ¼ãƒ åã‚’æç”»
 		auto text = FontAsset(U"Stat")(Transform::ToString((TeamType)i));
 		status_drawer.DrawStatus(text, team_color);
 		
-		// •`‰æˆÊ’u‚ğ‰üs
+		// æç”»ä½ç½®ã‚’æ”¹è¡Œ
 		
 		for (size_t k : step(messages[i].count()))
 		{

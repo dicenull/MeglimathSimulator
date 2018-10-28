@@ -1,4 +1,4 @@
-#include "Transform.h"
+﻿#include "Transform.h"
 
 const std::u32string Transform::ToString(Action action)
 {
@@ -10,6 +10,8 @@ const std::u32string Transform::ToString(Action action)
 		return U"Remove";
 	case Action::Stop:
 		return U"Stop";
+	case Action::Collision:
+		return U"Collision";
 	}
 
 	return U"";
@@ -56,10 +58,10 @@ const std::u32string Transform::ToString(TeamType team)
 {
 	switch (team)
 	{
-	case TeamType::A:
-		return U"Team A";
-	case TeamType::B:
-		return U"Team B";
+	case TeamType::Blue:
+		return U"Blue";
+	case TeamType::Red:
+		return U"Red";
 	}
 
 	return U"";
@@ -69,9 +71,9 @@ const char Transform::ToChar(TileType tile)
 {
 	switch (tile)
 	{
-	case TileType::A:
+	case TileType::Blue:
 		return 'a';
-	case TileType::B:
+	case TileType::Red:
 		return 'b';
 	case TileType::None:
 		return '-';

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include"GameLogic/GameLogic.h"
 #include<Siv3D.hpp>
 namespace LogicUtil {
@@ -9,9 +9,9 @@ namespace LogicUtil {
 	inline Point toS3dPoint(const _Point<> &_p) {
 		return Point{ _p.x,_p.y };
 	}
-	inline HashTable<TeamType, Array<Agent>> toS3dHashTable(const std::unordered_map<TeamType, std::vector<Agent>> &_map) {
+	inline HashTable<TeamType, Array<Agent>> toS3dHashTable(const std::array<TeamLogic,2> &_map) {
 		HashTable<TeamType, Array<Agent>> ret;
-		for (auto k : _map)ret[k.first] = k.second;
+		for (auto k : { TeamType::Blue,TeamType::Red })ret[k] = { _map[k].agents[0],_map[k].agents[1] };
 		return ret;
 	}
 	template<class C>

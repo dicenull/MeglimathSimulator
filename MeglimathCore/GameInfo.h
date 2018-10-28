@@ -1,5 +1,6 @@
 #pragma once
 #include "GameLogic/Field.h"
+#include"GameLogic/GameLogic.h"
 #include<Siv3D.hpp>
 
 class GameInfo
@@ -15,6 +16,7 @@ public:
 	Array<Agent> GetAgents(TeamType type) const;
 	int GetTurn() const;
 
+	GameLogic GetGameLogic()const;
 public:
 	GameInfo();
 	GameInfo(std::string json);

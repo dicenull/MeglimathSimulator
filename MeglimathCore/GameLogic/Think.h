@@ -1,20 +1,44 @@
-#pragma once
-#include "Action.h"
+﻿#pragma once
 #include<array>
 #include <rapidjson\document.h>
 #include <string>
 
 /// <summary>
-/// �G�[�W�F���g��l���̍s��
+/// エージェントの動作
 /// </summary>
-class Think
+enum class Action
 {
-public:
-	Step steps[2];
+	Move, RemoveTile, Stop, Collision
+};
 
-	Think(std::string json);
-	Think(Step steps[2]);
-	Think(Step step1, Step step2);
-	Think();
-	~Think();
+/// <summary>
+/// 動作の方向
+/// </summary>
+enum class Direction
+{
+	Right,
+	RightUp,
+	Up,
+	LeftUp,
+	Left,
+	LeftDown,
+	Down,
+	RightDown,
+	Stop
+};
+
+struct Step
+{
+	Action action;
+	Direction direction;
+};
+
+/// <summary>
+/// エージェント二人分の行動
+/// </summary>
+struct Think
+{
+	std::array<Step,2> steps;
+
+	static Think makeThink(std::string json);
 };

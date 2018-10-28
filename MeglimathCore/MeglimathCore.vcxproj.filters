@@ -185,22 +185,10 @@
     <ClInclude Include="TeamColor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GameLogic\Action.h">
-      <Filter>Header Files\GameLogic</Filter>
-    </ClInclude>
-    <ClInclude Include="GameLogic\Agent.h">
-      <Filter>Header Files\GameLogic</Filter>
-    </ClInclude>
-    <ClInclude Include="GameLogic\Cell.h">
-      <Filter>Header Files\GameLogic</Filter>
-    </ClInclude>
     <ClInclude Include="GameLogic\Field.h">
       <Filter>Header Files\GameLogic</Filter>
     </ClInclude>
     <ClInclude Include="GameLogic\GameLogic.h">
-      <Filter>Header Files\GameLogic</Filter>
-    </ClInclude>
-    <ClInclude Include="GameLogic\GamePoints.h">
       <Filter>Header Files\GameLogic</Filter>
     </ClInclude>
     <ClInclude Include="GameLogic\TeamLogic.h">
@@ -218,9 +206,6 @@
     <ClInclude Include="LogicUtil.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GameLogic\Util.h">
-      <Filter>Header Files\GameLogic</Filter>
-    </ClInclude>
     <ClInclude Include="GameLogic\Format.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -228,6 +213,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="StatusDrawer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -238,22 +226,10 @@
     <ClCompile Include="GameInfo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GameLogic\Agent.cpp">
-      <Filter>Source Files\GameLogic</Filter>
-    </ClCompile>
-    <ClCompile Include="GameLogic\Cell.cpp">
-      <Filter>Source Files\GameLogic</Filter>
-    </ClCompile>
     <ClCompile Include="GameLogic\Field.cpp">
       <Filter>Source Files\GameLogic</Filter>
     </ClCompile>
     <ClCompile Include="GameLogic\GameLogic.cpp">
-      <Filter>Source Files\GameLogic</Filter>
-    </ClCompile>
-    <ClCompile Include="GameLogic\GamePoints.cpp">
-      <Filter>Source Files\GameLogic</Filter>
-    </ClCompile>
-    <ClCompile Include="GameLogic\TeamLogic.cpp">
       <Filter>Source Files\GameLogic</Filter>
     </ClCompile>
     <ClCompile Include="GameLogic\Transform.cpp">
@@ -262,9 +238,6 @@
     <ClCompile Include="Drawer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GameLogic\Think.cpp">
-      <Filter>Source Files\GameLogic</Filter>
-    </ClCompile>
     <ClCompile Include="GameLogic\Format.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -272,6 +245,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="StatusDrawer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameLogic\Think.cpp">
+      <Filter>Source Files\GameLogic</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

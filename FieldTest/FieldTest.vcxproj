@@ -80,8 +80,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\git\rapidjson\include;C:\boost_1_67_0;$(SIV3D_0_2_5)\include;$(SIV3D_0_2_5)\include\ThirdParty;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SIV3D_0_2_5)\lib\Windows(x64);$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\git\rapidjson\include;C:\boost_1_67_0;$(SIV3D_0_3_0)\include;$(SIV3D_0_3_0)\include\ThirdParty;$(IncludePath)</IncludePath>
+    <LibraryPath>$(UniversalCRT_IncludePath);$(SIV3D_0_3_0)\lib\Windows(x64);$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)Intermediate\$(ProjectName)\Debug-x64\</OutDir>
     <IntDir>$(SolutionDir)Intermediate\$(ProjectName)\Debug-x64\Intermediate\</IntDir>
     <TargetName>$(ProjectName)(debug_64-bit)</TargetName>
@@ -134,12 +134,13 @@
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_SILENCE_CXX17_OLD_ALLOCATOR_MEMBERS_DEPRECATION_WARNING;_SILENCE_CXX17_UNCAUGHT_EXCEPTION_DEPRECATION_WARNING;_SILENCE_CXX17_RESULT_OF_DEPRECATION_WARNING;_SILENCE_CXX17_ITERATOR_BASE_CLASS_DEPRECATION_WARNING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <SDLCheck>true</SDLCheck>
+      <SDLCheck>false</SDLCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <MinimalRebuild>false</MinimalRebuild>
       <AdditionalIncludeDirectories>$(BOOST_INCLUDE_PATH);$(SolutionDir)MeglimathCore\GameLogic;$(RAPIDJSON)</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4996</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -251,6 +252,11 @@
   <ItemGroup>
     <Text Include="App\engine\font\fontawesome\LICENSE.txt" />
     <Text Include="App\engine\font\noto\LICENSE_OFL.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MeglimathCore\MeglimathCore.vcxproj">
+      <Project>{d7f2c72d-cdc8-43af-bdc8-2b12a04c9c3e}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
