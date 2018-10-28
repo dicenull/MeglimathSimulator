@@ -9,7 +9,7 @@
 大会要項を確認してください
 
 ## 動作の流れ
-![demo](https://github.com/Eulerd/MeglimathSimulator/blob/release/media/demo.gif)
+![demo](https://github.com/Eulerd/MeglimathSimulator/blob/master/media/demo.gif)
 + サーバを起動する
 + 別アプリケーションからサーバにフィールド情報をjson形式で送信する
 + クライアントをコマンドライン引数を2つ入力して起動する
